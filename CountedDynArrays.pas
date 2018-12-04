@@ -1,4 +1,16 @@
-unit DynArrayUtils;
+unit CountedDynArrays;
+
+{$IFDEF FPC}
+  {$MODE ObjFPC}{$H+}
+  {$INLINE ON}
+  {$DEFINE CanInline}
+{$ELSE}
+  {$IF CompilerVersion >= 17 then}  // Delphi 2005+
+    {$DEFINE CanInline}
+  {$ELSE}
+    {$UNDEF CanInline}
+  {$IFEND}
+{$ENDIF}
 
 interface
 
@@ -21,7 +33,7 @@ type
   agmLinear         - grow by GrowFactor (integer part of the float)
   agmFast           - grow by capacity * GrowFactor
   agmFastAttenuated - if capacity is below DYNARRAY_GROW_ATTENUATE_THRESHOLD,
-                      grow by capacity * GrowFactor
+                      then grow by capacity * GrowFactor
                     - if capacity is above or equal to DYNARRAY_GROW_ATTENUATE_THRESHOLD,
                       grow by 1/16 * DYNARRAY_GROW_ATTENUATE_THRESHOLD
 
@@ -53,6 +65,7 @@ Function Low(const Arr: TArrayType): Integer; overload;{$IFDEF CanInline} inline
 Function High(const Arr: TArrayType): Integer; overload;{$IFDEF CanInline} inline; {$ENDIF}
 Function CheckIndex(const Arr: TArrayType; Index: Integer): Boolean; overload;
 
+procedure Init(var Arr: TArrayType); overload;
 procedure SetLength(var Arr: TArrayType; NewLength: Integer); overload;
 procedure SetCapacity(var Arr: TArrayType; NewCapacity: Integer); overload;{$IFDEF CanInline} inline; {$ENDIF}
 procedure Clear(var Arr: TArrayType); overload;{$IFDEF CanInline} inline; {$ENDIF}
@@ -114,6 +127,15 @@ end;
 Function CheckIndex(const Arr: TArrayType; Index: Integer): Boolean;
 begin
 Result := (Index >= System.Low(Arr.Arr)) and (Index < Arr.Count);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure Init(var Arr: TArrayType);
+begin
+System.SetLength(Arr.Arr,0);
+Arr.Count := 0;
+Arr.Data := 0;
 end;
 
 //------------------------------------------------------------------------------
