@@ -1,46 +1,16 @@
-unit CountedDynArrays;
+unit CountedDynArraysInt;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
 interface
 
 uses
-  AuxTypes;
-
-type
-{
-  Array is only grown if current count + DeltaMin is larger than current capacity.
-
-  agmSlow           - grow by 1
-  agmLinear         - grow by GrowFactor (integer part of the float)
-  agmFast           - grow by capacity * GrowFactor
-  agmFastAttenuated - if capacity is below DYNARRAY_GROW_ATTENUATE_THRESHOLD,
-                      then grow by capacity * GrowFactor
-                    - if capacity is above or equal to DYNARRAY_GROW_ATTENUATE_THRESHOLD,
-                      grow by 1/16 * DYNARRAY_GROW_ATTENUATE_THRESHOLD
-
-  If mode is other than agmSlow and current capacity is 0, then new capacity is
-  set to DYNARRAY_INITIAL_CAPACITY, irrespective of selected grow mode.
-}
-  TArrayGrowMode = (agmSlow, agmLinear, agmFast, agmFastAttenuated);
-
-{
-  asmKeepCap - array is not shrinked, capacity is preserved
-  asmNormal  - if capacity is above DYNARRAY_INITIAL_CAPACITY and count is below capacity div 4,
-               then capacity is set to capacity div 4, otherwise capacity is preserved
-             - if capacity is below or equal to DYNARRAY_INITIAL_CAPACITY, then the array
-               is not shinked unless the count is 0, in which case the new capacity is set to 0
-  asmToCount - capacity is set to count
-}
-  TArrayShrinkMode = (asmKeepCap, asmNormal, asmToCount);
-
-const
-  DYNARRAY_INITIAL_CAPACITY         = 16;
-  DYNARRAY_GROW_ATTENUATE_THRESHOLD = 16 * 1024 * 1024;
+  AuxTypes,
+  CountedDynArrays;
 
 {$DEFINE Interface}
 
-{$DEFINE CDA_TypeBool}
+{$DEFINE CDA_TypeInt8}
 type
   {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
     Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
@@ -50,9 +20,9 @@ type
   {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
 
 {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeBool}
+{$UNDEF CDA_TypeInt8}
 
-{$DEFINE CDA_TypeInteger}
+{$DEFINE CDA_TypeUInt8}
 type
   {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
     Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
@@ -62,9 +32,9 @@ type
   {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
 
 {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeInteger}
+{$UNDEF CDA_TypeUInt8}
 
-{$DEFINE CDA_TypeDateTime}
+{$DEFINE CDA_TypeInt16}
 type
   {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
     Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
@@ -74,9 +44,9 @@ type
   {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
 
 {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeDateTime}
+{$UNDEF CDA_TypeInt16}
 
-{$DEFINE CDA_TypeString}
+{$DEFINE CDA_TypeUInt16}
 type
   {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
     Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
@@ -86,9 +56,9 @@ type
   {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
 
 {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeString}
+{$UNDEF CDA_TypeUInt16}
 
-{$DEFINE CDA_TypePointer}
+{$DEFINE CDA_TypeInt32}
 type
   {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
     Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
@@ -98,9 +68,9 @@ type
   {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
 
 {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypePointer}
+{$UNDEF CDA_TypeInt32}
 
-{$DEFINE CDA_TypeObject}
+{$DEFINE CDA_TypeUInt32}
 type
   {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
     Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
@@ -110,7 +80,31 @@ type
   {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
 
 {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeObject}
+{$UNDEF CDA_TypeUInt32}
+
+{$DEFINE CDA_TypeInt64}
+type
+  {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
+    Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
+    Count:  Integer;
+    Data:   PtrInt;
+  end;
+  {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
+
+{$INCLUDE '.\CountedDynArrays.inc'}
+{$UNDEF CDA_TypeInt64}
+
+{$DEFINE CDA_TypeUInt64}
+type
+  {$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'} = record
+    Arr:    array of {$INCLUDE '.\CDA_inc\CDA_BaseType.inc'};
+    Count:  Integer;
+    Data:   PtrInt;
+  end;
+  {$INCLUDE '.\CDA_inc\CDA_PArrayType.inc'} = ^{$INCLUDE '.\CDA_inc\CDA_ArrayType.inc'};
+
+{$INCLUDE '.\CountedDynArrays.inc'}
+{$UNDEF CDA_TypeUInt64}
 
 {$UNDEF Interface}
 
@@ -121,32 +115,38 @@ uses
 
 {$DEFINE Implementation}
 
-{$DEFINE CDA_TypeBool}
+{$DEFINE CDA_TypeInt8}
   {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeBool}
+{$UNDEF CDA_TypeInt8}
 
-{$DEFINE CDA_TypeInteger}
+{$DEFINE CDA_TypeUInt8}
   {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeInteger}
+{$UNDEF CDA_TypeUInt8}
 
-{$DEFINE CDA_TypeDateTime}
+{$DEFINE CDA_TypeInt16}
   {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeDateTime}
+{$UNDEF CDA_TypeInt16}
 
-{$DEFINE CDA_TypeString}
+{$DEFINE CDA_TypeUInt16}
   {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeString}
+{$UNDEF CDA_TypeUInt16}
 
-{$DEFINE CDA_TypePointer}
+{$DEFINE CDA_TypeInt32}
   {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypePointer}
+{$UNDEF CDA_TypeInt32}
 
-{$DEFINE CDA_TypeObject}
+{$DEFINE CDA_TypeUInt32}
   {$INCLUDE '.\CountedDynArrays.inc'}
-{$UNDEF CDA_TypeObject}
+{$UNDEF CDA_TypeUInt32}
+
+{$DEFINE CDA_TypeInt64}
+  {$INCLUDE '.\CountedDynArrays.inc'}
+{$UNDEF CDA_TypeInt64}
+
+{$DEFINE CDA_TypeUInt64}
+  {$INCLUDE '.\CountedDynArrays.inc'}
+{$UNDEF CDA_TypeUInt64}
 
 {$UNDEF Implementation}
 
 end.
-
-
