@@ -31,37 +31,37 @@
   or no modifications for any other type - it uses templates and type aliases
   as a kind of generics.
   For examples on how to implement a counted dynamic array, refer to files
-  CountedDynArrays*.pas, where * is name of the base type.
+  CountedDynArray*.pas, where * is name of the base type.
 
   Arrays of following types are implemented in current version of this library:
 
-    Boolean    in CountedDynArraysBoolean.pas
-    Integer    in CountedDynArraysInteger.pas
-    TDateTime  in CountedDynArraysDateTime.pas
-    String     in CountedDynArraysString.pas
-    Pointer    in CountedDynArraysPointer.pas
-    TObject    in CountedDynArraysTObject.pas
-    Int8       in CountedDynArraysInt8.pas
-    UInt8      in CountedDynArraysUInt8.pas
-    Int16      in CountedDynArraysInt16.pas
-    UInt16     in CountedDynArraysUInt16.pas
-    Int32      in CountedDynArraysInt32.pas
-    UInt32     in CountedDynArraysUInt32.pas
-    Int64      in CountedDynArraysInt64.pas
-    UInt64     in CountedDynArraysUInt64.pas
-    Float32    in CountedDynArraysFloat32.pas
-    Float64    in CountedDynArraysFloat64.pas
+    Boolean    in CountedDynArrayBoolean.pas
+    Integer    in CountedDynArrayInteger.pas
+    TDateTime  in CountedDynArrayDateTime.pas
+    String     in CountedDynArrayString.pas
+    Pointer    in CountedDynArrayPointer.pas
+    TObject    in CountedDynArrayTObject.pas
+    Int8       in CountedDynArrayInt8.pas
+    UInt8      in CountedDynArrayUInt8.pas
+    Int16      in CountedDynArrayInt16.pas
+    UInt16     in CountedDynArrayUInt16.pas
+    Int32      in CountedDynArrayInt32.pas
+    UInt32     in CountedDynArrayUInt32.pas
+    Int64      in CountedDynArrayInt64.pas
+    UInt64     in CountedDynArrayUInt64.pas
+    Float32    in CountedDynArrayFloat32.pas
+    Float64    in CountedDynArrayFloat64.pas
 
   Note that given the method used (template with type alias), there is a limit
   of one array type per *.pas file.
 
   If you want to override any preimplemented method, define symbol
   CDA_DisableFunc_<FunctionName> and write your own implementation.
-  Example how to do it can be found in unit CountedDynArraysString.pas.
+  Example how to do it can be found in unit CountedDynArrayString.pas.
 
   ©František Milt 2018-12-08
 
-  Version 1.0
+  Version 1.0 (needs testing)
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes

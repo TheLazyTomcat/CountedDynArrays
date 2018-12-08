@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysString;
+unit CountedDynArrayString;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 

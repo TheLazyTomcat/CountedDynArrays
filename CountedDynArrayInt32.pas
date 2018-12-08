@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of objects
+    Counted dynamic array of Int32 values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysObject;
+unit CountedDynArrayInt32;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,15 +31,15 @@ uses
   CountedDynArrays;
 
 type
-  TObjectCountedDynArray = record
-    Arr:    array of TObject;
+  TInt32CountedDynArray = record
+    Arr:    array of Int32;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PObjectCountedDynArray = ^TObjectCountedDynArray;
+  PInt32CountedDynArray = ^TInt32CountedDynArray;
 
-  TBaseType = TObject;
-  TArrayType = TObjectCountedDynArray;
+  TBaseType = Int32;
+  TArrayType = TInt32CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,16 +51,9 @@ uses
   SysUtils,
   ListSorters;
 
-{$IFDEF FPC_DisableWarns}
-  {$DEFINE FPCDWM}
-  {$DEFINE W4055:={$WARN 4055 OFF}} // Conversion between ordinals and pointers is not portable
-{$ENDIF}
-
-Function CDA_CompareFunc(A,B: TObject): Integer;
+Function CDA_CompareFunc(A,B: Int32): Integer;
 begin
-{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
-Result := Integer(PtrUInt(Pointer(A)) - PtrUInt(Pointer(B)));
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
+Result := Integer(A - B);
 end;
 
 //------------------------------------------------------------------------------
@@ -68,6 +61,5 @@ end;
 {$DEFINE CDA_Implementation}
 {$INCLUDE '.\CountedDynArrays.inc'}
 {$UNDEF CDA_Implementation}
-
 
 end.

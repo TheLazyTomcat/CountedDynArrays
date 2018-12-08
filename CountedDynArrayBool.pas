@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of TDateTime values
+    Counted dynamic array of Boolean values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysDateTime;
+unit CountedDynArrayBool;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,15 +31,15 @@ uses
   CountedDynArrays;
 
 type
-  TDateTimeCountedDynArray = record
-    Arr:    array of TDateTime;
+  TBooleanCountedDynArray = record
+    Arr:    array of Boolean;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PDateTimeCountedDynArray = ^TDateTimeCountedDynArray;
+  PBooleanCountedDynArray = ^TBooleanCountedDynArray;
 
-  TBaseType = TDateTime;
-  TArrayType = TDateTimeCountedDynArray;
+  TBaseType = Boolean;
+  TArrayType = TBooleanCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,11 +51,9 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: TDateTime): Integer;
+Function CDA_CompareFunc(A,B: Boolean): Integer;
 begin
-If A > B then Result := 1
-  else If A < B then Result := -1
-    else Result := 0;
+Result := Ord(A) - Ord(B);
 end;
 
 //------------------------------------------------------------------------------

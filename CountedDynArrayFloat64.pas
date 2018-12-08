@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of Int64 values
+    Counted dynamic array of Float64 (Double) values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysInt64;
+unit CountedDynArrayFloat64;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,19 +31,20 @@ uses
   CountedDynArrays;
 
 type
-  TInt64CountedDynArray = record
-    Arr:    array of Int64;
+  TFloat64CountedDynArray = record
+    Arr:    array of Float64;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PInt64CountedDynArray = ^TInt64CountedDynArray;
+  PFloat64CountedDynArray = ^TFloat64CountedDynArray;
 
-  TBaseType = Int64;
-  TArrayType = TInt64CountedDynArray;
+  TBaseType = Float64;
+  TArrayType = TFloat64CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
 {$UNDEF CDA_Interface}
+
 
 implementation
 
@@ -51,9 +52,11 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: Int64): Integer;
+Function CDA_CompareFunc(A,B: Float64): Integer;
 begin
-Result := Integer(A - B);
+If A > B then Result := 1
+  else If A < B then Result := -1
+    else Result := 0;
 end;
 
 //------------------------------------------------------------------------------
@@ -63,3 +66,4 @@ end;
 {$UNDEF CDA_Implementation}
 
 end.
+

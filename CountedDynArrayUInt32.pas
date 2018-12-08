@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of Int32 values
+    Counted dynamic array of UInt32 values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysInt32;
+unit CountedDynArrayUInt32;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,15 +31,15 @@ uses
   CountedDynArrays;
 
 type
-  TInt32CountedDynArray = record
-    Arr:    array of Int32;
+  TUInt32CountedDynArray = record
+    Arr:    array of UInt32;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PInt32CountedDynArray = ^TInt32CountedDynArray;
+  PUInt32CountedDynArray = ^TUInt32CountedDynArray;
 
-  TBaseType = Int32;
-  TArrayType = TInt32CountedDynArray;
+  TBaseType = UInt32;
+  TArrayType = TUInt32CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,7 +51,7 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: Int32): Integer;
+Function CDA_CompareFunc(A,B: UInt32): Integer;
 begin
 Result := Integer(A - B);
 end;

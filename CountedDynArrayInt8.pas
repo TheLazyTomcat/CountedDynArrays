@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of Integer values
+    Counted dynamic array of Int8 values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysInteger;
+unit CountedDynArrayInt8;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,15 +31,15 @@ uses
   CountedDynArrays;
 
 type
-  TIntegerCountedDynArray = record
-    Arr:    array of Integer;
+  TInt8CountedDynArray = record
+    Arr:    array of Int8;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PIntegerCountedDynArray = ^TIntegerCountedDynArray;
+  PInt8CountedDynArray = ^TInt8CountedDynArray;
 
-  TBaseType = Integer;
-  TArrayType = TIntegerCountedDynArray;
+  TBaseType = Int8;
+  TArrayType = TInt8CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,9 +51,9 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: TBaseType): Integer;
+Function CDA_CompareFunc(A,B: Int8): Integer;
 begin
-Result := Ord(A) - Ord(B);
+Result := Integer(A - B);
 end;
 
 //------------------------------------------------------------------------------

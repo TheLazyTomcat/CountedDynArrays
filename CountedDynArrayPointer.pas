@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of UInt64 values
+    Counted dynamic array of Pointer values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysUInt64;
+unit CountedDynArrayPointer;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,15 +31,15 @@ uses
   CountedDynArrays;
 
 type
-  TUInt64CountedDynArray = record
-    Arr:    array of UInt64;
+  TPointerCountedDynArray = record
+    Arr:    array of Pointer;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PUInt64CountedDynArray = ^TUInt64CountedDynArray;
+  PPointerCountedDynArray = ^TPointerCountedDynArray;
 
-  TBaseType = UInt64;
-  TArrayType = TUInt64CountedDynArray;
+  TBaseType = Pointer;
+  TArrayType = TPointerCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,9 +51,16 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: UInt64): Integer;
+{$IFDEF FPC_DisableWarns}
+  {$DEFINE FPCDWM}
+  {$DEFINE W4055:={$WARN 4055 OFF}} // Conversion between ordinals and pointers is not portable
+{$ENDIF}
+
+Function CDA_CompareFunc(A,B: Pointer): Integer;
 begin
-Result := Integer(A - B);
+{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
+Result := Integer(PtrUInt(A) - PtrUInt(B));
+{$IFDEF FPCDWM}{$POP}{$ENDIF}
 end;
 
 //------------------------------------------------------------------------------

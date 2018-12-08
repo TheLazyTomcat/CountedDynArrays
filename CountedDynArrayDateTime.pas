@@ -9,7 +9,7 @@
 
   Counted dynamic arrays
 
-    Counted dynamic array of UInt32 values
+    Counted dynamic array of TDateTime values
 
   ©František Milt 2018-12-08
 
@@ -20,7 +20,7 @@
     ListSorters - github.com/ncs-sniper/Lib.ListSorters
 
 ===============================================================================}
-unit CountedDynArraysUInt32;
+unit CountedDynArrayDateTime;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -31,15 +31,15 @@ uses
   CountedDynArrays;
 
 type
-  TUInt32CountedDynArray = record
-    Arr:    array of UInt32;
+  TDateTimeCountedDynArray = record
+    Arr:    array of TDateTime;
     Count:  Integer;
     Data:   PtrInt;
   end;
-  PUInt32CountedDynArray = ^TUInt32CountedDynArray;
+  PDateTimeCountedDynArray = ^TDateTimeCountedDynArray;
 
-  TBaseType = UInt32;
-  TArrayType = TUInt32CountedDynArray;
+  TBaseType = TDateTime;
+  TArrayType = TDateTimeCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,9 +51,11 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: UInt32): Integer;
+Function CDA_CompareFunc(A,B: TDateTime): Integer;
 begin
-Result := Integer(A - B);
+If A > B then Result := 1
+  else If A < B then Result := -1
+    else Result := 0;
 end;
 
 //------------------------------------------------------------------------------
