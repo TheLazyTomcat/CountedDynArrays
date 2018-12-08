@@ -7,23 +7,33 @@
 -------------------------------------------------------------------------------}
 {===============================================================================
 
-  Counted dynamic arrays - basic types and constants
+  Counted dynamic arrays
 
-  ©František Milt 2018-12-06
+    Basic types and constants
 
-  Version 1.0
+  This library is designed to ease work with dynamic arrays and also slightly
+  optimize reallocation of the array.
 
-  Dependencies:
-    AuxTypes - github.com/ncs-sniper/Lib.AuxTypes
+  The array itself is hidden in a record that should be considered opaque,
+  but is in fact completely acessible so the compiler can work around it. It is
+  not recommended to directly access fields of this record, but it should not
+  cause any problem when you are cautious.
+  To allow growing and shrinking optimizations, count of the items inside an
+  array is trictly separated from the actual array and its length/capacity
+  (hence counted dynamic arrays).
 
-===============================================================================}
-{===============================================================================
---------------------------------------------------------------------------------
-  For examples of how to implement a counted dynamic array, refer to files
+  Standard functions like Length, SetLength or Copy are implemented along with
+  many more functions that allows acessing the array in a way similar to
+  accessing a list object (Add, Remove, IndexOf, ...).
+
+  This library implements counted arrays for several basic types (integers,
+  floats, strings, ...), but is designed so the codebase can be used with minor
+  or no modifications for any other type - it uses templates and type aliases
+  as a kind of generics.
+  For examples on how to implement a counted dynamic array, refer to files
   CountedDynArrays*.pas, where * is name of the base type.
 
-  Arrays for following types are implemented in current version of this
-  library and should be shipped with it:
+  Arrays of following types are implemented in current version of this library:
 
     Boolean    in CountedDynArraysBoolean.pas
     Integer    in CountedDynArraysInteger.pas
@@ -49,7 +59,14 @@
   CDA_DisableFunc_<FunctionName> and write your own implementation.
   Example how to do it can be found in unit CountedDynArraysString.pas.
 
---------------------------------------------------------------------------------
+  ©František Milt 2018-12-08
+
+  Version 1.0
+
+  Dependencies:
+    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
+    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+
 ===============================================================================}
 unit CountedDynArrays;
 

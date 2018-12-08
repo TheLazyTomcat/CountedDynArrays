@@ -1,3 +1,25 @@
+{-------------------------------------------------------------------------------
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+-------------------------------------------------------------------------------}
+{===============================================================================
+
+  Counted dynamic arrays
+
+    Counted dynamic array of Int8 values
+
+  ©František Milt 2018-12-08
+
+  Version 1.0
+
+  Dependencies:
+    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
+    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+
+===============================================================================}
 unit CountedDynArraysInt8;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
