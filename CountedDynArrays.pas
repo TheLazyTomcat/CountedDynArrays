@@ -35,7 +35,7 @@
 
   Arrays of following types are implemented in current version of this library:
 
-    Boolean    in CountedDynArrayBoolean.pas
+    Boolean    in CountedDynArrayBool.pas
     Integer    in CountedDynArrayInteger.pas
     TDateTime  in CountedDynArrayDateTime.pas
     String     in CountedDynArrayString.pas
