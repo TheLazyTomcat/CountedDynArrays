@@ -59,7 +59,7 @@ uses
 Function CDA_CompareFunc(A,B: Pointer): Integer;
 begin
 {$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
-Result := Integer(PtrUInt(A) - PtrUInt(B));
+Result := Integer(PtrUInt(B) - PtrUInt(A));
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
 end;
 

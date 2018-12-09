@@ -61,7 +61,7 @@
 
   ©František Milt 2018-12-08
 
-  Version 1.0 (needs testing)
+  Version 1.0
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes

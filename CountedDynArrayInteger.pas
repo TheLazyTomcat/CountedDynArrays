@@ -53,7 +53,7 @@ uses
 
 Function CDA_CompareFunc(A,B: TBaseType): Integer;
 begin
-Result := Ord(A) - Ord(B);
+Result := Integer(B - A);
 end;
 
 //------------------------------------------------------------------------------

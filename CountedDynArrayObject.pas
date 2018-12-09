@@ -59,7 +59,7 @@ uses
 Function CDA_CompareFunc(A,B: TObject): Integer;
 begin
 {$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
-Result := Integer(PtrUInt(Pointer(A)) - PtrUInt(Pointer(B)));
+Result := Integer(PtrUInt(Pointer(B)) - PtrUInt(Pointer(A)));
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
 end;
 

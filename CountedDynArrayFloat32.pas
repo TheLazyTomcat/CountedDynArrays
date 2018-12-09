@@ -54,8 +54,8 @@ uses
 
 Function CDA_CompareFunc(A,B: Float32): Integer;
 begin
-If A > B then Result := 1
-  else If A < B then Result := -1
+If A > B then Result := -1
+  else If A < B then Result := 1
     else Result := 0;
 end;
 

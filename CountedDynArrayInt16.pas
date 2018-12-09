@@ -53,7 +53,7 @@ uses
 
 Function CDA_CompareFunc(A,B: Int16): Integer;
 begin
-Result := Integer(A - B);
+Result := Integer(B - A);
 end;
 
 //------------------------------------------------------------------------------

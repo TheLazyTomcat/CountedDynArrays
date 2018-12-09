@@ -35,11 +35,13 @@
 {$IFNDEF CDA_DisableFunc_SetLength}   procedure SetLength(var Arr: TArrayType; NewLength: Integer); overload;{$ENDIF}
 {$IFNDEF CDA_DisableFunc_SetCapacity} procedure SetCapacity(var Arr: TArrayType; NewCapacity: Integer); overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 
-{$IFNDEF CDA_DisableFunc_Grow}        Function Grow(var Arr: TArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 2.0; DeltaMin: Integer = 1): Integer; overload;{$ENDIF}
+{$IFNDEF CDA_DisableFunc_Grow}        Function Grow(var Arr: TArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 1.0; DeltaMin: Integer = 1): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_DisableFunc_Shrink}      procedure Shrink(var Arr: TArrayType; ShrinkMode: TCDAShrinkMode = asmNormal); overload;{$ENDIF}
 
 {$IFNDEF CDA_DisableFunc_UniqueArray} procedure UniqueArray(var Arr: TArrayType); overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
+{$IFNDEF CDA_DisableFunc_CopyProcP}   procedure Copy(const Src: TArrayType; out Dst: TArrayType; Index, Count: Integer); overload;{$ENDIF}
 {$IFNDEF CDA_DisableFunc_CopyProc}    procedure Copy(const Src: TArrayType; out Dst: TArrayType); overload;{$ENDIF}
+{$IFNDEF CDA_DisableFunc_CopyP}       Function Copy(const Src: TArrayType; Index, Count: Integer): TArrayType; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 {$IFNDEF CDA_DisableFunc_Copy}        Function Copy(const Src: TArrayType): TArrayType; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 
 {$IFNDEF CDA_DisableFunc_GetData}     Function GetData(const Arr: TArrayType): PtrInt; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
@@ -187,13 +189,13 @@ end;
 //------------------------------------------------------------------------------
  
 {$IFNDEF CDA_DisableFunc_Grow}
-Function Grow(var Arr: TArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 2.0; DeltaMin: Integer = 1): Integer;
+Function Grow(var Arr: TArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 1.0; DeltaMin: Integer = 1): Integer;
 begin
 If DeltaMin < 1 then
   DeltaMin := 1;
 If (Count(Arr) + DeltaMin) > Capacity(Arr) then
   begin
-    If (Capacity(Arr) <= 0) and (GrowMode <> agmSlow) then
+    If (Capacity(Arr) > 0) or (GrowMode = agmSlow) then
       case GrowMode of
         agmLinear:
           Result := Trunc(GrowFactor);
@@ -255,6 +257,24 @@ end;
 {$ENDIF}
 
 //------------------------------------------------------------------------------
+
+{$IFNDEF CDA_DisableFunc_CopyProcP}
+procedure Copy(const Src: TArrayType; out Dst: TArrayType; Index, Count: Integer);
+begin
+If CheckIndex(Src,Index) then
+  begin
+    // note - count function cannot be used here because of collision with parameter
+    If (Index + Count) > Src.Count then
+      Count := Src.Count - Index;
+    Dst.Arr := System.Copy(Src.Arr,Index,Count);
+    Dst.Count := Count;
+    Dst.Data := Src.Data;
+  end
+else Clear(Dst);
+end;
+{$ENDIF}
+
+//------------------------------------------------------------------------------
  
 {$IFNDEF CDA_DisableFunc_CopyProc}
 procedure Copy(const Src: TArrayType; out Dst: TArrayType);
@@ -266,7 +286,16 @@ end;
 {$ENDIF}
 
 //------------------------------------------------------------------------------
-   
+
+{$IFNDEF CDA_DisableFunc_CopyP}
+Function Copy(const Src: TArrayType; Index, Count: Integer): TArrayType;
+begin
+Copy(Src,Result,Index,Count);
+end;
+{$ENDIF}
+
+//------------------------------------------------------------------------------
+
 {$IFNDEF CDA_DisableFunc_Copy}
 Function Copy(const Src: TArrayType): TArrayType;
 begin
@@ -518,13 +547,16 @@ procedure Sort(var Arr: TArrayType; Reversed: Boolean = False);
 var
   Sorter: TListQuickSorter;
 begin
-Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFunc,CDA_ItemExchangeFunc);
-try
-  Sorter.Reversed := Reversed;
-  Sorter.Sort(Low(Arr),High(Arr));
-finally
-  Sorter.Free;
-end;
+If Count(Arr) > 1 then
+  begin
+    Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFunc,CDA_ItemExchangeFunc);
+    try
+      Sorter.Reversed := Reversed;
+      Sorter.Sort(Low(Arr),High(Arr));
+    finally
+      Sorter.Free;
+    end;
+  end;
 end;
 {$ENDIF}
 
