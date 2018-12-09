@@ -31,7 +31,7 @@
 {$IFNDEF CDA_DisableFunc_High}        Function High(const Arr: TArrayType): Integer; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 {$IFNDEF CDA_DisableFunc_CheckIndex}  Function CheckIndex(const Arr: TArrayType; Index: Integer): Boolean; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 
-{$IFNDEF CDA_DisableFunc_Init}        procedure Init(var Arr: TArrayType); overload;{$ENDIF}
+{$IFNDEF CDA_DisableFunc_Init}        procedure Init(out Arr: TArrayType); overload;{$ENDIF}
 {$IFNDEF CDA_DisableFunc_SetLength}   procedure SetLength(var Arr: TArrayType; NewLength: Integer); overload;{$ENDIF}
 {$IFNDEF CDA_DisableFunc_SetCapacity} procedure SetCapacity(var Arr: TArrayType; NewCapacity: Integer); overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 
@@ -39,10 +39,8 @@
 {$IFNDEF CDA_DisableFunc_Shrink}      procedure Shrink(var Arr: TArrayType; ShrinkMode: TCDAShrinkMode = asmNormal); overload;{$ENDIF}
 
 {$IFNDEF CDA_DisableFunc_UniqueArray} procedure UniqueArray(var Arr: TArrayType); overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
-{$IFNDEF CDA_DisableFunc_CopyProcP}   procedure Copy(const Src: TArrayType; out Dst: TArrayType; Index, Count: Integer); overload;{$ENDIF}
-{$IFNDEF CDA_DisableFunc_CopyProc}    procedure Copy(const Src: TArrayType; out Dst: TArrayType); overload;{$ENDIF}
-{$IFNDEF CDA_DisableFunc_CopyP}       Function Copy(const Src: TArrayType; Index, Count: Integer): TArrayType; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
-{$IFNDEF CDA_DisableFunc_Copy}        Function Copy(const Src: TArrayType): TArrayType; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
+{$IFNDEF CDA_DisableFunc_CopyP}       Function Copy(const Src: TArrayType; Index, Count: Integer): TArrayType; overload;{$ENDIF}
+{$IFNDEF CDA_DisableFunc_Copy}        Function Copy(const Src: TArrayType): TArrayType; overload;{$ENDIF}
 
 {$IFNDEF CDA_DisableFunc_GetData}     Function GetData(const Arr: TArrayType): PtrInt; overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 {$IFNDEF CDA_DisableFunc_SetData}     procedure SetData(var Arr: TArrayType; Data: PtrInt); overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
@@ -154,7 +152,7 @@ end;
 //------------------------------------------------------------------------------
  
 {$IFNDEF CDA_DisableFunc_Init}
-procedure Init(var Arr: TArrayType);
+procedure Init(out Arr: TArrayType);
 begin
 System.SetLength(Arr.Arr,0);
 Arr.Count := 0;
@@ -258,39 +256,19 @@ end;
 
 //------------------------------------------------------------------------------
 
-{$IFNDEF CDA_DisableFunc_CopyProcP}
-procedure Copy(const Src: TArrayType; out Dst: TArrayType; Index, Count: Integer);
+{$IFNDEF CDA_DisableFunc_CopyP}
+Function Copy(const Src: TArrayType; Index, Count: Integer): TArrayType;
 begin
+Init(Result);
 If CheckIndex(Src,Index) then
   begin
     // note - count function cannot be used here because of collision with parameter
     If (Index + Count) > Src.Count then
       Count := Src.Count - Index;
-    Dst.Arr := System.Copy(Src.Arr,Index,Count);
-    Dst.Count := Count;
-    Dst.Data := Src.Data;
-  end
-else Clear(Dst);
-end;
-{$ENDIF}
-
-//------------------------------------------------------------------------------
- 
-{$IFNDEF CDA_DisableFunc_CopyProc}
-procedure Copy(const Src: TArrayType; out Dst: TArrayType);
-begin
-Dst.Arr := System.Copy(Src.Arr);
-Dst.Count := Src.Count;
-Dst.Data := Src.Data;
-end;
-{$ENDIF}
-
-//------------------------------------------------------------------------------
-
-{$IFNDEF CDA_DisableFunc_CopyP}
-Function Copy(const Src: TArrayType; Index, Count: Integer): TArrayType;
-begin
-Copy(Src,Result,Index,Count);
+    Result.Arr := System.Copy(Src.Arr,Index,Count);
+    Result.Count := Count;
+    Result.Data := Src.Data;
+  end;
 end;
 {$ENDIF}
 
@@ -299,7 +277,10 @@ end;
 {$IFNDEF CDA_DisableFunc_Copy}
 Function Copy(const Src: TArrayType): TArrayType;
 begin
-Copy(Src,Result);
+Init(Result);
+Result.Arr := System.Copy(Src.Arr);
+Result.Count := Src.Count;
+Result.Data := Src.Data;
 end;
 {$ENDIF}
 

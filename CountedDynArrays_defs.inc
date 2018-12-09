@@ -39,8 +39,6 @@
 {$UNDEF CDA_DisableFunc_Shrink}
 
 {$UNDEF CDA_DisableFunc_UniqueArray}
-{$UNDEF CDA_DisableFunc_CopyProcP}
-{$UNDEF CDA_DisableFunc_CopyProc}
 {$UNDEF CDA_DisableFunc_CopyP}
 {$UNDEF CDA_DisableFunc_Copy}
 
