@@ -38,8 +38,8 @@ type
   end;
   PStringCountedDynArray = ^TStringCountedDynArray;
 
-  TBaseType = String;
-  TArrayType = TStringCountedDynArray;
+  TCDABaseType = String;
+  TCDAArrayType = TStringCountedDynArray;
 
 {$DEFINE CDA_DisableFunc_ItemCompareFunc}
 {$DEFINE CDA_DisableFunc_IndexOf}
@@ -52,10 +52,10 @@ type
 {$UNDEF CDA_Interface}
 
 // overriden functions
-Function CDA_IndexOf(const Arr: TArrayType; const Item: TBaseType; CaseSensitive: Boolean = False): Integer; overload;
-Function CDA_Remove(var Arr: TArrayType; const Item: TBaseType; CaseSensitive: Boolean = False): Integer; overload;
-Function CDA_Same(const Arr1, Arr2: TArrayType; CaseSensitive: Boolean = False): Boolean; overload;
-procedure CDA_Sort(var Arr: TArrayType; Reversed: Boolean = False; CaseSensitive: Boolean = False); overload;
+Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
+Function CDA_Remove(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
+Function CDA_Same(const Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean; overload;
+procedure CDA_Sort(var Arr: TCDAArrayType; Reversed: Boolean = False; CaseSensitive: Boolean = False); overload;
 
 implementation
 
@@ -75,14 +75,14 @@ end;
 
 Function CDA_ItemCompareFuncCS(Context: Pointer; Idx1,Idx2: Integer): Integer;
 begin
-Result := CDA_CompareFunc(TArrayType(Context^).Arr[Idx1],TArrayType(Context^).Arr[Idx2],True);
+Result := CDA_CompareFunc(TCDAArrayType(Context^).Arr[Idx1],TCDAArrayType(Context^).Arr[Idx2],True);
 end;
 
 //------------------------------------------------------------------------------
 
 Function CDA_ItemCompareFuncCI(Context: Pointer; Idx1,Idx2: Integer): Integer;
 begin
-Result := CDA_CompareFunc(TArrayType(Context^).Arr[Idx1],TArrayType(Context^).Arr[Idx2],True);
+Result := CDA_CompareFunc(TCDAArrayType(Context^).Arr[Idx1],TCDAArrayType(Context^).Arr[Idx2],True);
 end;
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_IndexOf(const Arr: TArrayType; const Item: TBaseType; CaseSensitive: Boolean = False): Integer;
+Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
 var
   i:  Integer;
 begin
@@ -108,7 +108,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_Remove(var Arr: TArrayType; const Item: TBaseType; CaseSensitive: Boolean = False): Integer;
+Function CDA_Remove(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
 begin
 Result := CDA_IndexOf(Arr,Item,CaseSensitive);
 If CDA_CheckIndex(Arr,Result) then
@@ -117,7 +117,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_Same(const Arr1, Arr2: TArrayType; CaseSensitive: Boolean = False): Boolean;
+Function CDA_Same(const Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean;
 var
   i:  Integer;
 begin
@@ -136,7 +136,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure CDA_Sort(var Arr: TArrayType; Reversed: Boolean = False; CaseSensitive: Boolean = False);
+procedure CDA_Sort(var Arr: TCDAArrayType; Reversed: Boolean = False; CaseSensitive: Boolean = False);
 var
   Sorter: TListQuickSorter;
 begin

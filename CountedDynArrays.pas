@@ -102,8 +102,8 @@ type
   TCDAShrinkMode = (asmKeepCap, asmNormal, asmToCount);
 
 const
-  DYNARRAY_INITIAL_CAPACITY         = 16;
-  DYNARRAY_GROW_ATTENUATE_THRESHOLD = 16 * 1024 * 1024;
+  CDA_INITIAL_CAPACITY         = 16;
+  CDA_GROW_ATTENUATE_THRESHOLD = 16 * 1024 * 1024;
 
 implementation
 

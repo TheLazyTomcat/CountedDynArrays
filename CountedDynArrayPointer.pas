@@ -38,8 +38,8 @@ type
   end;
   PPointerCountedDynArray = ^TPointerCountedDynArray;
 
-  TBaseType = Pointer;
-  TArrayType = TPointerCountedDynArray;
+  TCDABaseType = Pointer;
+  TCDAArrayType = TPointerCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

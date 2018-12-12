@@ -38,8 +38,8 @@ type
   end;
   PFloat64CountedDynArray = ^TFloat64CountedDynArray;
 
-  TBaseType = Float64;
-  TArrayType = TFloat64CountedDynArray;
+  TCDABaseType = Float64;
+  TCDAArrayType = TFloat64CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

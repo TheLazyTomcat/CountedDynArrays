@@ -38,8 +38,8 @@ type
   end;
   PBooleanCountedDynArray = ^TBooleanCountedDynArray;
 
-  TBaseType = Boolean;
-  TArrayType = TBooleanCountedDynArray;
+  TCDABaseType = Boolean;
+  TCDAArrayType = TBooleanCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

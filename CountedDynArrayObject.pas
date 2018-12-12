@@ -38,8 +38,8 @@ type
   end;
   PObjectCountedDynArray = ^TObjectCountedDynArray;
 
-  TBaseType = TObject;
-  TArrayType = TObjectCountedDynArray;
+  TCDABaseType = TObject;
+  TCDAArrayType = TObjectCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

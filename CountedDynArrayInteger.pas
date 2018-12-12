@@ -38,8 +38,8 @@ type
   end;
   PIntegerCountedDynArray = ^TIntegerCountedDynArray;
 
-  TBaseType = Integer;
-  TArrayType = TIntegerCountedDynArray;
+  TCDABaseType = Integer;
+  TCDAArrayType = TIntegerCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -51,7 +51,7 @@ uses
   SysUtils,
   ListSorters;
 
-Function CDA_CompareFunc(A,B: TBaseType): Integer;
+Function CDA_CompareFunc(A,B: TCDABaseType): Integer;
 begin
 Result := Integer(B - A);
 end;

@@ -38,8 +38,8 @@ type
   end;
   PDateTimeCountedDynArray = ^TDateTimeCountedDynArray;
 
-  TBaseType = TDateTime;
-  TArrayType = TDateTimeCountedDynArray;
+  TCDABaseType = TDateTime;
+  TCDAArrayType = TDateTimeCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

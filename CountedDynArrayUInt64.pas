@@ -38,8 +38,8 @@ type
   end;
   PUInt64CountedDynArray = ^TUInt64CountedDynArray;
 
-  TBaseType = UInt64;
-  TArrayType = TUInt64CountedDynArray;
+  TCDABaseType = UInt64;
+  TCDAArrayType = TUInt64CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
