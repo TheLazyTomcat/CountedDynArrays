@@ -39,7 +39,10 @@ type
   PFloat32CountedDynArray = ^TFloat32CountedDynArray;
 
   TCDABaseType = Float32;
+  PCDABaseType = PFloat32;
+
   TCDAArrayType = TFloat32CountedDynArray;
+  PCDAArrayType = PFloat32CountedDynArray;  
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

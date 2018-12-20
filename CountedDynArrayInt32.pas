@@ -39,7 +39,10 @@ type
   PInt32CountedDynArray = ^TInt32CountedDynArray;
 
   TCDABaseType = Int32;
+  PCDABaseType = PInt32;
+
   TCDAArrayType = TInt32CountedDynArray;
+  PCDAArrayType = PInt32CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

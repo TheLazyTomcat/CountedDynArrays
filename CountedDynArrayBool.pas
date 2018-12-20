@@ -39,7 +39,10 @@ type
   PBooleanCountedDynArray = ^TBooleanCountedDynArray;
 
   TCDABaseType = Boolean;
+  PCDABaseType = PBoolean;
+
   TCDAArrayType = TBooleanCountedDynArray;
+  PCDAArrayType = PBooleanCountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

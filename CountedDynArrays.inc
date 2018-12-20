@@ -46,6 +46,7 @@
 {$IFNDEF CDA_DisableFunc_SetData}     procedure CDA_SetData(var Arr: TCDAArrayType; Data: PtrInt); overload;{$IFDEF CanInline} inline; {$ENDIF}{$ENDIF}
 
 {$IFNDEF CDA_DisableFunc_GetItem}     Function CDA_GetItem(const Arr: TCDAArrayType; Index: Integer): TCDABaseType; overload;{$ENDIF}
+{$IFNDEF CDA_DisableFunc_GetItemPtr}  Function CDA_GetItemPtr(const Arr: TCDAArrayType; Index: Integer): PCDABaseType; overload;{$ENDIF}
 {$IFNDEF CDA_DisableFunc_SetItem}     procedure CDA_SetItem(var Arr: TCDAArrayType; Index: Integer; const Item: TCDABaseType); overload;{$ENDIF}
 
 {$IFNDEF CDA_DisableFunc_First}       Function CDA_First(const Arr: TCDAArrayType): TCDABaseType; overload;{$ENDIF}
@@ -171,7 +172,7 @@ If NewLength >= 0 then
     If Arr.Count > NewLength then
       Arr.Count := NewLength;
   end
-else raise ERangeError.CreateFmt('SetLength: New length (%d) out of range.',[NewLength]);
+else raise ERangeError.CreateFmt('CDA_SetLength: New length (%d) out of range.',[NewLength]);
 end;
 {$ENDIF}
 
@@ -310,7 +311,19 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Result := Arr.Arr[Index]
 else
-  raise Exception.CreateFmt('GetItem: Index (%d) out of bounds.',[Index]);
+  raise Exception.CreateFmt('CDA_GetItem: Index (%d) out of bounds.',[Index]);
+end;
+{$ENDIF}
+
+//------------------------------------------------------------------------------
+
+{$IFNDEF CDA_DisableFunc_GetItemPtr}
+Function CDA_GetItemPtr(const Arr: TCDAArrayType; Index: Integer): PCDABaseType;
+begin
+If CDA_CheckIndex(Arr,Index) then
+  Result := Addr(Arr.Arr[Index])
+else
+  raise Exception.CreateFmt('CDA_GetItemPtr: Index (%d) out of bounds.',[Index]);
 end;
 {$ENDIF}
 
@@ -322,7 +335,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Arr.Arr[Index] := Item
 else
-  raise Exception.CreateFmt('SetItem: Index (%d) out of bounds.',[Index]);
+  raise Exception.CreateFmt('CDA_SetItem: Index (%d) out of bounds.',[Index]);
 end;
 {$ENDIF}
 
@@ -334,7 +347,7 @@ begin
 If CDA_Count(Arr) > 0 then
   Result := Arr.Arr[CDA_Low(Arr)]
 else
-  raise Exception.Create('First: Array is empty.');
+  raise Exception.Create('CDA_First: Array is empty.');
 end;
 {$ENDIF}
 
@@ -346,7 +359,7 @@ begin
 If CDA_Count(Arr) > 0 then
   Result := Arr.Arr[CDA_High(Arr)]
 else
-  raise Exception.Create('Last: Array is empty.');
+  raise Exception.Create('CDA_Last: Array is empty.');
 end;
 {$ENDIF}
 
@@ -408,9 +421,9 @@ begin
 If Idx1 <> Idx2 then
   begin
     If not CDA_CheckIndex(Arr,Idx1) then
-      raise Exception.CreateFmt('Exchange: First index (%d) out of bounds.',[Idx1]);
+      raise Exception.CreateFmt('CDA_Exchange: First index (%d) out of bounds.',[Idx1]);
     If not CDA_CheckIndex(Arr,Idx2) then
-      raise Exception.CreateFmt('Exchange: Second index (%d) out of bounds.',[Idx2]);
+      raise Exception.CreateFmt('CDA_Exchange: Second index (%d) out of bounds.',[Idx2]);
     Temp := Arr.Arr[Idx1];
     Arr.Arr[Idx1] := Arr.Arr[Idx2];
     Arr.Arr[Idx2] := Temp;
@@ -429,9 +442,9 @@ begin
 If SrcIdx <> DstIdx then
   begin
     If not CDA_CheckIndex(Arr,SrcIdx) then
-      raise Exception.CreateFmt('Move: Source index (%d) out of bounds.',[SrcIdx]);
+      raise Exception.CreateFmt('CDA_Move: Source index (%d) out of bounds.',[SrcIdx]);
     If not CDA_CheckIndex(Arr,DstIdx) then
-      raise Exception.CreateFmt('Move: Destination index (%d) out of bounds.',[DstIdx]);
+      raise Exception.CreateFmt('CDA_Move: Destination index (%d) out of bounds.',[DstIdx]);
     Temp := Arr.Arr[SrcIdx];
     If SrcIdx > DstIdx then
       For i := SrcIdx downto Succ(DstIdx) do
@@ -469,7 +482,7 @@ If CDA_CheckIndex(Arr,Index) then
     Dec(Arr.Count);
     CDA_Shrink(Arr);
   end
-else raise Exception.CreateFmt('Delete: Index (%d) out of bounds.',[Index]);
+else raise Exception.CreateFmt('CDA_Delete: Index (%d) out of bounds.',[Index]);
 end;
 {$ENDIF}
 

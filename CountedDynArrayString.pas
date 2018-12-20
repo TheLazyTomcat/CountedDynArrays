@@ -39,7 +39,10 @@ type
   PStringCountedDynArray = ^TStringCountedDynArray;
 
   TCDABaseType = String;
+  PCDABaseType = PString;
+
   TCDAArrayType = TStringCountedDynArray;
+  PCDAArrayType = PStringCountedDynArray;
 
 {$DEFINE CDA_DisableFunc_ItemCompareFunc}
 {$DEFINE CDA_DisableFunc_IndexOf}

@@ -39,7 +39,10 @@ type
   PUInt16CountedDynArray = ^TUInt16CountedDynArray;
 
   TCDABaseType = UInt16;
+  PCDABaseType = PUInt16;
+
   TCDAArrayType = TUInt16CountedDynArray;
+  PCDAArrayType = PUInt16CountedDynArray;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

@@ -46,6 +46,7 @@
 {$UNDEF CDA_DisableFunc_SetData}
 
 {$UNDEF CDA_DisableFunc_GetItem}
+{$UNDEF CDA_DisableFunc_GetItemPtr}
 {$UNDEF CDA_DisableFunc_SetItem}
 
 {$UNDEF CDA_DisableFunc_First}
