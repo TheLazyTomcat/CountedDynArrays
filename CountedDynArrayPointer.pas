@@ -11,9 +11,9 @@
 
     Counted dynamic array of Pointer values
 
-  ©František Milt 2018-12-08
+  ©František Milt 2019-01-01
 
-  Version 1.0
+  Version 1.0.1
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
@@ -33,8 +33,10 @@ uses
 type
   TPointerCountedDynArray = record
     Arr:    array of Pointer;
+    SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
+    SigB:   UInt32;
   end;
   PPointerCountedDynArray = ^TPointerCountedDynArray;
 

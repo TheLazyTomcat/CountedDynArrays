@@ -59,9 +59,9 @@
   CDA_DisableFunc_<FunctionName> and write your own implementation.
   Example how to do it can be found in unit CountedDynArrayString.pas.
 
-  ©František Milt 2018-12-08
+  ©František Milt 2019-01-01
 
-  Version 1.0
+  Version 1.0.1
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
@@ -104,6 +104,9 @@ type
 const
   CDA_INITIAL_CAPACITY         = 16;
   CDA_GROW_ATTENUATE_THRESHOLD = 16 * 1024 * 1024;
+
+  CDA_SIGA = $AF05C0F3;
+  CDA_SIGB = $F23CF3E8;
 
 implementation
 

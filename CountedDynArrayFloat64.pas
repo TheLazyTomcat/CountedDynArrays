@@ -11,9 +11,9 @@
 
     Counted dynamic array of Float64 (Double) values
 
-  ©František Milt 2018-12-08
+  ©František Milt 2019-01-01
 
-  Version 1.0
+  Version 1.0.1
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
@@ -33,8 +33,10 @@ uses
 type
   TFloat64CountedDynArray = record
     Arr:    array of Float64;
+    SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
+    SigB:   UInt32;
   end;
   PFloat64CountedDynArray = ^TFloat64CountedDynArray;
 

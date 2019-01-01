@@ -11,9 +11,9 @@
 
     Counted dynamic array of String values
 
-  ©František Milt 2018-12-08
+  ©František Milt 2019-01-01
 
-  Version 1.0
+  Version 1.0.1
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
@@ -33,8 +33,10 @@ uses
 type
   TStringCountedDynArray = record
     Arr:    array of String;
+    SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
+    SigB:   UInt32;
   end;
   PStringCountedDynArray = ^TStringCountedDynArray;
 
@@ -55,9 +57,9 @@ type
 {$UNDEF CDA_Interface}
 
 // overriden functions
-Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
+Function CDA_IndexOf(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
 Function CDA_Remove(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
-Function CDA_Same(const Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean; overload;
+Function CDA_Same(var Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean; overload;
 procedure CDA_Sort(var Arr: TCDAArrayType; Reversed: Boolean = False; CaseSensitive: Boolean = False); overload;
 
 implementation
@@ -96,10 +98,11 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
+Function CDA_IndexOf(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
 var
   i:  Integer;
 begin
+CDA_Validate(Arr);
 Result := -1;
 For i := CDA_Low(Arr) to CDA_High(Arr) do
   If CDA_CompareFunc(Arr.Arr[i],Item,CaseSensitive) = 0 then
@@ -113,6 +116,7 @@ end;
 
 Function CDA_Remove(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
 begin
+CDA_Validate(Arr);
 Result := CDA_IndexOf(Arr,Item,CaseSensitive);
 If CDA_CheckIndex(Arr,Result) then
   CDA_Delete(Arr,Result);
@@ -120,10 +124,12 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_Same(const Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean;
+Function CDA_Same(var Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean;
 var
   i:  Integer;
 begin
+CDA_Validate(Arr1);
+CDA_Validate(Arr2);
 If CDA_Count(Arr1) = CDA_Count(Arr2) then
   begin
     Result := True;
@@ -143,6 +149,7 @@ procedure CDA_Sort(var Arr: TCDAArrayType; Reversed: Boolean = False; CaseSensit
 var
   Sorter: TListQuickSorter;
 begin
+CDA_Validate(Arr);
 If CaseSensitive then
   Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFuncCS,CDA_ItemExchangeFunc)
 else

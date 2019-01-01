@@ -17,10 +17,14 @@
 // do not touch following...
 
 {$UNDEF CDA_Interface}
-{$UNDEF CDA_IMplemantation}
+{$UNDEF CDA_Implemantation}
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$UNDEF CDA_DisableFunc_Validate}
 {$UNDEF CDA_DisableFunc_ItemCompareFunc}
 {$UNDEF CDA_DisableFunc_ItemExchangeFunc}
+{$UNDEF CDA_DisableFunc_ItemFinal}
 
 {$UNDEF CDA_DisableFunc_Length}
 {$UNDEF CDA_DisableFunc_Capacity}
@@ -64,4 +68,3 @@
 {$UNDEF CDA_DisableFunc_Same}
 {$UNDEF CDA_DisableFunc_Reverse}
 {$UNDEF CDA_DisableFunc_Sort}
-
