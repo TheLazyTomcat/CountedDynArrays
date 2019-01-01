@@ -74,7 +74,7 @@
 {$IFNDEF CDA_DisableFunc_Validate}
 procedure CDA_Validate(var Arr: TCDAArrayType);{$IFDEF CanInline} inline; {$ENDIF}
 begin
-If (Arr.SigA <> $AF05C0F3) or (Arr.SigB <> $F23CF3E8) then
+If (Arr.SigA <> $AF05C0F3) or (Arr.SigB <> $F23CF3E8) or (Arr.Count > Length(Arr.Arr)) then
   CDA_Init(Arr);
 end;
 {$ENDIF}
