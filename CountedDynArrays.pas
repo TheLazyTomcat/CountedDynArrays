@@ -59,9 +59,12 @@
   CDA_DisableFunc_<FunctionName> and write your own implementation.
   Example how to do it can be found in unit CountedDynArrayString.pas.
 
-  ©František Milt 2019-01-01
+  WARNING - before using any counted dynamic array variable, you have to
+            pass it to CDA_Init for proper initialization.
 
-  Version 1.0.1
+  ©František Milt 2019-01-17
+
+  Version 1.0.2
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes

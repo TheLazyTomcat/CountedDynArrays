@@ -11,9 +11,9 @@
 
     Counted dynamic array of String values
 
-  ©František Milt 2019-01-01
+  ©František Milt 2019-01-17
 
-  Version 1.0.1
+  Version 1.0.2
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
@@ -46,7 +46,9 @@ type
   TCDAArrayType = TStringCountedDynArray;
   PCDAArrayType = PStringCountedDynArray;
 
-{$DEFINE CDA_DisableFunc_ItemCompareFunc}
+{$DEFINE CDA_DisableFunc_ItemCompareSortFunc}
+{$DEFINE CDA_DisableFunc_ItemUnique}
+
 {$DEFINE CDA_DisableFunc_IndexOf}
 {$DEFINE CDA_DisableFunc_Remove}
 {$DEFINE CDA_DisableFunc_Same}
@@ -68,6 +70,22 @@ uses
   SysUtils,
   ListSorters;
 
+{$IFDEF FPC_DisableWarns}
+  {$DEFINE FPCDWM}
+  {$DEFINE W5024:={$WARN 5024 OFF}} // Parameter "$1" not used   
+  {$PUSH}{$WARN 2005 OFF} // Comment level $1 found
+  {$IF Defined(FPC) and (FPC_FULLVERSION >= 30000)}
+    {$DEFINE W5093:={$WARN 5093 OFF}} // Function result variable of a managed type does not seem to initialized
+    {$DEFINE W5094:={$WARN 5094 OFF}} // Function result variable of a managed type does not seem to initialized
+    {$DEFINE W5060:=}
+  {$ELSE}
+    {$DEFINE W5093:=}
+    {$DEFINE W5094:=}
+    {$DEFINE W5060:={$WARN 5060 OFF}} // Function result variable does not seem to be initialized
+  {$IFEND}
+  {$POP}
+{$ENDIF}
+
 Function CDA_CompareFunc(const A,B: String; CaseSensitive: Boolean): Integer;
 begin
 If CaseSensitive then
@@ -78,16 +96,23 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_ItemCompareFuncCS(Context: Pointer; Idx1,Idx2: Integer): Integer;
+Function CDA_ItemCompareFuncCS(Context: Pointer; Idx1,Idx2: Integer): Integer;{$IFDEF CanInline} inline; {$ENDIF}
 begin
 Result := CDA_CompareFunc(TCDAArrayType(Context^).Arr[Idx1],TCDAArrayType(Context^).Arr[Idx2],True);
 end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_ItemCompareFuncCI(Context: Pointer; Idx1,Idx2: Integer): Integer;
+Function CDA_ItemCompareFuncCI(Context: Pointer; Idx1,Idx2: Integer): Integer;{$IFDEF CanInline} inline; {$ENDIF}
 begin
 Result := CDA_CompareFunc(TCDAArrayType(Context^).Arr[Idx1],TCDAArrayType(Context^).Arr[Idx2],True);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure CDA_ItemUnique(var Item: TCDABaseType); {$IFDEF CanInline} inline; {$ENDIF}
+begin
+UniqueString(Item);
 end;
 
 //------------------------------------------------------------------------------
@@ -151,9 +176,9 @@ var
 begin
 CDA_Validate(Arr);
 If CaseSensitive then
-  Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFuncCS,CDA_ItemExchangeFunc)
+  Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFuncCS,CDA_ItemExchangeSortFunc)
 else
-  Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFuncCI,CDA_ItemExchangeFunc);
+  Sorter := TListQuickSorter.Create(@Arr,CDA_ItemCompareFuncCI,CDA_ItemExchangeSortFunc);
 try
   Sorter.Reversed := Reversed;
   Sorter.Sort(CDA_Low(Arr),CDA_High(Arr));

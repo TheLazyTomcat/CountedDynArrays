@@ -21,10 +21,14 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-{$UNDEF CDA_DisableFunc_Validate}
-{$UNDEF CDA_DisableFunc_ItemCompareFunc}
-{$UNDEF CDA_DisableFunc_ItemExchangeFunc}
+{$UNDEF CDA_DisableFunc_ItemCompareSortFunc}
+{$UNDEF CDA_DisableFunc_ItemExchangeSortFunc}
 {$UNDEF CDA_DisableFunc_ItemFinal}
+{$UNDEF CDA_DisableFunc_ItemUnique}
+
+{$UNDEF CDA_DisableFunc_Valid}
+{$UNDEF CDA_DisableFunc_Validate}
+{$UNDEF CDA_DisableFunc_Init}
 
 {$UNDEF CDA_DisableFunc_Length}
 {$UNDEF CDA_DisableFunc_Capacity}
@@ -35,7 +39,6 @@
 {$UNDEF CDA_DisableFunc_High}
 {$UNDEF CDA_DisableFunc_CheckIndex}
 
-{$UNDEF CDA_DisableFunc_Init}
 {$UNDEF CDA_DisableFunc_SetLength}
 {$UNDEF CDA_DisableFunc_SetCapacity}
 
