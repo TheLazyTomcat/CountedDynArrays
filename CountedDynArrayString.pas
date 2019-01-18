@@ -59,9 +59,9 @@ type
 {$UNDEF CDA_Interface}
 
 // overriden functions
-Function CDA_IndexOf(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
+Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
 Function CDA_Remove(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer; overload;
-Function CDA_Same(var Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean; overload;
+Function CDA_Same(const Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean; overload;
 procedure CDA_Sort(var Arr: TCDAArrayType; Reversed: Boolean = False; CaseSensitive: Boolean = False); overload;
 
 implementation
@@ -123,12 +123,12 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_IndexOf(var Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
+Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType; CaseSensitive: Boolean = False): Integer;
 var
   i:  Integer;
 begin
-CDA_Validate(Arr);
 Result := -1;
+// CDA_High checks for validity, -1 is returned for invalid array
 For i := CDA_Low(Arr) to CDA_High(Arr) do
   If CDA_CompareFunc(Arr.Arr[i],Item,CaseSensitive) = 0 then
     begin
@@ -149,13 +149,11 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_Same(var Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean;
+Function CDA_Same(const Arr1, Arr2: TCDAArrayType; CaseSensitive: Boolean = False): Boolean;
 var
   i:  Integer;
 begin
-CDA_Validate(Arr1);
-CDA_Validate(Arr2);
-If CDA_Count(Arr1) = CDA_Count(Arr2) then
+If CDA_Valid(Arr1) and CDA_Valid(Arr2) and (CDA_Count(Arr1) = CDA_Count(Arr2)) then
   begin
     Result := True;
     For i := CDA_Low(Arr1) to CDA_High(Arr1) do
