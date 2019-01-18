@@ -59,6 +59,11 @@
   CDA_DisableFunc_<FunctionName> and write your own implementation.
   Example how to do it can be found in unit CountedDynArrayString.pas.
 
+  If you want to call the original implementation from the override, define
+  symbol CDA_HideFunc_<FunctionName>. The original function will then be
+  renamed to _<FunctionName> (original name prepended with underscore) and
+  removed from interface section.
+
   WARNING - before using any counted dynamic array variable, you have to
             pass it to CDA_Init for proper initialization.
 

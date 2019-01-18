@@ -71,3 +71,56 @@
 {$UNDEF CDA_DisableFunc_Same}
 {$UNDEF CDA_DisableFunc_Reverse}
 {$UNDEF CDA_DisableFunc_Sort}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$UNDEF CDA_HideFunc_ItemCompareSortFunc}
+{$UNDEF CDA_HideFunc_ItemExchangeSortFunc}
+{$UNDEF CDA_HideFunc_ItemFinal}
+{$UNDEF CDA_HideFunc_ItemUnique}
+
+{$UNDEF CDA_HideFunc_Valid}
+{$UNDEF CDA_HideFunc_Validate}
+{$UNDEF CDA_HideFunc_Init}
+
+{$UNDEF CDA_HideFunc_Length}
+{$UNDEF CDA_HideFunc_Capacity}
+{$UNDEF CDA_HideFunc_FreeCapacity}
+{$UNDEF CDA_HideFunc_Count}
+
+{$UNDEF CDA_HideFunc_Low}
+{$UNDEF CDA_HideFunc_High}
+{$UNDEF CDA_HideFunc_CheckIndex}
+
+{$UNDEF CDA_HideFunc_SetLength}
+{$UNDEF CDA_HideFunc_SetCapacity}
+
+{$UNDEF CDA_HideFunc_Grow}
+{$UNDEF CDA_HideFunc_Shrink}
+
+{$UNDEF CDA_HideFunc_UniqueArray}
+{$UNDEF CDA_HideFunc_CopyP}
+{$UNDEF CDA_HideFunc_Copy}
+
+{$UNDEF CDA_HideFunc_GetData}
+{$UNDEF CDA_HideFunc_SetData}
+
+{$UNDEF CDA_HideFunc_GetItem}
+{$UNDEF CDA_HideFunc_GetItemPtr}
+{$UNDEF CDA_HideFunc_SetItem}
+
+{$UNDEF CDA_HideFunc_First}
+{$UNDEF CDA_HideFunc_Last}
+
+{$UNDEF CDA_HideFunc_IndexOf}
+{$UNDEF CDA_HideFunc_Add}
+{$UNDEF CDA_HideFunc_Insert}
+{$UNDEF CDA_HideFunc_Exchange}
+{$UNDEF CDA_HideFunc_Move}
+{$UNDEF CDA_HideFunc_Remove}
+{$UNDEF CDA_HideFunc_Delete}
+{$UNDEF CDA_HideFunc_Clear}
+
+{$UNDEF CDA_HideFunc_Same}
+{$UNDEF CDA_HideFunc_Reverse}
+{$UNDEF CDA_HideFunc_Sort}
