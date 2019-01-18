@@ -440,7 +440,7 @@ end;
 {$IFNDEF CDA_DisableFunc_CopyP}
 {$IFDEF FPCDWM}{$PUSH}W5093 W5094 W5060{$ENDIF}
 {$IFDEF CDA_HideFunc_CopyP}
-Function _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType;
+Function _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType;
 {$ENDIF}
@@ -470,7 +470,7 @@ end;
 {$IFNDEF CDA_DisableFunc_Copy}
 {$IFDEF FPCDWM}{$PUSH}W5093 W5094 W5060{$ENDIF}
 {$IFDEF CDA_HideFunc_Copy}
-Function _CDA_Copy(const Src: TCDAArrayType): TCDAArrayType;
+Function _CDA_Copy(const Src: TCDAArrayType): TCDAArrayType; overload;
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType): TCDAArrayType;
 {$ENDIF}
