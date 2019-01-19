@@ -454,12 +454,12 @@ If CDA_CheckIndex(Src,Index) then
     If (Index + Count) > CDA_Count(Src) then
       Count := CDA_Count(Src) - Index;
     Result.Arr := Copy(Src.Arr,Index,Count);
-    For i := CDA_Low(Result) to CDA_High(Result) do
-      CDA_ItemUnique(Result.Arr[i]);
     Result.SigA := CDA_SIGA;
     Result.Count := Count;
     Result.Data := Src.Data;
     Result.SigB := CDA_SIGB;
+    For i := CDA_Low(Result) to CDA_High(Result) do
+      CDA_ItemUnique(Result.Arr[i]);
   end;
 end;
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
@@ -481,12 +481,12 @@ CDA_Validate(Result);
 If CDA_Valid(Src) then
   begin
     Result.Arr := Copy(Src.Arr);
-    For i := CDA_Low(Result) to CDA_High(Result) do
-      CDA_ItemUnique(Result.Arr[i]);    
     Result.SigA := CDA_SIGA;
     Result.Count := Src.Count;
     Result.Data := Src.Data;
     Result.SigB := CDA_SIGB;
+    For i := CDA_Low(Result) to CDA_High(Result) do
+      CDA_ItemUnique(Result.Arr[i]);    
   end;
 end;
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
