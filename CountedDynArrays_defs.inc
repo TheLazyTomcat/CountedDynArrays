@@ -29,6 +29,7 @@
 {$UNDEF CDA_DisableFunc_Valid}
 {$UNDEF CDA_DisableFunc_Validate}
 {$UNDEF CDA_DisableFunc_Init}
+{$UNDEF CDA_DisableFunc_ArrayPtr}
 
 {$UNDEF CDA_DisableFunc_Length}
 {$UNDEF CDA_DisableFunc_Capacity}
@@ -82,6 +83,7 @@
 {$UNDEF CDA_HideFunc_Valid}
 {$UNDEF CDA_HideFunc_Validate}
 {$UNDEF CDA_HideFunc_Init}
+{$UNDEF CDA_HideFunc_ArrayPtr}
 
 {$UNDEF CDA_HideFunc_Length}
 {$UNDEF CDA_HideFunc_Capacity}

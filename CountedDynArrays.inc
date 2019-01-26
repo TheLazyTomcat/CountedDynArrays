@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  ©František Milt 2019-01-17
+  ©František Milt 2019-01-26
 
-  Version 1.0.2
+  Version 1.0.3
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
@@ -28,6 +28,8 @@
   procedure CDA_Validate(var Arr: TCDAArrayType);{$IFDEF CanInline} inline; {$ENDIF}{$IFEND}
 {$IF not(Defined(CDA_DisableFunc_Init) or Defined(CDA_HideFunc_Init))}
   procedure CDA_Init(out Arr: TCDAArrayType); overload;{$IFEND}
+{$IF not(Defined(CDA_DisableFunc_ArrayPtr) or Defined(CDA_HideFunc_ArrayPtr))}
+  Function CDA_ArrayPtr(out Arr: TCDAArrayType): Pointer; overload;{$IFEND}
 
 {$IF not(Defined(CDA_DisableFunc_Length) or Defined(CDA_HideFunc_Length))}
   Function CDA_Length(const Arr: TCDAArrayType): Integer; overload;{$IFEND}
@@ -202,6 +204,22 @@ Arr.SigA := CDA_SIGA;
 Arr.Count := 0;
 Arr.Data := 0;
 Arr.SigB := CDA_SIGB;
+end;
+{$ENDIF}
+
+//------------------------------------------------------------------------------
+
+{$IFNDEF CDA_DisableFunc_ArrayPtr}
+{$IFDEF CDA_HideFunc_ArrayPtr}
+Function _CDA_ArrayPtr(out Arr: TCDAArrayType): Pointer;
+{$ELSE}
+Function CDA_ArrayPtr(out Arr: TCDAArrayType): Pointer;
+{$ENDIF}
+begin
+If Length(Arr.Arr) > 0 then
+  Result := Addr(Arr.Arr[0])
+else
+  Result := nil;
 end;
 {$ENDIF}
 
