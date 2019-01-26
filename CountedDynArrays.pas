@@ -67,9 +67,9 @@
   WARNING - before using any counted dynamic array variable, you have to
             pass it to CDA_Init for proper initialization.
 
-  ©František Milt 2019-01-17
+  ©František Milt 2019-01-26
 
-  Version 1.0.2
+  Version 1.0.3
 
   Dependencies:
     AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
