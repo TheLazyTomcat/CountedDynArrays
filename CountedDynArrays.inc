@@ -29,7 +29,7 @@
 {$IF not(Defined(CDA_DisableFunc_Init) or Defined(CDA_HideFunc_Init))}
   procedure CDA_Init(out Arr: TCDAArrayType); overload;{$IFEND}
 {$IF not(Defined(CDA_DisableFunc_ArrayPtr) or Defined(CDA_HideFunc_ArrayPtr))}
-  Function CDA_ArrayPtr(out Arr: TCDAArrayType): Pointer; overload;{$IFEND}
+  Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer; overload;{$IFEND}
 
 {$IF not(Defined(CDA_DisableFunc_Length) or Defined(CDA_HideFunc_Length))}
   Function CDA_Length(const Arr: TCDAArrayType): Integer; overload;{$IFEND}
@@ -211,9 +211,9 @@ end;
 
 {$IFNDEF CDA_DisableFunc_ArrayPtr}
 {$IFDEF CDA_HideFunc_ArrayPtr}
-Function _CDA_ArrayPtr(out Arr: TCDAArrayType): Pointer;
+Function _CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;
 {$ELSE}
-Function CDA_ArrayPtr(out Arr: TCDAArrayType): Pointer;
+Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;
 {$ENDIF}
 begin
 If Length(Arr.Arr) > 0 then
