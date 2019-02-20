@@ -216,7 +216,7 @@ Function _CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;
 Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;
 {$ENDIF}
 begin
-If Length(Arr.Arr) > 0 then
+If Arr.Count > 0 then
   Result := Addr(Arr.Arr[0])
 else
   Result := nil;
