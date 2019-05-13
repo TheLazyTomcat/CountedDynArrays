@@ -64,16 +64,16 @@
   renamed to _<FunctionName> (original name prepended with underscore) and
   removed from interface section.
 
-  WARNING - before using any counted dynamic array variable, you have to
+  WARNING - before using any counted dynamic array variable, it is recommended
             pass it to CDA_Init for proper initialization.
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrays;

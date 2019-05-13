@@ -11,13 +11,13 @@
 
     Counted dynamic array of Integer values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayInteger;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = Integer;
+  PCDABaseType = ^TCDABaseType;
+
   TIntegerCountedDynArray = record
-    Arr:    array of Integer;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PIntegerCountedDynArray = ^TIntegerCountedDynArray;
-
-  TCDABaseType = Integer;
-  PCDABaseType = PInteger;
 
   TCDAArrayType = TIntegerCountedDynArray;
   PCDAArrayType = PIntegerCountedDynArray;

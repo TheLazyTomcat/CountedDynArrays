@@ -11,13 +11,13 @@
 
     Counted dynamic array of Pointer values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayPointer;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = Pointer;
+  PCDABaseType = ^TCDABaseType;
+
   TPointerCountedDynArray = record
-    Arr:    array of Pointer;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PPointerCountedDynArray = ^TPointerCountedDynArray;
-
-  TCDABaseType = Pointer;
-  PCDABaseType = PPointer;
 
   TCDAArrayType = TPointerCountedDynArray;
   PCDAArrayType = PPointerCountedDynArray;
@@ -73,7 +73,7 @@ uses
   {$POP}
 {$ENDIF}
 
-Function CDA_CompareFunc(A,B: Pointer): Integer;{$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_CompareFunc(A,B: TCDABaseType): Integer;{$IFDEF CanInline} inline; {$ENDIF}
 begin
 {$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
 Result := Integer(PtrUInt(B) - PtrUInt(A));

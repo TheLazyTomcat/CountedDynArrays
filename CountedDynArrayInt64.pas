@@ -11,13 +11,13 @@
 
     Counted dynamic array of Int64 values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayInt64;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = Int64;
+  PCDABaseType = ^TCDABaseType;
+
   TInt64CountedDynArray = record
-    Arr:    array of Int64;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PInt64CountedDynArray = ^TInt64CountedDynArray;
-
-  TCDABaseType = Int64;
-  PCDABaseType = PInt64;
 
   TCDAArrayType = TInt64CountedDynArray;
   PCDAArrayType = PInt64CountedDynArray;
@@ -72,7 +72,7 @@ uses
   {$POP}
 {$ENDIF}
 
-Function CDA_CompareFunc(A,B: Int64): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_CompareFunc(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
 begin
 Result := Integer(B - A);
 end;

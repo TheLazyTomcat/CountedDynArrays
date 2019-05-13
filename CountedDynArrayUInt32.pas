@@ -11,13 +11,13 @@
 
     Counted dynamic array of UInt32 values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayUInt32;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = UInt32;
+  PCDABaseType = ^TCDABaseType;
+
   TUInt32CountedDynArray = record
-    Arr:    array of UInt32;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PUInt32CountedDynArray = ^TUInt32CountedDynArray;
-
-  TCDABaseType = UInt32;
-  PCDABaseType = PUInt32;
 
   TCDAArrayType = TUInt32CountedDynArray;
   PCDAArrayType = PUInt32CountedDynArray;  
@@ -72,7 +72,7 @@ uses
   {$POP}
 {$ENDIF}
 
-Function CDA_CompareFunc(A,B: UInt32): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_CompareFunc(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
 begin
 Result := Integer(B - A);
 end;

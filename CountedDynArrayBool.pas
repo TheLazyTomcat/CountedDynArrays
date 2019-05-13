@@ -11,13 +11,13 @@
 
     Counted dynamic array of Boolean values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayBool;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = Boolean;
+  PCDABaseType = ^TCDABaseType;
+
   TBooleanCountedDynArray = record
-    Arr:    array of Boolean;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PBooleanCountedDynArray = ^TBooleanCountedDynArray;
-
-  TCDABaseType = Boolean;
-  PCDABaseType = PBoolean;
 
   TCDAArrayType = TBooleanCountedDynArray;
   PCDAArrayType = PBooleanCountedDynArray;
@@ -72,7 +72,7 @@ uses
   {$POP}
 {$ENDIF}
 
-Function CDA_CompareFunc(A,B: Boolean): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_CompareFunc(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
 begin
 Result := Abs(Ord(B)) - Abs(Ord(A));
 end;

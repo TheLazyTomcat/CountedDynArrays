@@ -80,6 +80,10 @@
   Function CDA_First(const Arr: TCDAArrayType): TCDABaseType; overload;{$IFEND}
 {$IF not(Defined(CDA_DisableFunc_Last) or Defined(CDA_HideFunc_Last))}
   Function CDA_Last(const Arr: TCDAArrayType): TCDABaseType; overload;{$IFEND}
+{$IF not(Defined(CDA_DisableFunc_FirstPtr) or Defined(CDA_HideFunc_FirstPtr))}
+  Function CDA_FirstPtr(const Arr: TCDAArrayType): PCDABaseType; overload;{$IFEND}
+{$IF not(Defined(CDA_DisableFunc_LastPtr) or Defined(CDA_HideFunc_LastPtr))}
+  Function CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType; overload;{$IFEND}
 
 {$IF not(Defined(CDA_DisableFunc_IndexOf) or Defined(CDA_HideFunc_IndexOf))}
   Function CDA_IndexOf(const Arr: TCDAArrayType; const Item: TCDABaseType): Integer; overload;{$IFEND}
@@ -592,7 +596,7 @@ end;
 {$ENDIF}
 
 //------------------------------------------------------------------------------
-    
+
 {$IFNDEF CDA_DisableFunc_First}
 {$IFDEF CDA_HideFunc_First}
 Function _CDA_First(const Arr: TCDAArrayType): TCDABaseType;
@@ -622,6 +626,40 @@ If CDA_Count(Arr) > 0 then
   Result := Arr.Arr[CDA_High(Arr)]
 else
   raise Exception.Create('CDA_Last: Array is empty.');
+end;
+{$ENDIF}
+
+//------------------------------------------------------------------------------
+
+{$IFNDEF CDA_DisableFunc_FirstPtr}
+{$IFDEF CDA_HideFunc_FirstPtr}
+Function _CDA_FirstPtr(const Arr: TCDAArrayType): PCDABaseType;
+{$ELSE}
+Function CDA_FirstPtr(const Arr: TCDAArrayType): PCDABaseType;
+{$ENDIF}
+begin
+// CDA_Count checks for validity, exception is raised for invalid array
+If CDA_Count(Arr) > 0 then
+  Result := Addr(Arr.Arr[CDA_Low(Arr)])
+else
+  raise Exception.Create('CDA_FirstPtr: Array is empty.');
+end;
+{$ENDIF}
+
+//------------------------------------------------------------------------------
+    
+{$IFNDEF CDA_DisableFunc_LastPtr}
+{$IFDEF CDA_HideFunc_LastPtr}
+Function _CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType;
+{$ELSE}
+Function CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType;
+{$ENDIF}
+begin
+// CDA_Count checks for validity, exception is raised for invalid array
+If CDA_Count(Arr) > 0 then
+  Result := Addr(Arr.Arr[CDA_High(Arr)])
+else
+  raise Exception.Create('CDA_LastPtr: Array is empty.');
 end;
 {$ENDIF}
 

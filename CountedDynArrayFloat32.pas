@@ -11,13 +11,13 @@
 
     Counted dynamic array of Float32 (Single) values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayFloat32;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = Float32;
+  PCDABaseType = ^TCDABaseType;
+
   TFloat32CountedDynArray = record
-    Arr:    array of Float32;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PFloat32CountedDynArray = ^TFloat32CountedDynArray;
-
-  TCDABaseType = Float32;
-  PCDABaseType = PFloat32;
 
   TCDAArrayType = TFloat32CountedDynArray;
   PCDAArrayType = PFloat32CountedDynArray;  
@@ -73,7 +73,7 @@ uses
   {$POP}
 {$ENDIF}
 
-Function CDA_CompareFunc(A,B: Float32): Integer;
+Function CDA_CompareFunc(A,B: TCDABaseType): Integer;
 begin
 If A > B then Result := -1
   else If A < B then Result := 1

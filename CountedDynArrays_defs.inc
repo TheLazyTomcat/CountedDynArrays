@@ -59,6 +59,8 @@
 
 {$UNDEF CDA_DisableFunc_First}
 {$UNDEF CDA_DisableFunc_Last}
+{$UNDEF CDA_DisableFunc_FirstPtr}
+{$UNDEF CDA_DisableFunc_LastPtr}
 
 {$UNDEF CDA_DisableFunc_IndexOf}
 {$UNDEF CDA_DisableFunc_Add}

@@ -11,13 +11,13 @@
 
     Counted dynamic array of String values
 
-  ©František Milt 2019-01-26
+  ©František Milt 2019-05-13
 
-  Version 1.0.3
+  Version 1.1.0
 
   Dependencies:
-    AuxTypes    - github.com/ncs-sniper/Lib.AuxTypes
-    ListSorters - github.com/ncs-sniper/Lib.ListSorters
+    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
 
 ===============================================================================}
 unit CountedDynArrayString;
@@ -31,17 +31,17 @@ uses
   CountedDynArrays;
 
 type
+  TCDABaseType = String;
+  PCDABaseType = ^TCDABaseType;
+
   TStringCountedDynArray = record
-    Arr:    array of String;
+    Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
   PStringCountedDynArray = ^TStringCountedDynArray;
-
-  TCDABaseType = String;
-  PCDABaseType = PString;
 
   TCDAArrayType = TStringCountedDynArray;
   PCDAArrayType = PStringCountedDynArray;
@@ -86,7 +86,7 @@ uses
   {$POP}
 {$ENDIF}
 
-Function CDA_CompareFunc(const A,B: String; CaseSensitive: Boolean): Integer;
+Function CDA_CompareFunc(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;
 begin
 If CaseSensitive then
   Result := -AnsiCompareStr(A,B)
