@@ -34,17 +34,20 @@ type
   TCDABaseType = Pointer;
   PCDABaseType = ^TCDABaseType;
 
-  TPointerCountedDynArray = record
+  TCountedDynArrayPointer = record
     Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
-  PPointerCountedDynArray = ^TPointerCountedDynArray;
+  PCountedDynArrayPointer = ^TCountedDynArrayPointer;
 
-  TCDAArrayType = TPointerCountedDynArray;
-  PCDAArrayType = PPointerCountedDynArray;
+  TPointerCountedDynArray = TCountedDynArrayPointer;
+  PPointerCountedDynArray = PCountedDynArrayPointer;
+
+  TCDAArrayType = TCountedDynArrayPointer;
+  PCDAArrayType = PCountedDynArrayPointer;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

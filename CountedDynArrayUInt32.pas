@@ -34,17 +34,20 @@ type
   TCDABaseType = UInt32;
   PCDABaseType = ^TCDABaseType;
 
-  TUInt32CountedDynArray = record
+  TCountedDynArrayUInt32 = record
     Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
-  PUInt32CountedDynArray = ^TUInt32CountedDynArray;
+  PCountedDynArrayUInt32 = ^TCountedDynArrayUInt32;
 
-  TCDAArrayType = TUInt32CountedDynArray;
-  PCDAArrayType = PUInt32CountedDynArray;  
+  TUInt32CountedDynArray = TCountedDynArrayUInt32;
+  PUInt32CountedDynArray = PCountedDynArrayUInt32;
+
+  TCDAArrayType = TCountedDynArrayUInt32;
+  PCDAArrayType = PCountedDynArrayUInt32;  
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

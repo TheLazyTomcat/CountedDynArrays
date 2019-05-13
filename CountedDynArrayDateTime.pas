@@ -34,17 +34,20 @@ type
   TCDABaseType = TDateTime;
   PCDABaseType = ^TCDABaseType;
 
-  TDateTimeCountedDynArray = record
+  TCountedDynArrayDateTime = record
     Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
-  PDateTimeCountedDynArray = ^TDateTimeCountedDynArray;
+  PCountedDynArrayDateTime = ^TCountedDynArrayDateTime;
 
-  TCDAArrayType = TDateTimeCountedDynArray;
-  PCDAArrayType = PDateTimeCountedDynArray;  
+  TDateTimeCountedDynArray = TCountedDynArrayDateTime;
+  PDateTimeCountedDynArray = PCountedDynArrayDateTime;
+
+  TCDAArrayType = TCountedDynArrayDateTime;
+  PCDAArrayType = PCountedDynArrayDateTime;  
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

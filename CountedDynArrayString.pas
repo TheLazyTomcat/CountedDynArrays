@@ -34,17 +34,20 @@ type
   TCDABaseType = String;
   PCDABaseType = ^TCDABaseType;
 
-  TStringCountedDynArray = record
+  TCountedDynArrayString = record
     Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
-  PStringCountedDynArray = ^TStringCountedDynArray;
+  PCountedDynArrayString = ^TCountedDynArrayString;
 
-  TCDAArrayType = TStringCountedDynArray;
-  PCDAArrayType = PStringCountedDynArray;
+  TStringCountedDynArray = TCountedDynArrayString;
+  PStringCountedDynArray = PCountedDynArrayString;
+
+  TCDAArrayType = TCountedDynArrayString;
+  PCDAArrayType = PCountedDynArrayString;
 
 {$DEFINE CDA_DisableFunc_ItemCompareSortFunc}
 {$DEFINE CDA_DisableFunc_ItemUnique}

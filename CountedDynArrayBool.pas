@@ -34,17 +34,20 @@ type
   TCDABaseType = Boolean;
   PCDABaseType = ^TCDABaseType;
 
-  TBooleanCountedDynArray = record
+  TCountedDynArrayBoolean = record
     Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
-  PBooleanCountedDynArray = ^TBooleanCountedDynArray;
+  PCountedDynArrayBoolean = ^TCountedDynArrayBoolean;
 
-  TCDAArrayType = TBooleanCountedDynArray;
-  PCDAArrayType = PBooleanCountedDynArray;
+  TBooleanCountedDynArray = TCountedDynArrayBoolean;
+  PBooleanCountedDynArray = PCountedDynArrayBoolean;
+
+  TCDAArrayType = TCountedDynArrayBoolean;
+  PCDAArrayType = PCountedDynArrayBoolean;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}

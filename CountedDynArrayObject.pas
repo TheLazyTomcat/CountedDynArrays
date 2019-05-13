@@ -34,17 +34,20 @@ type
   TCDABaseType = TObject;
   PCDABaseType = ^TCDABaseType;
 
-  TObjectCountedDynArray = record
+  TCountedDynArrayObject = record
     Arr:    array of TCDABaseType;
     SigA:   UInt32;
     Count:  Integer;
     Data:   PtrInt;
     SigB:   UInt32;
   end;
-  PObjectCountedDynArray = ^TObjectCountedDynArray;
+  PCountedDynArrayObject = ^TCountedDynArrayObject;
 
-  TCDAArrayType = TObjectCountedDynArray;
-  PCDAArrayType = PObjectCountedDynArray;
+  TObjectCountedDynArray = TCountedDynArrayObject;
+  PObjectCountedDynArray = PCountedDynArrayObject;
+
+  TCDAArrayType = TCountedDynArrayObject;
+  PCDAArrayType = PCountedDynArrayObject;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
