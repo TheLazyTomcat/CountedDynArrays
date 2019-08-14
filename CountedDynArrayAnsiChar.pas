@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of UInt8 values
+    Counted dynamic array of AnsiChar values
 
   ©František Milt 2019-08-14
 
@@ -31,9 +31,11 @@
     StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
-unit CountedDynArrayUInt8;
+unit CountedDynArrayAnsiChar;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
+
+{$DEFINE CDA_CaseSensitiveBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
 
@@ -44,25 +46,25 @@ uses
   CountedDynArrays;
 
 type
-  TCDABaseType = UInt8;
+  TCDABaseType = AnsiChar;
   PCDABaseType = ^TCDABaseType;
 
-  TCountedDynArrayUInt8 = record
+  TCountedDynArrayAnsiChar = record
   {$DEFINE CDA_Structure}
     {$INCLUDE '.\CountedDynArrays.inc'}
   {$UNDEF CDA_Structure}
   end;
-  PCountedDynArrayUInt8 = ^TCountedDynArrayUInt8;
+  PCountedDynArrayAnsiChar = ^TCountedDynArrayAnsiChar;
 
   // aliases
-  TCountedDynArrayOfUInt8 = TCountedDynArrayUInt8;
-  PCountedDynArrayOfUInt8 = PCountedDynArrayUInt8;
+  TCountedDynArrayOfAnsiChar = TCountedDynArrayAnsiChar;
+  PCountedDynArrayOfAnsiChar = PCountedDynArrayAnsiChar;
 
-  TUInt8CountedDynArray = TCountedDynArrayUInt8;
-  PUInt8CountedDynArray = PCountedDynArrayUInt8;
+  TAnsiCharCountedDynArray = TCountedDynArrayAnsiChar;
+  PAnsiCharCountedDynArray = PCountedDynArrayAnsiChar;
 
-  TCDAArrayType = TCountedDynArrayUInt8;
-  PCDAArrayType = PCountedDynArrayUInt8;
+  TCDAArrayType = TCountedDynArrayAnsiChar;
+  PCDAArrayType = PCountedDynArrayAnsiChar;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -72,13 +74,13 @@ implementation
 
 uses
   SysUtils,
-  ListSorters;
+  ListSorters,StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
-Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin
-Result := Integer(B - A);
+Result := -AnsiStringCompare(A,B,CaseSensitive);
 end;
 
 //------------------------------------------------------------------------------
@@ -88,4 +90,3 @@ end;
 {$UNDEF CDA_Implementation}
 
 end.
-

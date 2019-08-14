@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of UInt8 values
+    Counted dynamic array of ShortString values
 
   ©František Milt 2019-08-14
 
@@ -31,9 +31,12 @@
     StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
-unit CountedDynArrayUInt8;
+unit CountedDynArrayShortString;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
+
+{$DEFINE CDA_ConstBaseType}
+{$DEFINE CDA_CaseSensitiveBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
 
@@ -44,25 +47,25 @@ uses
   CountedDynArrays;
 
 type
-  TCDABaseType = UInt8;
+  TCDABaseType = ShortString;
   PCDABaseType = ^TCDABaseType;
 
-  TCountedDynArrayUInt8 = record
+  TCountedDynArrayShortString = record
   {$DEFINE CDA_Structure}
     {$INCLUDE '.\CountedDynArrays.inc'}
   {$UNDEF CDA_Structure}
   end;
-  PCountedDynArrayUInt8 = ^TCountedDynArrayUInt8;
+  PCountedDynArrayShortString = ^TCountedDynArrayShortString;
 
   // aliases
-  TCountedDynArrayOfUInt8 = TCountedDynArrayUInt8;
-  PCountedDynArrayOfUInt8 = PCountedDynArrayUInt8;
+  TCountedDynArrayOfShortString = TCountedDynArrayShortString;
+  PCountedDynArrayOfShortString = PCountedDynArrayShortString;
 
-  TUInt8CountedDynArray = TCountedDynArrayUInt8;
-  PUInt8CountedDynArray = PCountedDynArrayUInt8;
+  TShortStringCountedDynArray = TCountedDynArrayShortString;
+  PShortStringCountedDynArray = PCountedDynArrayShortString;
 
-  TCDAArrayType = TCountedDynArrayUInt8;
-  PCDAArrayType = PCountedDynArrayUInt8;
+  TCDAArrayType = TCountedDynArrayShortString;
+  PCDAArrayType = PCountedDynArrayShortString;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -72,20 +75,17 @@ implementation
 
 uses
   SysUtils,
-  ListSorters;
+  ListSorters, StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
-Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin
-Result := Integer(B - A);
+Result := -ShortStringCompare(A,B,CaseSensitive);
 end;
-
-//------------------------------------------------------------------------------
 
 {$DEFINE CDA_Implementation}
 {$INCLUDE '.\CountedDynArrays.inc'}
 {$UNDEF CDA_Implementation}
 
 end.
-

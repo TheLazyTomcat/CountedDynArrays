@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of UInt8 values
+    Counted dynamic array of Variant values
 
   ©František Milt 2019-08-14
 
@@ -26,14 +26,16 @@
 
   Dependencies:
     AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses    
+    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses
     ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
     StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
-unit CountedDynArrayUInt8;
+unit CountedDynArrayVariant;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
+
+{$DEFINE CDA_ConstBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
 
@@ -44,25 +46,25 @@ uses
   CountedDynArrays;
 
 type
-  TCDABaseType = UInt8;
+  TCDABaseType = Variant;
   PCDABaseType = ^TCDABaseType;
 
-  TCountedDynArrayUInt8 = record
+  TCountedDynArrayVariant = record
   {$DEFINE CDA_Structure}
     {$INCLUDE '.\CountedDynArrays.inc'}
   {$UNDEF CDA_Structure}
   end;
-  PCountedDynArrayUInt8 = ^TCountedDynArrayUInt8;
+  PCountedDynArrayVariant = ^TCountedDynArrayVariant;
 
   // aliases
-  TCountedDynArrayOfUInt8 = TCountedDynArrayUInt8;
-  PCountedDynArrayOfUInt8 = PCountedDynArrayUInt8;
+  TCountedDynArrayOfVariant = TCountedDynArrayVariant;
+  PCountedDynArrayOfVariant = PCountedDynArrayVariant;
 
-  TUInt8CountedDynArray = TCountedDynArrayUInt8;
-  PUInt8CountedDynArray = PCountedDynArrayUInt8;
+  TVariantCountedDynArray = TCountedDynArrayVariant;
+  PVariantCountedDynArray = PCountedDynArrayVariant;
 
-  TCDAArrayType = TCountedDynArrayUInt8;
-  PCDAArrayType = PCountedDynArrayUInt8;
+  TCDAArrayType = TCountedDynArrayVariant;
+  PCDAArrayType = PCountedDynArrayVariant;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -71,17 +73,22 @@ type
 implementation
 
 uses
-  SysUtils,
+  SysUtils, Variants,
   ListSorters;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
-Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_ItemCompare(const A,B: TCDABaseType): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin
-Result := Integer(B - A);
+case VarCompareValue(A,B) of
+  vrEqual:        Result := 0;
+  vrLessThan:     Result := +1;
+  vrGreaterThan:  Result := -1;
+  vrNotEqual:     Result := 0;
+else
+  Result := 0;
 end;
-
-//------------------------------------------------------------------------------
+end;
 
 {$DEFINE CDA_Implementation}
 {$INCLUDE '.\CountedDynArrays.inc'}

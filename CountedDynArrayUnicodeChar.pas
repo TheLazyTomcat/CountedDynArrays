@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of UInt8 values
+    Counted dynamic array of UnicodeChar values
 
   ©František Milt 2019-08-14
 
@@ -26,14 +26,16 @@
 
   Dependencies:
     AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses    
+    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses
     ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
     StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
-unit CountedDynArrayUInt8;
+unit CountedDynArrayUnicodeChar;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
+
+{$DEFINE CDA_CaseSensitiveBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
 
@@ -44,25 +46,25 @@ uses
   CountedDynArrays;
 
 type
-  TCDABaseType = UInt8;
+  TCDABaseType = UnicodeChar;
   PCDABaseType = ^TCDABaseType;
 
-  TCountedDynArrayUInt8 = record
+  TCountedDynArrayUnicodeChar = record
   {$DEFINE CDA_Structure}
     {$INCLUDE '.\CountedDynArrays.inc'}
   {$UNDEF CDA_Structure}
   end;
-  PCountedDynArrayUInt8 = ^TCountedDynArrayUInt8;
+  PCountedDynArrayUnicodeChar = ^TCountedDynArrayUnicodeChar;
 
   // aliases
-  TCountedDynArrayOfUInt8 = TCountedDynArrayUInt8;
-  PCountedDynArrayOfUInt8 = PCountedDynArrayUInt8;
+  TCountedDynArrayOfUnicodeChar = TCountedDynArrayUnicodeChar;
+  PCountedDynArrayOfUnicodeChar = PCountedDynArrayUnicodeChar;
 
-  TUInt8CountedDynArray = TCountedDynArrayUInt8;
-  PUInt8CountedDynArray = PCountedDynArrayUInt8;
+  TUnicodeCharCountedDynArray = TCountedDynArrayUnicodeChar;
+  PUnicodeCharCountedDynArray = PCountedDynArrayUnicodeChar;
 
-  TCDAArrayType = TCountedDynArrayUInt8;
-  PCDAArrayType = PCountedDynArrayUInt8;
+  TCDAArrayType = TCountedDynArrayUnicodeChar;
+  PCDAArrayType = PCountedDynArrayUnicodeChar;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -72,13 +74,13 @@ implementation
 
 uses
   SysUtils,
-  ListSorters;
+  ListSorters, StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
-Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin
-Result := Integer(B - A);
+Result := -UnicodeStringCompare(A,B,CaseSensitive);
 end;
 
 //------------------------------------------------------------------------------
@@ -87,5 +89,5 @@ end;
 {$INCLUDE '.\CountedDynArrays.inc'}
 {$UNDEF CDA_Implementation}
 
-end.
 
+end.

@@ -7,22 +7,35 @@
 -------------------------------------------------------------------------------}
 {===============================================================================
 
-  Counted dynamic arrays
+  Counted Dynamic Arrays
 
     Counted dynamic array of Float32 (Single) values
 
-  ©František Milt 2019-05-13
+  ©František Milt 2019-08-14
 
-  Version 1.1.0
+  Version 1.2.0
+
+  Contacts:
+    František Milt: frantisek.milt@gmail.com
+
+  Support:
+    If you find this code useful, please consider supporting its author(s) by
+    making a small donation using the following link(s):
+
+      https://www.paypal.me/FMilt
 
   Dependencies:
     AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
+    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses    
     ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
+    StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 unit CountedDynArrayFloat32;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
+
+{$DEFINE CDA_FuncOverride_ItemCompare}
 
 interface
 
@@ -35,19 +48,21 @@ type
   PCDABaseType = ^TCDABaseType;
 
   TCountedDynArrayFloat32 = record
-    Arr:    array of TCDABaseType;
-    SigA:   UInt32;
-    Count:  Integer;
-    Data:   PtrInt;
-    SigB:   UInt32;
+  {$DEFINE CDA_Structure}
+    {$INCLUDE '.\CountedDynArrays.inc'}
+  {$UNDEF CDA_Structure}
   end;
   PCountedDynArrayFloat32 = ^TCountedDynArrayFloat32;
+
+  // aliases
+  TCountedDynArrayOfFloat32 = TCountedDynArrayFloat32;
+  PCountedDynArrayOfFloat32 = PCountedDynArrayFloat32;
 
   TFloat32CountedDynArray = TCountedDynArrayFloat32;
   PFloat32CountedDynArray = PCountedDynArrayFloat32;
 
   TCDAArrayType = TCountedDynArrayFloat32;
-  PCDAArrayType = PCountedDynArrayFloat32;  
+  PCDAArrayType = PCountedDynArrayFloat32;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -60,27 +75,16 @@ uses
   SysUtils,
   ListSorters;
 
-{$IFDEF FPC_DisableWarns}
-  {$DEFINE FPCDWM}
-  {$DEFINE W5024:={$WARN 5024 OFF}} // Parameter "$1" not used   
-  {$PUSH}{$WARN 2005 OFF} // Comment level $1 found
-  {$IF Defined(FPC) and (FPC_FULLVERSION >= 30000)}
-    {$DEFINE W5093:={$WARN 5093 OFF}} // Function result variable of a managed type does not seem to initialized
-    {$DEFINE W5094:={$WARN 5094 OFF}} // Function result variable of a managed type does not seem to initialized
-    {$DEFINE W5060:=}
-  {$ELSE}
-    {$DEFINE W5093:=}
-    {$DEFINE W5094:=}
-    {$DEFINE W5060:={$WARN 5060 OFF}} // Function result variable does not seem to be initialized
-  {$IFEND}
-  {$POP}
-{$ENDIF}
+{$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
-Function CDA_CompareFunc(A,B: TCDABaseType): Integer;
+Function CDA_ItemCompare(A,B: TCDABaseType): Integer;
 begin
-If A > B then Result := -1
-  else If A < B then Result := 1
-    else Result := 0;
+If A < B then
+  Result := +1
+else If A > B then
+  Result := -1
+else
+  Result := 0;
 end;
 
 //------------------------------------------------------------------------------

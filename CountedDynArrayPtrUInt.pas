@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of UInt8 values
+    Counted dynamic array of PtrUInt values
 
   ©František Milt 2019-08-14
 
@@ -31,7 +31,7 @@
     StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
-unit CountedDynArrayUInt8;
+unit CountedDynArrayPtrUInt;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
@@ -44,25 +44,25 @@ uses
   CountedDynArrays;
 
 type
-  TCDABaseType = UInt8;
+  TCDABaseType = PtrUInt;
   PCDABaseType = ^TCDABaseType;
 
-  TCountedDynArrayUInt8 = record
+  TCountedDynArrayPtrUInt = record
   {$DEFINE CDA_Structure}
     {$INCLUDE '.\CountedDynArrays.inc'}
   {$UNDEF CDA_Structure}
   end;
-  PCountedDynArrayUInt8 = ^TCountedDynArrayUInt8;
+  PCountedDynArrayPtrUInt = ^TCountedDynArrayPtrUInt;
 
   // aliases
-  TCountedDynArrayOfUInt8 = TCountedDynArrayUInt8;
-  PCountedDynArrayOfUInt8 = PCountedDynArrayUInt8;
+  TCountedDynArrayOfPtrUInt = TCountedDynArrayPtrUInt;
+  PCountedDynArrayOfPtrUInt = PCountedDynArrayPtrUInt;
 
-  TUInt8CountedDynArray = TCountedDynArrayUInt8;
-  PUInt8CountedDynArray = PCountedDynArrayUInt8;
+  TPtrUIntCountedDynArray = TCountedDynArrayPtrUInt;
+  PPtrUIntCountedDynArray = PCountedDynArrayPtrUInt;
 
-  TCDAArrayType = TCountedDynArrayUInt8;
-  PCDAArrayType = PCountedDynArrayUInt8;
+  TCDAArrayType = TCountedDynArrayPtrUInt;
+  PCDAArrayType = PCountedDynArrayPtrUInt;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -76,9 +76,14 @@ uses
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
-Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+Function CDA_ItemCompare(A,B: TCDABaseType): Integer;
 begin
-Result := Integer(B - A);
+If A < B then
+  Result := +1
+else If A > B then
+  Result := -1
+else
+  Result := 0;
 end;
 
 //------------------------------------------------------------------------------
@@ -88,4 +93,3 @@ end;
 {$UNDEF CDA_Implementation}
 
 end.
-
