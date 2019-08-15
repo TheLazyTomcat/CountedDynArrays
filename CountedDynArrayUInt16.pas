@@ -11,10 +11,12 @@
 
     Counted dynamic array of UInt16 values
 
-  ©František Milt 2019-08-14
-
   Version 1.2.0
+  
+  Last changed 2018-08-15
 
+  ©2018-2019 František Milt
+  
   Contacts:
     František Milt: frantisek.milt@gmail.com
 

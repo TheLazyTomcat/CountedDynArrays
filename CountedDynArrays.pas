@@ -79,9 +79,11 @@
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  ©František Milt 2019-08-14
-
   Version 1.2.0
+  
+  Last changed 2018-08-15
+
+  ©2018-2019 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
