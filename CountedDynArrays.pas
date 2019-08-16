@@ -117,6 +117,10 @@ type
   TCDAIndexArray = array of Integer;
   PCDAIndexArray = ^TCDAIndexArray;
 
+{$IF (SizeOf(TCDAIndexArray) <> SizeOf(Pointer))}
+  {$MESSAGE Fatal 'Incompatible implementation detail.'}
+{$IFEND}
+
 {
   Array is only grown if current count + DeltaMin is larger than current capacity.
 
