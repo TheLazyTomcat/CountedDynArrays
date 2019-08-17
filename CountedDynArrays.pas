@@ -117,7 +117,7 @@ type
   TCDAIndexArray = array of Integer;
   PCDAIndexArray = ^TCDAIndexArray;
 
-{$IF (SizeOf(TCDAIndexArray) <> SizeOf(Pointer))}
+{$IF SizeOf(TCDAIndexArray) <> SizeOf(Pointer)}
   {$MESSAGE Fatal 'Incompatible implementation detail.'}
 {$IFEND}
 

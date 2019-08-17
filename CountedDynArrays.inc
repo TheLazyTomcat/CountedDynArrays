@@ -60,7 +60,7 @@
 
 // internal structure manipulation
 {$IFNDEF CDA_FuncReintroduce_Valid}
-  Function CDA_Valid(const Arr: TCDAArrayType): Boolean; overload;{$ENDIF}
+  Function CDA_Valid(const Arr: TCDAArrayType): Boolean; overload;{$IF Defined(CanInline) and Defined(FPC)} inline;{$ENDIF}{$IFEND}
 {$IFNDEF CDA_FuncReintroduce_Validate}
   procedure CDA_Validate(var Arr: TCDAArrayType); overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Init}
@@ -110,7 +110,7 @@
 {$IFNDEF CDA_FuncReintroduce_High}
   Function CDA_High(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_CheckIndex}
-  Function CDA_CheckIndex(const Arr: TCDAArrayType; Index: Integer): Boolean; overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
+  Function CDA_CheckIndex(const Arr: TCDAArrayType; Index: Integer): Boolean; overload;{$ENDIF}
 
 // item access
 {$IFNDEF CDA_FuncReintroduce_GetItem}
