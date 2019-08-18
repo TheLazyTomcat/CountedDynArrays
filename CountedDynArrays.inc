@@ -60,7 +60,7 @@
 
 // internal structure manipulation
 {$IFNDEF CDA_FuncReintroduce_Valid}
-  Function CDA_Valid(const Arr: TCDAArrayType): Boolean; overload;{$IF Defined(CanInline) and Defined(FPC)} inline;{$ENDIF}{$IFEND}
+  Function CDA_Valid(const Arr: TCDAArrayType): Boolean; overload;{$IF Defined(CanInline) and Defined(FPC)} inline;{$IFEND}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Validate}
   procedure CDA_Validate(var Arr: TCDAArrayType); overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Init}
