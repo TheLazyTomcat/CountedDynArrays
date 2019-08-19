@@ -79,9 +79,9 @@
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  Version 1.2.0
+  Version 1.2.1 (2019-08-19)
   
-  Last changed 2018-08-15
+  Last changed 2019-08-19
 
   ©2018-2019 František Milt
 
@@ -93,6 +93,11 @@
     making a small donation using the following link(s):
 
       https://www.paypal.me/FMilt
+
+  Changelog:
+    For detailed changelog and history please refer to this git repository:
+
+      github.com/TheLazyTomcat/Lib.AuxClasses
 
   Dependencies:
     AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
