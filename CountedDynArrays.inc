@@ -13,7 +13,7 @@
 
   Version 1.2.1 (2019-08-19)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-20
 
   ©2018-2019 František Milt
 
@@ -466,7 +466,7 @@ If NewLength >= 0 then
       Arr.Count := NewLength;
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else raise ERangeError.CreateFmt('CDA_SetLength: New length (%d) out of range.',[NewLength]);
+else raise ECDAOutOfRange.CreateFmt('CDA_SetLength: New length (%d) out of range.',[NewLength]);
 end;
 
 //------------------------------------------------------------------------------
@@ -512,7 +512,7 @@ If NewCount >= 0 then
       end;
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else raise ERangeError.CreateFmt('CDA_SetCount: New count (%d) out of range.',[NewCount])
+else raise ECDAOutOfRange.CreateFmt('CDA_SetCount: New count (%d) out of range.',[NewCount])
 end;
 
 //==============================================================================
@@ -699,7 +699,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Result := Arr.Arr[Index]
 else
-  raise Exception.CreateFmt('CDA_GetItem: Index (%d) out of bounds.',[Index]);
+  raise ECDAIndexOutOfBound.CreateFmt('CDA_GetItem: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -714,7 +714,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Result := Addr(Arr.Arr[Index])
 else
-  raise Exception.CreateFmt('CDA_GetItemPtr: Index (%d) out of bounds.',[Index]);
+  raise ECDAIndexOutOfBound.CreateFmt('CDA_GetItemPtr: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -729,7 +729,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Arr.Arr[Index] := Item
 else
-  raise Exception.CreateFmt('CDA_SetItem: Index (%d) out of bounds.',[Index]);
+  raise ECDAIndexOutOfBound.CreateFmt('CDA_SetItem: Index (%d) out of bounds.',[Index]);
 end;
 
 //==============================================================================
@@ -744,7 +744,7 @@ begin
 If CDA_Count(Arr) > 0 then
   Result := Arr.Arr[0]
 else
-  raise Exception.Create('CDA_First: Array is empty.');
+  raise ECDAEmptyArray.Create('CDA_First: Array is empty.');
 end;
 
 //------------------------------------------------------------------------------
@@ -759,7 +759,7 @@ begin
 If CDA_Count(Arr) > 0 then
   Result := Arr.Arr[Pred(Arr.Count)]
 else
-  raise Exception.Create('CDA_Last: Array is empty.');
+  raise ECDAEmptyArray.Create('CDA_Last: Array is empty.');
 end;
 
 //------------------------------------------------------------------------------
@@ -774,7 +774,7 @@ begin
 If CDA_Count(Arr) > 0 then
   Result := Addr(Arr.Arr[0])
 else
-  raise Exception.Create('CDA_FirstPtr: Array is empty.');
+  raise ECDAEmptyArray.Create('CDA_FirstPtr: Array is empty.');
 end;
 
 //------------------------------------------------------------------------------
@@ -789,7 +789,7 @@ begin
 If CDA_Count(Arr) > 0 then
   Result := Addr(Arr.Arr[Pred(Arr.Count)])
 else
-  raise Exception.Create('CDA_LastPtr: Array is empty.');
+  raise ECDAEmptyArray.Create('CDA_LastPtr: Array is empty.');
 end;
 
 //==============================================================================
@@ -892,9 +892,9 @@ CDA_Validate(Arr);
 If Idx1 <> Idx2 then
   begin
     If not CDA_CheckIndex(Arr,Idx1) then
-      raise Exception.CreateFmt('CDA_Exchange: First index (%d) out of bounds.',[Idx1]);
+      raise ECDAIndexOutOfBound.CreateFmt('CDA_Exchange: First index (%d) out of bounds.',[Idx1]);
     If not CDA_CheckIndex(Arr,Idx2) then
-      raise Exception.CreateFmt('CDA_Exchange: Second index (%d) out of bounds.',[Idx2]);
+      raise ECDAIndexOutOfBound.CreateFmt('CDA_Exchange: Second index (%d) out of bounds.',[Idx2]);
     Temp := Arr.Arr[Idx1];
     Arr.Arr[Idx1] := Arr.Arr[Idx2];
     Arr.Arr[Idx2] := Temp;
@@ -916,9 +916,9 @@ CDA_Validate(Arr);
 If SrcIdx <> DstIdx then
   begin
     If not CDA_CheckIndex(Arr,SrcIdx) then
-      raise Exception.CreateFmt('CDA_Move: Source index (%d) out of bounds.',[SrcIdx]);
+      raise ECDAIndexOutOfBound.CreateFmt('CDA_Move: Source index (%d) out of bounds.',[SrcIdx]);
     If not CDA_CheckIndex(Arr,DstIdx) then
-      raise Exception.CreateFmt('CDA_Move: Destination index (%d) out of bounds.',[DstIdx]);
+      raise ECDAIndexOutOfBound.CreateFmt('CDA_Move: Destination index (%d) out of bounds.',[DstIdx]);
     Temp := Arr.Arr[SrcIdx];
     If SrcIdx > DstIdx then
       For i := SrcIdx downto Succ(DstIdx) do
@@ -950,7 +950,7 @@ If CDA_CheckIndex(Arr,Index) then
     Arr.Checksum := CDA_Checksum(Arr);     
     CDA_Shrink(Arr);
   end
-else raise Exception.CreateFmt('CDA_Extract: Index (%d) out of bounds.',[Index]);
+else raise ECDAIndexOutOfBound.CreateFmt('CDA_Extract: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -987,7 +987,7 @@ If CDA_CheckIndex(Arr,Index) then
     Arr.Checksum := CDA_Checksum(Arr);
     CDA_Shrink(Arr);
   end
-else raise Exception.CreateFmt('CDA_Delete: Index (%d) out of bounds.',[Index]);
+else raise ECDAIndexOutOfBound.CreateFmt('CDA_Delete: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -1051,9 +1051,9 @@ If CDA_Valid(Arr1) then
               Result := Integer(Temp);
           end
       end
-    else raise Exception.Create('CDA_Compare: Invalid array #2.');
+    else raise ECDAInvalidArray.Create('CDA_Compare: Invalid array #2.');
   end
-else raise Exception.Create('CDA_Compare: Invalid array #1.');
+else raise ECDAInvalidArray.Create('CDA_Compare: Invalid array #1.');
 end;
 
 //------------------------------------------------------------------------------

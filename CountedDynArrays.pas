@@ -81,7 +81,7 @@
 
   Version 1.2.1 (2019-08-19)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-20
 
   ©2018-2019 František Milt
 
@@ -113,6 +113,7 @@ unit CountedDynArrays;
 interface
 
 uses
+  SysUtils,
   AuxTypes;
 
 type
@@ -121,6 +122,13 @@ type
   
   TCDAIndexArray = array of Integer;
   PCDAIndexArray = ^TCDAIndexArray;
+
+  ECDAException = class(Exception);
+
+  ECDAInvalidArray    = class(ECDAException);
+  ECDAEmptyArray      = class(ECDAException);
+  ECDAOutOfRange      = class(ECDAException);
+  ECDAIndexOutOfBound = class(ECDAException);
 
 {$IF SizeOf(TCDAIndexArray) <> SizeOf(Pointer)}
   {$MESSAGE Fatal 'Incompatible implementation detail.'}
