@@ -11,9 +11,9 @@
 
     Counted dynamic array of UInt64 values
 
-  Version 1.2.1 (2019-08-19)
+  Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-22
 
   ©2018-2019 František Milt
 
@@ -86,15 +86,15 @@ uses
 Function CDA_ItemCompare(A,B: TCDABaseType): Integer;
 begin
 If Int64Rec(A).Hi < Int64Rec(B).Hi then
-  Result := +1
-else If Int64Rec(A).Hi > Int64Rec(B).Hi then
   Result := -1
+else If Int64Rec(A).Hi > Int64Rec(B).Hi then
+  Result := +1
 else
   begin
     If Int64Rec(A).Lo < Int64Rec(B).Lo then
-      Result := +1
-    else If Int64Rec(A).Lo > Int64Rec(B).Lo then
       Result := -1
+    else If Int64Rec(A).Lo > Int64Rec(B).Lo then
+      Result := +1
     else
       Result := 0;
   end;

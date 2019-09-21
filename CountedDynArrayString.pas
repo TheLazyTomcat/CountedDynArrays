@@ -11,9 +11,9 @@
 
     Counted dynamic array of String values
 
-  Version 1.2.1 (2019-08-19)
+  Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-22
 
   ©2018-2019 František Milt
 
@@ -96,7 +96,7 @@ end;
 
 Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin
-Result := -StringCompare(A,B,CaseSensitive);
+Result := StringCompare(A,B,CaseSensitive);
 end;
 
 {$DEFINE CDA_Implementation}

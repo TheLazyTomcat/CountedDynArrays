@@ -11,9 +11,9 @@
 
     Counted dynamic array of Variant values
 
-  Version 1.2.1 (2019-08-19)
+  Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-22
 
   ©2018-2019 František Milt
 
@@ -89,8 +89,8 @@ Function CDA_ItemCompare(const A,B: TCDABaseType): Integer;{$IFDEF CanInline} in
 begin
 case VarCompareValue(A,B) of
   vrEqual:        Result := 0;
-  vrLessThan:     Result := +1;
-  vrGreaterThan:  Result := -1;
+  vrLessThan:     Result := -1;
+  vrGreaterThan:  Result := +1;
   vrNotEqual:     Result := 0;
 else
   Result := 0;

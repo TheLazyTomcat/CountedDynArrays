@@ -11,9 +11,9 @@
 
     Counted dynamic array of Int16 values
 
-  Version 1.2.1 (2019-08-19)
+  Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-22
 
   ©2018-2019 František Milt
 
@@ -85,7 +85,7 @@ uses
 
 Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
 begin
-Result := Integer(B - A);
+Result := Integer(A - B);
 end;
 
 //------------------------------------------------------------------------------

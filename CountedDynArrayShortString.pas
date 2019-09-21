@@ -11,9 +11,9 @@
 
     Counted dynamic array of ShortString values
 
-  Version 1.2.1 (2019-08-19)
+  Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-08-19
+  Last changed 2019-09-22
 
   ©2018-2019 František Milt
 
@@ -88,7 +88,7 @@ uses
 
 Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin
-Result := -ShortStringCompare(A,B,CaseSensitive);
+Result := ShortStringCompare(A,B,CaseSensitive);
 end;
 
 {$DEFINE CDA_Implementation}

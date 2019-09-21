@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.2.1 (2019-08-19)
+  Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-09-20
+  Last changed 2019-09-22
 
   ©2018-2019 František Milt
 
@@ -288,9 +288,9 @@ If Result = 0 then
   with TCDAArrayType(Context^) do
     begin
       If PCDAIndexArray(InternalPtr)^[Idx1] < PCDAIndexArray(InternalPtr)^[Idx2] then
-        Result := +1
+        Result := -1
       else If PCDAIndexArray(InternalPtr)^[Idx1] > PCDAIndexArray(InternalPtr)^[Idx2] then
-        Result := -1;
+        Result := +1;
     end;
 end;
 
@@ -1027,29 +1027,35 @@ Function _CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBa
 Function CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
 {$IFEND}
 var
-  i:    Integer;
-  Temp: Int64;
+  i:  Integer;
+
+  Function Min(A,B: Integer): Integer;
+  begin
+    If A < B then
+      Result := A
+    else
+      Result := B;
+  end;
+
 begin
 If CDA_Valid(Arr1) then
   begin
     If CDA_Valid(Arr2) then
       begin
-        If Arr1.Count < Arr2.Count then
-          Result := +1
-        else If Arr1.Count > Arr2.Count then
-          Result := -1
-        else {both arrays have the same number of elements}
+        // first compare items at common indices
+        For i := 0 to Pred(Min(Arr1.Count,Arr2.Count)) do
           begin
-            Temp := 0;
-            For i := 0 to Pred(Arr1.Count) do
-              Temp := Temp + CDA_ItemCompare(Arr1.Arr[i],Arr2.Arr[i]{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF});
-            If Temp > Int64(High(Integer)) then
-              Result := +1
-            else If Temp < Int64(Low(Integer)) then
-              Result := -1
-            else
-              Result := Integer(Temp);
-          end
+            Result := CDA_ItemCompare(Arr1.Arr[i],Arr2.Arr[i]{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF});
+            If Result <> 0 then
+              Exit;
+          end;
+        // all items at common indices match, compare lengths
+        If Arr1.Count < Arr2.Count then
+          Result := -1
+        else If Arr1.Count > Arr2.Count then
+          Result := +1
+        else
+          Result := 0;
       end
     else raise ECDAInvalidArray.Create('CDA_Compare: Invalid array #2.');
   end
