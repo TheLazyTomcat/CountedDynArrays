@@ -13,7 +13,7 @@
 
   Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-09-22
+  Last changed 2019-10-03
 
   ©2018-2019 František Milt
 
@@ -466,7 +466,7 @@ If NewLength >= 0 then
       Arr.Count := NewLength;
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else raise ECDAOutOfRange.CreateFmt('CDA_SetLength: New length (%d) out of range.',[NewLength]);
+else raise ECDAOutOfRange.CreateFmt('CDA_SetLength: New length (%d) out of allowed range.',[NewLength]);
 end;
 
 //------------------------------------------------------------------------------
@@ -512,7 +512,7 @@ If NewCount >= 0 then
       end;
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else raise ECDAOutOfRange.CreateFmt('CDA_SetCount: New count (%d) out of range.',[NewCount])
+else raise ECDAOutOfRange.CreateFmt('CDA_SetCount: New count (%d) out of allowed range.',[NewCount])
 end;
 
 //==============================================================================
@@ -699,7 +699,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Result := Arr.Arr[Index]
 else
-  raise ECDAIndexOutOfBound.CreateFmt('CDA_GetItem: Index (%d) out of bounds.',[Index]);
+  raise ECDAIndexOutOfBounds.CreateFmt('CDA_GetItem: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -714,7 +714,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Result := Addr(Arr.Arr[Index])
 else
-  raise ECDAIndexOutOfBound.CreateFmt('CDA_GetItemPtr: Index (%d) out of bounds.',[Index]);
+  raise ECDAIndexOutOfBounds.CreateFmt('CDA_GetItemPtr: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -729,7 +729,7 @@ begin
 If CDA_CheckIndex(Arr,Index) then
   Arr.Arr[Index] := Item
 else
-  raise ECDAIndexOutOfBound.CreateFmt('CDA_SetItem: Index (%d) out of bounds.',[Index]);
+  raise ECDAIndexOutOfBounds.CreateFmt('CDA_SetItem: Index (%d) out of bounds.',[Index]);
 end;
 
 //==============================================================================
@@ -892,9 +892,9 @@ CDA_Validate(Arr);
 If Idx1 <> Idx2 then
   begin
     If not CDA_CheckIndex(Arr,Idx1) then
-      raise ECDAIndexOutOfBound.CreateFmt('CDA_Exchange: First index (%d) out of bounds.',[Idx1]);
+      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Exchange: First index (%d) out of bounds.',[Idx1]);
     If not CDA_CheckIndex(Arr,Idx2) then
-      raise ECDAIndexOutOfBound.CreateFmt('CDA_Exchange: Second index (%d) out of bounds.',[Idx2]);
+      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Exchange: Second index (%d) out of bounds.',[Idx2]);
     Temp := Arr.Arr[Idx1];
     Arr.Arr[Idx1] := Arr.Arr[Idx2];
     Arr.Arr[Idx2] := Temp;
@@ -916,9 +916,9 @@ CDA_Validate(Arr);
 If SrcIdx <> DstIdx then
   begin
     If not CDA_CheckIndex(Arr,SrcIdx) then
-      raise ECDAIndexOutOfBound.CreateFmt('CDA_Move: Source index (%d) out of bounds.',[SrcIdx]);
+      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Move: Source index (%d) out of bounds.',[SrcIdx]);
     If not CDA_CheckIndex(Arr,DstIdx) then
-      raise ECDAIndexOutOfBound.CreateFmt('CDA_Move: Destination index (%d) out of bounds.',[DstIdx]);
+      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Move: Destination index (%d) out of bounds.',[DstIdx]);
     Temp := Arr.Arr[SrcIdx];
     If SrcIdx > DstIdx then
       For i := SrcIdx downto Succ(DstIdx) do
@@ -950,7 +950,7 @@ If CDA_CheckIndex(Arr,Index) then
     Arr.Checksum := CDA_Checksum(Arr);     
     CDA_Shrink(Arr);
   end
-else raise ECDAIndexOutOfBound.CreateFmt('CDA_Extract: Index (%d) out of bounds.',[Index]);
+else raise ECDAIndexOutOfBounds.CreateFmt('CDA_Extract: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------
@@ -987,7 +987,7 @@ If CDA_CheckIndex(Arr,Index) then
     Arr.Checksum := CDA_Checksum(Arr);
     CDA_Shrink(Arr);
   end
-else raise ECDAIndexOutOfBound.CreateFmt('CDA_Delete: Index (%d) out of bounds.',[Index]);
+else raise ECDAIndexOutOfBounds.CreateFmt('CDA_Delete: Index (%d) out of bounds.',[Index]);
 end;
 
 //------------------------------------------------------------------------------

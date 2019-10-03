@@ -81,7 +81,7 @@
 
   Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-09-22
+  Last changed 2019-10-03
 
   ©2018-2019 František Milt
 
@@ -125,10 +125,10 @@ type
 
   ECDAException = class(Exception);
 
-  ECDAInvalidArray    = class(ECDAException);
-  ECDAEmptyArray      = class(ECDAException);
-  ECDAOutOfRange      = class(ECDAException);
-  ECDAIndexOutOfBound = class(ECDAException);
+  ECDAInvalidArray     = class(ECDAException);
+  ECDAEmptyArray       = class(ECDAException);
+  ECDAOutOfRange       = class(ECDAException);
+  ECDAIndexOutOfBounds = class(ECDAException);
 
 {$IF SizeOf(TCDAIndexArray) <> SizeOf(Pointer)}
   {$MESSAGE Fatal 'Incompatible implementation detail.'}
