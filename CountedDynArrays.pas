@@ -81,7 +81,7 @@
 
   Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-10-03
+  Last changed 2019-10-10
 
   ©2018-2019 František Milt
 
@@ -97,7 +97,7 @@
   Changelog:
     For detailed changelog and history please refer to this git repository:
 
-      github.com/TheLazyTomcat/Lib.AuxClasses
+      github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
     AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
