@@ -13,7 +13,7 @@
 
   Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-10-10
+  Last changed 2020-01-20
 
   ©2018-2019 František Milt
 
@@ -91,7 +91,7 @@ case VarCompareValue(A,B) of
   vrEqual:        Result := 0;
   vrLessThan:     Result := -1;
   vrGreaterThan:  Result := +1;
-  vrNotEqual:     Result := 0;
+  vrNotEqual:     Result := -1;   // preserve order
 else
   Result := 0;
 end;

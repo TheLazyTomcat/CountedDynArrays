@@ -6,10 +6,6 @@
   {$DEFINE 32bit}
 {$IFEND}
 
-{$IF Defined(WINDOWS) or Defined(MSWINDOWS)}
-  {$DEFINE Windows}
-{$IFEND}
-
 {$IFDEF FPC}
   {$MODE ObjFPC}{$H+}
   {$MODESWITCH CLASSICPROCVARS+}
