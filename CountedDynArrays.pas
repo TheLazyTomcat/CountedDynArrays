@@ -81,7 +81,7 @@
 
   Version 1.2.2 (2019-09-22)
   
-  Last changed 2019-10-10
+  Last changed 2020-07-04
 
   ©2018-2019 František Milt
 
@@ -140,21 +140,21 @@ type
   agmSlow           - grow by 1
   agmLinear         - grow by GrowFactor (integer part of the float)
   agmFast           - grow by capacity * GrowFactor
-  agmFastAttenuated - if capacity is below DYNARRAY_GROW_ATTENUATE_THRESHOLD,
+  agmFastAttenuated - if capacity is below CDA_GROW_ATTENUATE_THRESHOLD,
                       then grow by capacity * GrowFactor
-                    - if capacity is above or equal to DYNARRAY_GROW_ATTENUATE_THRESHOLD,
-                      grow by 1/16 * DYNARRAY_GROW_ATTENUATE_THRESHOLD
+                    - if capacity is above or equal to CDA_GROW_ATTENUATE_THRESHOLD,
+                      grow by 1/16 * CDA_GROW_ATTENUATE_THRESHOLD
 
   If mode is other than agmSlow and current capacity is 0, then new capacity is
-  set to DYNARRAY_INITIAL_CAPACITY, irrespective of selected grow mode.
+  set to CDA_INITIAL_CAPACITY, irrespective of selected grow mode.
 }
   TCDAGrowMode = (agmSlow, agmLinear, agmFast, agmFastAttenuated);
 
 {
   asmKeepCap - array is not shrinked, capacity is preserved
-  asmNormal  - if capacity is above DYNARRAY_INITIAL_CAPACITY and count is below capacity div 4,
+  asmNormal  - if capacity is above CDA_INITIAL_CAPACITY and count is below capacity div 4,
                then capacity is set to capacity div 4, otherwise capacity is preserved
-             - if capacity is below or equal to DYNARRAY_INITIAL_CAPACITY, then the array
+             - if capacity is below or equal to CDA_INITIAL_CAPACITY, then the array
                is not shinked unless the count is 0, in which case the new capacity is set to 0
   asmToCount - capacity is set to count
 }
