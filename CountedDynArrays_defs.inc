@@ -7,7 +7,7 @@
 {$IFEND}
 
 {$IFDEF FPC}
-  {$MODE ObjFPC}{$H+}
+  {$MODE ObjFPC}
   {$MODESWITCH CLASSICPROCVARS+}
   {$INLINE ON}
   {$DEFINE CanInline}
@@ -20,6 +20,7 @@
     {$UNDEF CanInline}
   {$IFEND}
 {$ENDIF}
+{$H+}
 
 //------------------------------------------------------------------------------
 // do not touch following defines...

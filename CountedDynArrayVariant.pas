@@ -13,9 +13,9 @@
 
   Version 1.2.2 (2019-09-22)
   
-  Last changed 2020-01-20
+  Last changed 2020-08-02
 
-  ©2018-2019 František Milt
+  ©2018-2020 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
