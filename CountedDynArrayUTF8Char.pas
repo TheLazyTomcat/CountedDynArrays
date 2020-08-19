@@ -11,9 +11,9 @@
 
     Counted dynamic array of UTF8Char values
 
-  Version 1.2.2 (2019-09-22)
+  Version 1.2.3 (2020-08-19)
   
-  Last changed 2020-08-02
+  Last changed 2020-08-19
 
   ©2018-2020 František Milt
 
@@ -84,6 +84,11 @@ uses
   ListSorters, StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
+
+const
+  CDA_DEFAULT_VALUE = TCDABaseType(#0);
+
+//------------------------------------------------------------------------------
 
 Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
 begin

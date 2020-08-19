@@ -11,9 +11,9 @@
 
     Counted dynamic array of UnicdoeString values
 
-  Version 1.2.2 (2019-09-22)
+  Version 1.2.3 (2020-08-19)
   
-  Last changed 2020-08-02
+  Last changed 2020-08-19
 
   ©2018-2020 František Milt
 
@@ -86,6 +86,11 @@ uses
   ListSorters, StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
+
+const
+  CDA_DEFAULT_VALUE = TCDABaseType('');
+
+//------------------------------------------------------------------------------
 
 procedure CDA_ItemUnique(var Item: TCDABaseType);{$IFDEF CanInline} inline;{$ENDIF}
 begin

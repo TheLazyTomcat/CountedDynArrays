@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.2.2 (2019-09-22)
+  Version 1.2.3 (2020-08-19)
   
-  Last changed 2020-08-02
+  Last changed 2020-08-19
 
   ©2018-2020 František Milt
 
@@ -220,6 +220,7 @@ procedure _CDA_ItemInit(var Item: TCDABaseType);
 procedure CDA_ItemInit(var Item: TCDABaseType);
 {$IFEND}
 begin
+Item := CDA_DEFAULT_VALUE;
 end;
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
 
@@ -232,6 +233,7 @@ procedure _CDA_ItemFinal(var Item: TCDABaseType);
 procedure CDA_ItemFinal(var Item: TCDABaseType);
 {$IFEND}
 begin
+Item := CDA_DEFAULT_VALUE;
 end;
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
 
@@ -1136,7 +1138,7 @@ If Arr.Count > 1 then
 end;
 
 //------------------------------------------------------------------------------
-                                                 
+
 {$IF Defined(CDA_FuncOverride_SortStabilized) or Defined(CDA_FuncReintroduce_SortStabilized)}
 procedure _CDA_SortStabilized(var Arr: TCDAArrayType; Reversed: Boolean = False{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF});
 {$ELSE}

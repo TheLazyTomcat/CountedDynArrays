@@ -11,9 +11,9 @@
 
     Counted dynamic array of UInt64 values
 
-  Version 1.2.2 (2019-09-22)
+  Version 1.2.3 (2020-08-19)
   
-  Last changed 2020-08-02
+  Last changed 2020-08-19
 
   ©2018-2020 František Milt
 
@@ -82,6 +82,11 @@ uses
   ListSorters;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
+
+const
+  CDA_DEFAULT_VALUE = 0;
+
+//------------------------------------------------------------------------------
 
 Function CDA_ItemCompare(A,B: TCDABaseType): Integer;
 begin
