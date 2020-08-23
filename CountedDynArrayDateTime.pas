@@ -11,9 +11,9 @@
 
     Counted dynamic array of TDateTime values
 
-  Version 1.2.3 (2020-08-19)
-  
-  Last changed 2020-08-19
+  Version 1.3 (2020-08-23)
+
+  Last changed 2020-08-23
 
   ©2018-2020 František Milt
 

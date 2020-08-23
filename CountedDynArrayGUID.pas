@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of String values
+    Counted dynamic array of TGUID values
 
   Version 1.3 (2020-08-23)
 
@@ -38,14 +38,10 @@
     StrRect     - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
-unit CountedDynArrayString;
+unit CountedDynArrayGUID;
 
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
-{$DEFINE CDA_ConstBaseType}
-{$DEFINE CDA_CaseSensitiveBaseType}
-
-{$DEFINE CDA_FuncOverride_ItemUnique}
 {$DEFINE CDA_FuncOverride_ItemCompare}
 
 interface
@@ -55,25 +51,25 @@ uses
   CountedDynArrays;
 
 type
-  TCDABaseType = String;
+  TCDABaseType = TGUID;
   PCDABaseType = ^TCDABaseType;
 
-  TCountedDynArrayString = record
+  TCountedDynArrayGUID = record
   {$DEFINE CDA_Structure}
     {$INCLUDE '.\CountedDynArrays.inc'}
   {$UNDEF CDA_Structure}
   end;
-  PCountedDynArrayString = ^TCountedDynArrayString;
+  PCountedDynArrayGUID = ^TCountedDynArrayGUID;
 
   // aliases
-  TCountedDynArrayOfString = TCountedDynArrayString;
-  PCountedDynArrayOfString = PCountedDynArrayString;
+  TCountedDynArrayOfGUID = TCountedDynArrayGUID;
+  PCountedDynArrayOfGUID = PCountedDynArrayGUID;
 
-  TStringCountedDynArray = TCountedDynArrayString;
-  PStringCountedDynArray = PCountedDynArrayString;
+  TGUIDCountedDynArray = TCountedDynArrayGUID;
+  PGUIDCountedDynArray = PCountedDynArrayGUID;
 
-  TCDAArrayType = TCountedDynArrayString;
-  PCDAArrayType = PCountedDynArrayString;
+  TCDAArrayType = TCountedDynArrayGUID;
+  PCDAArrayType = PCountedDynArrayGUID;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -82,30 +78,59 @@ type
 implementation
 
 uses
-  SysUtils,
-  ListSorters, StrRect;
+  ListSorters;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
 const
-  CDA_DEFAULT_VALUE = TCDABaseType('');
+  CDA_DEFAULT_VALUE: TGUID = '{00000000-0000-0000-0000-000000000000}';
 
 //------------------------------------------------------------------------------
 
-procedure CDA_ItemUnique(var Item: TCDABaseType);{$IFDEF CanInline} inline;{$ENDIF}
+Function CDA_ItemCompare(A,B: TCDABaseType): Integer;
+var
+  i:  Integer;
 begin
-UniqueString(Item);
+If A.D1 > B.D1 then
+  Result := +1
+else If A.D1 < B.D1 then
+  Result := -1
+else
+  begin
+    If A.D2 > B.D2 then
+      Result := +1
+    else If A.D2 < B.D2 then
+      Result := -1
+    else
+      begin
+        If A.D3 > B.D3 then
+          Result := +1
+        else If A.D3 < B.D3 then
+          Result := -1
+        else
+          begin
+            Result := 0;
+            For i := Low(A.D4) to High(B.D4) do
+              If A.D4[i] > B.D4[i] then
+                begin
+                  Result := +1;
+                  Break{For i};
+                end
+              else If A.D4[i] < B.D4[i] then
+                begin
+                  Result := -1;
+                  Break{For i};
+                end;
+          end;
+      end;
+  end;
 end;
 
 //------------------------------------------------------------------------------
-
-Function CDA_ItemCompare(const A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$IFDEF CanInline} inline;{$ENDIF}
-begin
-Result := StringCompare(A,B,CaseSensitive);
-end;
 
 {$DEFINE CDA_Implementation}
 {$INCLUDE '.\CountedDynArrays.inc'}
 {$UNDEF CDA_Implementation}
 
 end.
+

@@ -36,42 +36,43 @@
     Arrays of following types are implemented in current version of this
     library:
 
-      Boolean          CountedDynArrayBool.pas
+      Boolean         CountedDynArrayBool.pas
 
-      Int8             CountedDynArrayInt8.pas
-      UInt8            CountedDynArrayUInt8.pas
-      Int16            CountedDynArrayInt16.pas
-      UInt16           CountedDynArrayUInt16.pas
-      Int32            CountedDynArrayInt32.pas
-      UInt32           CountedDynArrayUInt32.pas
-      Int64            CountedDynArrayInt64.pas
-      UInt64           CountedDynArrayUInt64.pas
-      PtrInt           CountedDynArrayPtrInt.pas
-      PtrUInt          CountedDynArrayPtrUInt.pas
-      Integer          CountedDynArrayInteger.pas      
+      Int8            CountedDynArrayInt8.pas
+      UInt8           CountedDynArrayUInt8.pas
+      Int16           CountedDynArrayInt16.pas
+      UInt16          CountedDynArrayUInt16.pas
+      Int32           CountedDynArrayInt32.pas
+      UInt32          CountedDynArrayUInt32.pas
+      Int64           CountedDynArrayInt64.pas
+      UInt64          CountedDynArrayUInt64.pas
+      PtrInt          CountedDynArrayPtrInt.pas
+      PtrUInt         CountedDynArrayPtrUInt.pas
+      Integer         CountedDynArrayInteger.pas
 
-      Float32          CountedDynArrayFloat32.pas
-      Float64          CountedDynArrayFloat64.pas
-      TDateTime        CountedDynArrayDateTime.pas
-      Currency         CountedDynArrayCurrency.pas
+      Float32         CountedDynArrayFloat32.pas
+      Float64         CountedDynArrayFloat64.pas
+      TDateTime       CountedDynArrayDateTime.pas
+      Currency        CountedDynArrayCurrency.pas
 
-      Pointer          CountedDynArrayPointer.pas
-      TObject          CountedDynArrayTObject.pas
+      Pointer         CountedDynArrayPointer.pas
+      TObject         CountedDynArrayTObject.pas
 
-      AnsiChar         CountedDynArrayAnsiChar.pas
-      UTF8Char         CountedDynArrayUTF8Char.pas
-      WideChar         CountedDynArrayWideChar.pas
-      UnicodeChar      CountedDynArrayUnicodeChar.pas
-      Char             CountedDynArrayChar.pas
+      AnsiChar        CountedDynArrayAnsiChar.pas
+      UTF8Char        CountedDynArrayUTF8Char.pas
+      WideChar        CountedDynArrayWideChar.pas
+      UnicodeChar     CountedDynArrayUnicodeChar.pas
+      Char            CountedDynArrayChar.pas
 
-      ShortString      CountedDynArrayShortString.pas
-      AnsiString       CountedDynArrayAnsiString.pas
-      UTF8String       CountedDynArrayUTF8String.pas
-      WideString       CountedDynArrayWideString.pas
-      UnicodeString    CountedDynArrayUnicodeString.pas
-      String           CountedDynArrayString.pas
+      ShortString     CountedDynArrayShortString.pas
+      AnsiString      CountedDynArrayAnsiString.pas
+      UTF8String      CountedDynArrayUTF8String.pas
+      WideString      CountedDynArrayWideString.pas
+      UnicodeString   CountedDynArrayUnicodeString.pas
+      String          CountedDynArrayString.pas
 
-      Variant          CountedDynArrayVariant.pas
+      Variant         CountedDynArrayVariant.pas
+      TGUID           CountedDynArrayGUID.pas
 
     Note that given the method used (template with type alias), there is a limit
     of one array type per *.pas file.
@@ -79,9 +80,9 @@
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  Version 1.2.3 (2020-08-19)
-  
-  Last changed 2020-08-19
+  Version 1.3 (2020-08-23)
+
+  Last changed 2020-08-23
 
   ©2018-2020 František Milt
 
