@@ -82,7 +82,6 @@ type
 implementation
 
 uses
-  SysUtils,
   ListSorters, StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}

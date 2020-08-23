@@ -80,7 +80,7 @@ type
 implementation
 
 uses
-  SysUtils, Variants,
+  Variants,
   ListSorters;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}

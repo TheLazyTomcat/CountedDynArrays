@@ -80,8 +80,7 @@ type
 implementation
 
 uses
-  SysUtils,
-  ListSorters,StrRect;
+  ListSorters, StrRect;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
