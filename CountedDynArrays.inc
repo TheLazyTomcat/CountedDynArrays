@@ -13,7 +13,7 @@
 
   Version 1.3 (2020-08-23)
 
-  Last changed 2020-08-23
+  Last changed 2020-11-12
 
   ©2018-2020 František Milt
 
@@ -187,7 +187,7 @@
 
 Function CDA_Signature: TCDASignature;
 begin
-{$IFDEF 64bit}
+{$IFDEF CPU64bit}
 Result := (PtrUInt(Random($10000)) shl 48) or (PtrUInt(Random($10000)) shl 32) or
           (PtrUInt(Random($10000)) shl 16) or PtrUInt(Random($10000)) ;
 {$ELSE}
