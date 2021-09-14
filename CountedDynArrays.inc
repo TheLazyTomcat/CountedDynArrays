@@ -13,9 +13,9 @@
 
   Version 1.3 (2020-08-23)
 
-  Last changed 2020-11-12
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -82,7 +82,7 @@
   Function CDA_Length(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Capacity}
   Function CDA_Capacity(const Arr: TCDAArrayType): Integer; overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
-{$IFNDEF CDA_FuncReintroduce_FreeCapacity}
+{$IFNDEF CDA_FuncReintroduce_CapacityFree}
   Function CDA_CapacityFree(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Count}
   Function CDA_Count(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
@@ -104,7 +104,7 @@
 // secure copy
 {$IFNDEF CDA_FuncReintroduce_UniqueArray}
   procedure CDA_UniqueArray(var Arr: TCDAArrayType); overload;{$ENDIF}
-{$IFNDEF CDA_FuncReintroduce_CopyP}
+{$IFNDEF CDA_FuncReintroduce_CopyC}
   Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Copy}
   Function CDA_Copy(const Src: TCDAArrayType): TCDAArrayType; overload;{$ENDIF}
@@ -421,7 +421,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-{$IF Defined(CDA_FuncOverride_FreeCapacity) or Defined(CDA_FuncReintroduce_FreeCapacity)}
+{$IF Defined(CDA_FuncOverride_CapacityFree) or Defined(CDA_FuncReintroduce_CapacityFree)}
 Function _CDA_CapacityFree(const Arr: TCDAArrayType): Integer;
 {$ELSE}
 Function CDA_CapacityFree(const Arr: TCDAArrayType): Integer;
@@ -602,7 +602,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-{$IF Defined(CDA_FuncOverride_CopyP) or Defined(CDA_FuncReintroduce_CopyP)}
+{$IF Defined(CDA_FuncOverride_CopyC) or Defined(CDA_FuncReintroduce_CopyC)}
 Function _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType;

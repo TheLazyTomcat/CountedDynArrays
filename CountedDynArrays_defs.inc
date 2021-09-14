@@ -64,7 +64,7 @@
 {$UNDEF CDA_FuncOverride_Shrink}
 
 {$UNDEF CDA_FuncOverride_UniqueArray}
-{$UNDEF CDA_FuncOverride_CopyP}
+{$UNDEF CDA_FuncOverride_CopyC}
 {$UNDEF CDA_FuncOverride_Copy}
 
 {$UNDEF CDA_FuncOverride_Low}
@@ -130,7 +130,7 @@
 {$UNDEF CDA_FuncReintroduce_Shrink}
 
 {$UNDEF CDA_FuncReintroduce_UniqueArray}
-{$UNDEF CDA_FuncReintroduce_CopyP}
+{$UNDEF CDA_FuncReintroduce_CopyC}
 {$UNDEF CDA_FuncReintroduce_Copy}
 
 {$UNDEF CDA_FuncReintroduce_Low}
