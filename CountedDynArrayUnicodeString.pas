@@ -11,11 +11,11 @@
 
     Counted dynamic array of UnicdoeString values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -65,6 +65,9 @@ type
   end;
   PCountedDynArrayUnicodeString = ^TCountedDynArrayUnicodeString;
 
+  TCDAArrayType = TCountedDynArrayUnicodeString;
+  PCDAArrayType = PCountedDynArrayUnicodeString;
+
   // aliases
   TCountedDynArrayOfUnicodeString = TCountedDynArrayUnicodeString;
   PCountedDynArrayOfUnicodeString = PCountedDynArrayUnicodeString;
@@ -72,8 +75,14 @@ type
   TUnicodeStringCountedDynArray = TCountedDynArrayUnicodeString;
   PUnicodeStringCountedDynArray = PCountedDynArrayUnicodeString;
 
-  TCDAArrayType = TCountedDynArrayUnicodeString;
-  PCDAArrayType = PCountedDynArrayUnicodeString;
+  TCDAOfUnicodeString = TCountedDynArrayUnicodeString;
+  PCDAOfUnicodeString = PCountedDynArrayUnicodeString;
+
+  TCDAUnicodeString = TCountedDynArrayUnicodeString;
+  PCDAUnicodeString = PCountedDynArrayUnicodeString;
+
+  TUnicodeStringCDA = TCountedDynArrayUnicodeString;
+  PUnicodeStringCDA = PCountedDynArrayUnicodeString;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -88,6 +97,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = TCDABaseType('');
+
+  CDA_ARRAY_NAME = 'AoUnicodeString';
 
 //------------------------------------------------------------------------------
 

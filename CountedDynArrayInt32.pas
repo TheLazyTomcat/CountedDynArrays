@@ -11,11 +11,11 @@
 
     Counted dynamic array of Int32 values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayInt32 = ^TCountedDynArrayInt32;
 
+  TCDAArrayType = TCountedDynArrayInt32;
+  PCDAArrayType = PCountedDynArrayInt32;
+
   // aliases
   TCountedDynArrayOfInt32 = TCountedDynArrayInt32;
   PCountedDynArrayOfInt32 = PCountedDynArrayInt32;
@@ -68,8 +71,14 @@ type
   TInt32CountedDynArray = TCountedDynArrayInt32;
   PInt32CountedDynArray = PCountedDynArrayInt32;
 
-  TCDAArrayType = TCountedDynArrayInt32;
-  PCDAArrayType = PCountedDynArrayInt32;
+  TCDAOfInt32 = TCountedDynArrayInt32;
+  PCDAOfInt32 = PCountedDynArrayInt32;
+
+  TCDAInt32 = TCountedDynArrayInt32;
+  PCDAInt32 = PCountedDynArrayInt32;
+
+  TInt32CDA = TCountedDynArrayInt32;
+  PInt32CDA = PCountedDynArrayInt32;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0;
+
+  CDA_ARRAY_NAME = 'AoInt32';
 
 //------------------------------------------------------------------------------
 

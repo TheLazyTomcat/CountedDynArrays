@@ -11,11 +11,11 @@
 
     Counted dynamic array of ShortString values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -64,6 +64,9 @@ type
   end;
   PCountedDynArrayShortString = ^TCountedDynArrayShortString;
 
+  TCDAArrayType = TCountedDynArrayShortString;
+  PCDAArrayType = PCountedDynArrayShortString;
+
   // aliases
   TCountedDynArrayOfShortString = TCountedDynArrayShortString;
   PCountedDynArrayOfShortString = PCountedDynArrayShortString;
@@ -71,8 +74,14 @@ type
   TShortStringCountedDynArray = TCountedDynArrayShortString;
   PShortStringCountedDynArray = PCountedDynArrayShortString;
 
-  TCDAArrayType = TCountedDynArrayShortString;
-  PCDAArrayType = PCountedDynArrayShortString;
+  TCDAOfShortString = TCountedDynArrayShortString;
+  PCDAOfShortString = PCountedDynArrayShortString;
+
+  TCDAShortString = TCountedDynArrayShortString;
+  PCDAShortString = PCountedDynArrayShortString;
+
+  TShortStringCDA = TCountedDynArrayShortString;
+  PShortStringCDA = PCountedDynArrayShortString;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -87,6 +96,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = TCDABaseType('');
+
+  CDA_ARRAY_NAME = 'AoShortString';
 
 //------------------------------------------------------------------------------
 

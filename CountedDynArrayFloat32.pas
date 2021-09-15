@@ -11,11 +11,11 @@
 
     Counted dynamic array of Float32 (Single) values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayFloat32 = ^TCountedDynArrayFloat32;
 
+  TCDAArrayType = TCountedDynArrayFloat32;
+  PCDAArrayType = PCountedDynArrayFloat32;
+
   // aliases
   TCountedDynArrayOfFloat32 = TCountedDynArrayFloat32;
   PCountedDynArrayOfFloat32 = PCountedDynArrayFloat32;
@@ -68,8 +71,14 @@ type
   TFloat32CountedDynArray = TCountedDynArrayFloat32;
   PFloat32CountedDynArray = PCountedDynArrayFloat32;
 
-  TCDAArrayType = TCountedDynArrayFloat32;
-  PCDAArrayType = PCountedDynArrayFloat32;
+  TCDAOfFloat32 = TCountedDynArrayFloat32;
+  PCDAOfFloat32 = PCountedDynArrayFloat32;
+
+  TCDAFloat32 = TCountedDynArrayFloat32;
+  PCDAFloat32 = PCountedDynArrayFloat32;
+
+  TFloat32CDA = TCountedDynArrayFloat32;
+  PFloat32CDA = PCountedDynArrayFloat32;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -85,6 +94,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0.0;
+
+  CDA_ARRAY_NAME = 'AoFloat32';
 
 //------------------------------------------------------------------------------
 

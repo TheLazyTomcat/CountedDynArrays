@@ -11,11 +11,11 @@
 
     Counted dynamic array of AnsiChar values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -63,6 +63,9 @@ type
   end;
   PCountedDynArrayAnsiChar = ^TCountedDynArrayAnsiChar;
 
+  TCDAArrayType = TCountedDynArrayAnsiChar;
+  PCDAArrayType = PCountedDynArrayAnsiChar;
+
   // aliases
   TCountedDynArrayOfAnsiChar = TCountedDynArrayAnsiChar;
   PCountedDynArrayOfAnsiChar = PCountedDynArrayAnsiChar;
@@ -70,8 +73,14 @@ type
   TAnsiCharCountedDynArray = TCountedDynArrayAnsiChar;
   PAnsiCharCountedDynArray = PCountedDynArrayAnsiChar;
 
-  TCDAArrayType = TCountedDynArrayAnsiChar;
-  PCDAArrayType = PCountedDynArrayAnsiChar;
+  TCDAOfAnsiChar = TCountedDynArrayAnsiChar;
+  PCDAOfAnsiChar = PCountedDynArrayAnsiChar;
+
+  TCDAAnsiChar = TCountedDynArrayAnsiChar;
+  PCDAAnsiChar = PCountedDynArrayAnsiChar;
+
+  TAnsiCharCDA = TCountedDynArrayAnsiChar;
+  PAnsiCharCDA = PCountedDynArrayAnsiChar;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -86,6 +95,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = TCDABaseType(#0);
+
+  CDA_ARRAY_NAME = 'AoAnsiChar';
 
 //------------------------------------------------------------------------------
 

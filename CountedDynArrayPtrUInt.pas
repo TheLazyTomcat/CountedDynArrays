@@ -11,11 +11,11 @@
 
     Counted dynamic array of PtrUInt values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayPtrUInt = ^TCountedDynArrayPtrUInt;
 
+  TCDAArrayType = TCountedDynArrayPtrUInt;
+  PCDAArrayType = PCountedDynArrayPtrUInt;
+
   // aliases
   TCountedDynArrayOfPtrUInt = TCountedDynArrayPtrUInt;
   PCountedDynArrayOfPtrUInt = PCountedDynArrayPtrUInt;
@@ -68,8 +71,14 @@ type
   TPtrUIntCountedDynArray = TCountedDynArrayPtrUInt;
   PPtrUIntCountedDynArray = PCountedDynArrayPtrUInt;
 
-  TCDAArrayType = TCountedDynArrayPtrUInt;
-  PCDAArrayType = PCountedDynArrayPtrUInt;
+  TCDAOfPtrUInt = TCountedDynArrayPtrUInt;
+  PCDAOfPtrUInt = PCountedDynArrayPtrUInt;
+
+  TCDAPtrUInt = TCountedDynArrayPtrUInt;
+  PCDAPtrUInt = PCountedDynArrayPtrUInt;
+
+  TPtrUIntCDA = TCountedDynArrayPtrUInt;
+  PPtrUIntCDA = PCountedDynArrayPtrUInt;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0;
+
+  CDA_ARRAY_NAME = 'AoPtrUInt';
 
 //------------------------------------------------------------------------------
 

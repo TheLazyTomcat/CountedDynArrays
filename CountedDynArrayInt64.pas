@@ -11,11 +11,11 @@
 
     Counted dynamic array of Int64 values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayInt64 = ^TCountedDynArrayInt64;
 
+  TCDAArrayType = TCountedDynArrayInt64;
+  PCDAArrayType = PCountedDynArrayInt64;
+
   // aliases
   TCountedDynArrayOfInt64 = TCountedDynArrayInt64;
   PCountedDynArrayOfInt64 = PCountedDynArrayInt64;
@@ -68,8 +71,14 @@ type
   TInt64CountedDynArray = TCountedDynArrayInt64;
   PInt64CountedDynArray = PCountedDynArrayInt64;
 
-  TCDAArrayType = TCountedDynArrayInt64;
-  PCDAArrayType = PCountedDynArrayInt64;
+  TCDAOfInt64 = TCountedDynArrayInt64;
+  PCDAOfInt64 = PCountedDynArrayInt64;
+
+  TCDAInt64 = TCountedDynArrayInt64;
+  PCDAInt64 = PCountedDynArrayInt64;
+
+  TInt64CDA = TCountedDynArrayInt64;
+  PInt64CDA = PCountedDynArrayInt64;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0;
+
+  CDA_ARRAY_NAME = 'AoInt64';
 
 //------------------------------------------------------------------------------
 

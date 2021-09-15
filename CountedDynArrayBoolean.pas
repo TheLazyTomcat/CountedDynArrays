@@ -11,11 +11,11 @@
 
     Counted dynamic array of Boolean values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,15 +61,24 @@ type
   end;
   PCountedDynArrayBoolean = ^TCountedDynArrayBoolean;
 
+  TCDAArrayType = TCountedDynArrayBoolean;
+  PCDAArrayType = PCountedDynArrayBoolean;
+
   // aliases
   TCountedDynArrayOfBoolean = TCountedDynArrayBoolean;
   PCountedDynArrayOfBoolean = PCountedDynArrayBoolean;
-  
+
   TBooleanCountedDynArray = TCountedDynArrayBoolean;
   PBooleanCountedDynArray = PCountedDynArrayBoolean;
 
-  TCDAArrayType = TCountedDynArrayBoolean;
-  PCDAArrayType = PCountedDynArrayBoolean;
+  TCDAOfBoolean = TCountedDynArrayBoolean;
+  PCDAOfBoolean = PCountedDynArrayBoolean;
+
+  TCDABoolean = TCountedDynArrayBoolean;
+  PCDABoolean = PCountedDynArrayBoolean;
+
+  TBooleanCDA = TCountedDynArrayBoolean;
+  PBooleanCDA = PCountedDynArrayBoolean;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = False;
+
+  CDA_ARRAY_NAME = 'AoBoolean';
 
 //------------------------------------------------------------------------------
 

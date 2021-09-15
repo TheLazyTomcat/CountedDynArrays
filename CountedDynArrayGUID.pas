@@ -11,11 +11,11 @@
 
     Counted dynamic array of TGUID values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayGUID = ^TCountedDynArrayGUID;
 
+  TCDAArrayType = TCountedDynArrayGUID;
+  PCDAArrayType = PCountedDynArrayGUID;
+
   // aliases
   TCountedDynArrayOfGUID = TCountedDynArrayGUID;
   PCountedDynArrayOfGUID = PCountedDynArrayGUID;
@@ -68,8 +71,14 @@ type
   TGUIDCountedDynArray = TCountedDynArrayGUID;
   PGUIDCountedDynArray = PCountedDynArrayGUID;
 
-  TCDAArrayType = TCountedDynArrayGUID;
-  PCDAArrayType = PCountedDynArrayGUID;
+  TCDAOfGUID = TCountedDynArrayGUID;
+  PCDAOfGUID = PCountedDynArrayGUID;
+
+  TCDAGUID = TCountedDynArrayGUID;
+  PCDAGUID = PCountedDynArrayGUID;
+
+  TGUIDCDA = TCountedDynArrayGUID;
+  PGUIDCDA = PCountedDynArrayGUID;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE: TGUID = '{00000000-0000-0000-0000-000000000000}';
+
+  CDA_ARRAY_NAME = 'AoGUID';
 
 //------------------------------------------------------------------------------
 

@@ -11,11 +11,11 @@
 
     Counted dynamic array of Float64 (Double) values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayFloat64 = ^TCountedDynArrayFloat64;
 
+  TCDAArrayType = TCountedDynArrayFloat64;
+  PCDAArrayType = PCountedDynArrayFloat64;
+
   // aliases
   TCountedDynArrayOfFloat64 = TCountedDynArrayFloat64;
   PCountedDynArrayOfFloat64 = PCountedDynArrayFloat64;
@@ -68,8 +71,14 @@ type
   TFloat64CountedDynArray = TCountedDynArrayFloat64;
   PFloat64CountedDynArray = PCountedDynArrayFloat64;
 
-  TCDAArrayType = TCountedDynArrayFloat64;
-  PCDAArrayType = PCountedDynArrayFloat64;
+  TCDAOfFloat64 = TCountedDynArrayFloat64;
+  PCDAOfFloat64 = PCountedDynArrayFloat64;
+
+  TCDAFloat64 = TCountedDynArrayFloat64;
+  PCDAFloat64 = PCountedDynArrayFloat64;
+
+  TFloat64CDA = TCountedDynArrayFloat64;
+  PFloat64CDA = PCountedDynArrayFloat64;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -85,6 +94,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0.0;
+
+  CDA_ARRAY_NAME = 'AoFloat64';
 
 //------------------------------------------------------------------------------
 

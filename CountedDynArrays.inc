@@ -11,7 +11,7 @@
 
     Main implementation template
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
   Last changed 2021-09-15
 
@@ -450,7 +450,7 @@ end;
 //==============================================================================
 
 {$IF Defined(CDA_FuncOverride_SetLength) or Defined(CDA_FuncReintroduce_SetLength)}
-procedure _CDA_SetLength(var Arr: TCDAArrayType; NewLength: Integer);
+procedure _CDA_SetLength(var Arr: TCDAArrayType; NewLength: Integer);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_SetLength(var Arr: TCDAArrayType; NewLength: Integer);
 {$IFEND}
@@ -468,8 +468,10 @@ If NewLength >= 0 then
       Arr.Count := NewLength;
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else raise ECDAOutOfRange.CreateFmt('CDA_SetLength: New length (%d) out of allowed range.',[NewLength]);
+else raise ECDAOutOfRange.CreateFmt('%sCDA_SetLength(%s): New length (%d) out of allowed range.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,NewLength]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
@@ -485,7 +487,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_SetCount) or Defined(CDA_FuncReintroduce_SetCount)}
-procedure _CDA_SetCount(var Arr: TCDAArrayType; NewCount: Integer);
+procedure _CDA_SetCount(var Arr: TCDAArrayType; NewCount: Integer);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_SetCount(var Arr: TCDAArrayType; NewCount: Integer);
 {$IFEND}
@@ -514,8 +516,10 @@ If NewCount >= 0 then
       end;
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else raise ECDAOutOfRange.CreateFmt('CDA_SetCount: New count (%d) out of allowed range.',[NewCount])
+else raise ECDAOutOfRange.CreateFmt('%sCDA_SetCount(%s): New count (%d) out of allowed range.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,NewCount])
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //==============================================================================
 
@@ -596,6 +600,10 @@ var
 begin
 // CDA_SetLength validates the array
 CDA_SetLength(Arr,Length(Arr.Arr));
+// change the signature so the array is truly unique
+Arr.Signature := CDA_Signature;
+Arr.Checksum := CDA_Checksum(Arr);
+// ensure individual item are unique
 For i := 0 to Pred(Arr.Count) do
   CDA_ItemUnique(Arr.Arr[i]);
 end;
@@ -692,107 +700,149 @@ end;
 //==============================================================================
 
 {$IF Defined(CDA_FuncOverride_GetItem) or Defined(CDA_FuncReintroduce_GetItem)}
-Function _CDA_GetItem(const Arr: TCDAArrayType; Index: Integer): TCDABaseType;
+Function _CDA_GetItem(const Arr: TCDAArrayType; Index: Integer): TCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_GetItem(const Arr: TCDAArrayType; Index: Integer): TCDABaseType;
 {$IFEND}
 begin
-// CDA_CheckIndex checks for validity, exception is raised for an invalid array
-If CDA_CheckIndex(Arr,Index) then
-  Result := Arr.Arr[Index]
-else
-  raise ECDAIndexOutOfBounds.CreateFmt('CDA_GetItem: Index (%d) out of bounds.',[Index]);
+If CDA_Valid(Arr) then
+  begin
+    If CDA_CheckIndex(Arr,Index) then
+      Result := Arr.Arr[Index]
+    else
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_GetItem(%s): Index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_GetItem(%s): Invalid array.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_GetItemPtr) or Defined(CDA_FuncReintroduce_GetItemPtr)}
-Function _CDA_GetItemPtr(const Arr: TCDAArrayType; Index: Integer): PCDABaseType;
+Function _CDA_GetItemPtr(const Arr: TCDAArrayType; Index: Integer): PCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_GetItemPtr(const Arr: TCDAArrayType; Index: Integer): PCDABaseType;
 {$IFEND}
 begin
-// CDA_CheckIndex checks for validity, exception is raised for an invalid array
-If CDA_CheckIndex(Arr,Index) then
-  Result := Addr(Arr.Arr[Index])
-else
-  raise ECDAIndexOutOfBounds.CreateFmt('CDA_GetItemPtr: Index (%d) out of bounds.',[Index]);
+If CDA_Valid(Arr) then
+  begin
+    If CDA_CheckIndex(Arr,Index) then
+      Result := Addr(Arr.Arr[Index])
+    else
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_GetItemPtr(%s): Index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_GetItemPtr(%s): Invalid array.',
+            [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
   
 {$IF Defined(CDA_FuncOverride_SetItem) or Defined(CDA_FuncReintroduce_SetItem)}
-procedure _CDA_SetItem(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType);
+procedure _CDA_SetItem(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_SetItem(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType);
 {$IFEND}
 begin
-// CDA_CheckIndex checks for validity, exception is raised for an invalid array
-If CDA_CheckIndex(Arr,Index) then
-  Arr.Arr[Index] := Item
-else
-  raise ECDAIndexOutOfBounds.CreateFmt('CDA_SetItem: Index (%d) out of bounds.',[Index]);
+If CDA_Valid(Arr) then
+  begin
+    If CDA_CheckIndex(Arr,Index) then
+      Arr.Arr[Index] := Item
+    else
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_SetItem(%s): Index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_SetItem(%s): Invalid array.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //==============================================================================
 
 {$IF Defined(CDA_FuncOverride_First) or Defined(CDA_FuncReintroduce_First)}
-Function _CDA_First(const Arr: TCDAArrayType): TCDABaseType;
+Function _CDA_First(const Arr: TCDAArrayType): TCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_First(const Arr: TCDAArrayType): TCDABaseType;
 {$IFEND}
 begin
-// CDA_Count checks for validity, exception is raised for invalid array
-If CDA_Count(Arr) > 0 then
-  Result := Arr.Arr[0]
-else
-  raise ECDAEmptyArray.Create('CDA_First: Array is empty.');
+If CDA_Valid(Arr) then
+  begin
+    If CDA_Count(Arr) > 0 then
+      Result := Arr.Arr[0]
+    else
+      raise ECDAEmptyArray.CreateFmt('%sCDA_First(%s): Array is empty.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_First(%s): Invalid array.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Last) or Defined(CDA_FuncReintroduce_Last)}
-Function _CDA_Last(const Arr: TCDAArrayType): TCDABaseType;
+Function _CDA_Last(const Arr: TCDAArrayType): TCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_Last(const Arr: TCDAArrayType): TCDABaseType;
 {$IFEND}
 begin
-// CDA_Count checks for validity, exception is raised for invalid array
-If CDA_Count(Arr) > 0 then
-  Result := Arr.Arr[Pred(Arr.Count)]
-else
-  raise ECDAEmptyArray.Create('CDA_Last: Array is empty.');
+If CDA_Valid(Arr) then
+  begin
+    If CDA_Count(Arr) > 0 then
+      Result := Arr.Arr[Pred(Arr.Count)]
+    else
+      raise ECDAEmptyArray.CreateFmt('%sCDA_Last(%s): Array is empty.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_Last(%s): Invalid array.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_FirstPtr) or Defined(CDA_FuncReintroduce_FirstPtr)}
-Function _CDA_FirstPtr(const Arr: TCDAArrayType): PCDABaseType;
+Function _CDA_FirstPtr(const Arr: TCDAArrayType): PCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_FirstPtr(const Arr: TCDAArrayType): PCDABaseType;
 {$IFEND}
 begin
-// CDA_Count checks for validity, exception is raised for invalid array
-If CDA_Count(Arr) > 0 then
-  Result := Addr(Arr.Arr[0])
-else
-  raise ECDAEmptyArray.Create('CDA_FirstPtr: Array is empty.');
+If CDA_Valid(Arr) then
+  begin
+    If CDA_Count(Arr) > 0 then
+      Result := Addr(Arr.Arr[0])
+    else
+      raise ECDAEmptyArray.CreateFmt('%sCDA_FirstPtr(%s): Array is empty.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_FirstPtr(%s): Invalid array.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
     
 {$IF Defined(CDA_FuncOverride_LastPtr) or Defined(CDA_FuncReintroduce_LastPtr)}
-Function _CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType;
+Function _CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType;
 {$IFEND}
 begin
-// CDA_Count checks for validity, exception is raised for invalid array
-If CDA_Count(Arr) > 0 then
-  Result := Addr(Arr.Arr[Pred(Arr.Count)])
-else
-  raise ECDAEmptyArray.Create('CDA_LastPtr: Array is empty.');
+If CDA_Valid(Arr) then
+  begin
+    If CDA_Count(Arr) > 0 then
+      Result := Addr(Arr.Arr[Pred(Arr.Count)])
+    else
+      raise ECDAEmptyArray.CreateFmt('%sCDA_LastPtr(%s): Array is empty.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+  end
+else raise ECDAInvalidArray.CreateFmt('%sCDA_LastPtr(%s): Invalid array.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //==============================================================================
 
@@ -860,7 +910,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Insert) or Defined(CDA_FuncReintroduce_Insert)}
-procedure _CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType);
+procedure _CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType);
 {$IFEND}
@@ -877,13 +927,18 @@ If CDA_CheckIndex(Arr,Index) then
     Inc(Arr.Count);
     Arr.Checksum := CDA_Checksum(Arr);
   end
-else CDA_Add(Arr,Item);
+else If Index = CDA_Count(Arr) then
+  CDA_Add(Arr,Item)
+else
+  raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Insert(%s): Index (%d) out of bounds.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Exchange) or Defined(CDA_FuncReintroduce_Exchange)}
-procedure _CDA_Exchange(var Arr: TCDAArrayType; Idx1, Idx2: Integer);
+procedure _CDA_Exchange(var Arr: TCDAArrayType; Idx1, Idx2: Integer);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Exchange(var Arr: TCDAArrayType; Idx1, Idx2: Integer);
 {$IFEND}
@@ -894,19 +949,22 @@ CDA_Validate(Arr);
 If Idx1 <> Idx2 then
   begin
     If not CDA_CheckIndex(Arr,Idx1) then
-      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Exchange: First index (%d) out of bounds.',[Idx1]);
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Exchange(%s): First index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Idx1]);
     If not CDA_CheckIndex(Arr,Idx2) then
-      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Exchange: Second index (%d) out of bounds.',[Idx2]);
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Exchange(%s): Second index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Idx2]);
     Temp := Arr.Arr[Idx1];
     Arr.Arr[Idx1] := Arr.Arr[Idx2];
     Arr.Arr[Idx2] := Temp;
   end;
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Move) or Defined(CDA_FuncReintroduce_Move)}
-procedure _CDA_Move(var Arr: TCDAArrayType; SrcIdx, DstIdx: Integer);
+procedure _CDA_Move(var Arr: TCDAArrayType; SrcIdx, DstIdx: Integer);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Move(var Arr: TCDAArrayType; SrcIdx, DstIdx: Integer);
 {$IFEND}
@@ -918,9 +976,11 @@ CDA_Validate(Arr);
 If SrcIdx <> DstIdx then
   begin
     If not CDA_CheckIndex(Arr,SrcIdx) then
-      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Move: Source index (%d) out of bounds.',[SrcIdx]);
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Move(%s): Source index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,SrcIdx]);
     If not CDA_CheckIndex(Arr,DstIdx) then
-      raise ECDAIndexOutOfBounds.CreateFmt('CDA_Move: Destination index (%d) out of bounds.',[DstIdx]);
+      raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Move(%s): Destination index (%d) out of bounds.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,DstIdx]);
     Temp := Arr.Arr[SrcIdx];
     If SrcIdx > DstIdx then
       For i := SrcIdx downto Succ(DstIdx) do
@@ -931,11 +991,12 @@ If SrcIdx <> DstIdx then
     Arr.Arr[DstIdx] := Temp;    
   end;
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Extract) or Defined(CDA_FuncReintroduce_Extract)}
-Function _CDA_Extract(var Arr: TCDAArrayType; Index: Integer): TCDABaseType;
+Function _CDA_Extract(var Arr: TCDAArrayType; Index: Integer): TCDABaseType;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_Extract(var Arr: TCDAArrayType; Index: Integer): TCDABaseType;
 {$IFEND}
@@ -952,8 +1013,10 @@ If CDA_CheckIndex(Arr,Index) then
     Arr.Checksum := CDA_Checksum(Arr);     
     CDA_Shrink(Arr);
   end
-else raise ECDAIndexOutOfBounds.CreateFmt('CDA_Extract: Index (%d) out of bounds.',[Index]);
+else raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Extract(%s): Index (%d) out of bounds.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
      
@@ -972,7 +1035,7 @@ end;
 //------------------------------------------------------------------------------
     
 {$IF Defined(CDA_FuncOverride_Delete) or Defined(CDA_FuncReintroduce_Delete)}
-procedure _CDA_Delete(var Arr: TCDAArrayType; Index: Integer);
+procedure _CDA_Delete(var Arr: TCDAArrayType; Index: Integer);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Delete(var Arr: TCDAArrayType; Index: Integer);
 {$IFEND}
@@ -989,8 +1052,10 @@ If CDA_CheckIndex(Arr,Index) then
     Arr.Checksum := CDA_Checksum(Arr);
     CDA_Shrink(Arr);
   end
-else raise ECDAIndexOutOfBounds.CreateFmt('CDA_Delete: Index (%d) out of bounds.',[Index]);
+else raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Delete(%s): Index (%d) out of bounds.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
        
@@ -1024,7 +1089,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Compare) or Defined(CDA_FuncReintroduce_Compare)}
-Function _CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
+Function _CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
 {$IFEND}
@@ -1059,10 +1124,13 @@ If CDA_Valid(Arr1) then
         else
           Result := 0;
       end
-    else raise ECDAInvalidArray.Create('CDA_Compare: Invalid array #2.');
+    else raise ECDAInvalidArray.CreateFmt('%sCDA_Compare(%s): Invalid array #2.',
+                 [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
   end
-else raise ECDAInvalidArray.Create('CDA_Compare: Invalid array #1.');
+else raise ECDAInvalidArray.CreateFmt('%sCDA_Compare(%s): Invalid array #1.',
+             [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
 

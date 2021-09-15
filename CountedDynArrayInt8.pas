@@ -11,11 +11,11 @@
 
     Counted dynamic array of Int8 values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayInt8 = ^TCountedDynArrayInt8;
 
+  TCDAArrayType = TCountedDynArrayInt8;
+  PCDAArrayType = PCountedDynArrayInt8;
+
   // aliases
   TCountedDynArrayOfInt8 = TCountedDynArrayInt8;
   PCountedDynArrayOfInt8 = PCountedDynArrayInt8;
@@ -68,8 +71,14 @@ type
   TInt8CountedDynArray = TCountedDynArrayInt8;
   PInt8CountedDynArray = PCountedDynArrayInt8;
 
-  TCDAArrayType = TCountedDynArrayInt8;
-  PCDAArrayType = PCountedDynArrayInt8;
+  TCDAOfInt8 = TCountedDynArrayInt8;
+  PCDAOfInt8 = PCountedDynArrayInt8;
+
+  TCDAInt8 = TCountedDynArrayInt8;
+  PCDAInt8 = PCountedDynArrayInt8;
+
+  TInt8CDA = TCountedDynArrayInt8;
+  PInt8CDA = PCountedDynArrayInt8;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0;
+
+  CDA_ARRAY_NAME = 'AoInt8';
 
 //------------------------------------------------------------------------------
 

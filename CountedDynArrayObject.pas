@@ -11,11 +11,11 @@
 
     Counted dynamic array of TObject values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayObject = ^TCountedDynArrayObject;
 
+  TCDAArrayType = TCountedDynArrayObject;
+  PCDAArrayType = PCountedDynArrayObject;
+
   // aliases
   TCountedDynArrayOfObject = TCountedDynArrayObject;
   PCountedDynArrayOfObject = PCountedDynArrayObject;
@@ -68,8 +71,14 @@ type
   TObjectCountedDynArray = TCountedDynArrayObject;
   PObjectCountedDynArray = PCountedDynArrayObject;
 
-  TCDAArrayType = TCountedDynArrayObject;
-  PCDAArrayType = PCountedDynArrayObject;
+  TCDAOfObject = TCountedDynArrayObject;
+  PCDAOfObject = PCountedDynArrayObject;
+
+  TCDAObject = TCountedDynArrayObject;
+  PCDAObject = PCountedDynArrayObject;
+
+  TObjectCDA = TCountedDynArrayObject;
+  PObjectCDA = PCountedDynArrayObject;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = TCDABaseType(nil);
+
+  CDA_ARRAY_NAME = 'AoObject';
 
 //------------------------------------------------------------------------------
 

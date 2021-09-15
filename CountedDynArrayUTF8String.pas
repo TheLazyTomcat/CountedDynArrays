@@ -11,11 +11,11 @@
 
     Counted dynamic array of UTF8String values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -65,6 +65,9 @@ type
   end;
   PCountedDynArrayUTF8String = ^TCountedDynArrayUTF8String;
 
+  TCDAArrayType = TCountedDynArrayUTF8String;
+  PCDAArrayType = PCountedDynArrayUTF8String;
+
   // aliases
   TCountedDynArrayOfUTF8String = TCountedDynArrayUTF8String;
   PCountedDynArrayOfUTF8String = PCountedDynArrayUTF8String;
@@ -72,8 +75,14 @@ type
   TUTF8StringCountedDynArray = TCountedDynArrayUTF8String;
   PUTF8StringCountedDynArray = PCountedDynArrayUTF8String;
 
-  TCDAArrayType = TCountedDynArrayUTF8String;
-  PCDAArrayType = PCountedDynArrayUTF8String;
+  TCDAOfUTF8String = TCountedDynArrayUTF8String;
+  PCDAOfUTF8String = PCountedDynArrayUTF8String;
+
+  TCDAUTF8String = TCountedDynArrayUTF8String;
+  PCDAUTF8String = PCountedDynArrayUTF8String;
+
+  TUTF8StringCDA = TCountedDynArrayUTF8String;
+  PUTF8StringCDA = PCountedDynArrayUTF8String;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -88,6 +97,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = TCDABaseType('');
+
+  CDA_ARRAY_NAME = 'AoUTF8String';
 
 //------------------------------------------------------------------------------
 

@@ -11,11 +11,11 @@
 
     Counted dynamic array of Pointer values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayPointer = ^TCountedDynArrayPointer;
 
+  TCDAArrayType = TCountedDynArrayPointer;
+  PCDAArrayType = PCountedDynArrayPointer;
+
   // aliases
   TCountedDynArrayOfPointer = TCountedDynArrayPointer;
   PCountedDynArrayOfPointer = PCountedDynArrayPointer;
@@ -68,8 +71,14 @@ type
   TPointerCountedDynArray = TCountedDynArrayPointer;
   PPointerCountedDynArray = PCountedDynArrayPointer;
 
-  TCDAArrayType = TCountedDynArrayPointer;
-  PCDAArrayType = PCountedDynArrayPointer;
+  TCDAOfPointer = TCountedDynArrayPointer;
+  PCDAOfPointer = PCountedDynArrayPointer;
+
+  TCDAPointer = TCountedDynArrayPointer;
+  PCDAPointer = PCountedDynArrayPointer;
+
+  TPointerCDA = TCountedDynArrayPointer;
+  PPointerCDA = PCountedDynArrayPointer;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = nil;
+
+  CDA_ARRAY_NAME = 'AoPointer';
 
 //------------------------------------------------------------------------------
 

@@ -75,16 +75,16 @@
       TGUID           CountedDynArrayGUID.pas
 
     Note that given the method used (template with type alias), there is a limit
-    of one array type per *.pas file.
+    of one array type per a *.pas file.
 
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com

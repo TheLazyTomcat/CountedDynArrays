@@ -11,11 +11,11 @@
 
     Counted dynamic array of Int16 values
 
-  Version 1.3 (2020-08-23)
+  Version 1.3.1 (2021-09-15)
 
-  Last changed 2020-08-23
+  Last changed 2021-09-15
 
-  ©2018-2020 František Milt
+  ©2018-2021 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -61,6 +61,9 @@ type
   end;
   PCountedDynArrayInt16 = ^TCountedDynArrayInt16;
 
+  TCDAArrayType = TCountedDynArrayInt16;
+  PCDAArrayType = PCountedDynArrayInt16;
+
   // aliases
   TCountedDynArrayOfInt16 = TCountedDynArrayInt16;
   PCountedDynArrayOfInt16 = PCountedDynArrayInt16;
@@ -68,8 +71,14 @@ type
   TInt16CountedDynArray = TCountedDynArrayInt16;
   PInt16CountedDynArray = PCountedDynArrayInt16;
 
-  TCDAArrayType = TCountedDynArrayInt16;
-  PCDAArrayType = PCountedDynArrayInt16;
+  TCDAOfInt16 = TCountedDynArrayInt16;
+  PCDAOfInt16 = PCountedDynArrayInt16;
+
+  TCDAInt16 = TCountedDynArrayInt16;
+  PCDAInt16 = PCountedDynArrayInt16;
+
+  TInt16CDA = TCountedDynArrayInt16;
+  PInt16CDA = PCountedDynArrayInt16;
 
 {$DEFINE CDA_Interface}
 {$INCLUDE '.\CountedDynArrays.inc'}
@@ -84,6 +93,8 @@ uses
 
 const
   CDA_DEFAULT_VALUE = 0;
+
+  CDA_ARRAY_NAME = 'AoInt16';
 
 //------------------------------------------------------------------------------
 
