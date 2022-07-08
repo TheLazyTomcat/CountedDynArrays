@@ -13,7 +13,7 @@
 
   Version 1.3.1 (2021-09-15)
 
-  Last changed 2021-09-15
+  Last changed 2022-07-08
 
   ©2018-2021 František Milt
 
@@ -95,7 +95,11 @@ uses
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
 const
+{$IFDEF FPC}
   CDA_DEFAULT_VALUE = TCDABaseType('');
+{$ELSE}
+  CDA_DEFAULT_VALUE: TCDABaseType = '';
+{$ENDIF}
 
   CDA_ARRAY_NAME = 'AoShortString';
 
