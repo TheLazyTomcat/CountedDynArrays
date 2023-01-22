@@ -11,11 +11,11 @@
 
     Counted dynamic array of UInt64 values
 
-  Version 1.3.1 (2021-09-15)
+  Version 1.4 (2023-01-22)
 
-  Last changed 2021-09-15
+  Last changed 2023-01-22
 
-  ©2018-2021 František Milt
+  ©2018-2023 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -32,10 +32,12 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses    
-    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
-    StrRect     - github.com/TheLazyTomcat/Lib.StrRect
+    AuxClasses         - github.com/TheLazyTomcat/Lib.AuxClasses
+    AuxTypes           - github.com/TheLazyTomcat/Lib.AuxTypes
+    BinaryStreaming    - github.com/TheLazyTomcat/Lib.BinaryStreaming
+    ListSorters        - github.com/TheLazyTomcat/Lib.ListSorters
+    StaticMemoryStream - github.com/TheLazyTomcat/Lib.StaticMemoryStream
+    StrRect            - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 unit CountedDynArrayUInt64;
@@ -43,10 +45,13 @@ unit CountedDynArrayUInt64;
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
+{$DEFINE CDA_FuncOverride_ItemWrite}
+{$DEFINE CDA_FuncOverride_ItemRead}
 
 interface
 
 uses
+  Classes,
   AuxTypes,
   CountedDynArrays;
 
@@ -88,7 +93,7 @@ implementation
 
 uses
   SysUtils,
-  ListSorters;
+  ListSorters, StrRect, BinaryStreaming;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
@@ -114,6 +119,20 @@ else
     else
       Result := 0;
   end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure CDA_ItemWrite(Item: TCDABaseType; Stream: TStream);
+begin
+Stream_WriteUInt64(Stream,Item);
+end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemRead(Stream: TStream): TCDABaseType;
+begin
+Result := Stream_ReadUInt64(Stream);
 end;
 
 //------------------------------------------------------------------------------

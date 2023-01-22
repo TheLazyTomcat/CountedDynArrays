@@ -11,11 +11,11 @@
 
     Main implementation template
 
-  Version 1.3.1 (2021-09-15)
+  Version 1.4 (2023-01-22)
 
-  Last changed 2021-09-15
+  Last changed 2023-01-22
 
-  ©2018-2021 František Milt
+  ©2018-2023 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -32,10 +32,12 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses    
-    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
-    StrRect     - github.com/TheLazyTomcat/Lib.StrRect
+    AuxClasses         - github.com/TheLazyTomcat/Lib.AuxClasses
+    AuxTypes           - github.com/TheLazyTomcat/Lib.AuxTypes
+    BinaryStreaming    - github.com/TheLazyTomcat/Lib.BinaryStreaming
+    ListSorters        - github.com/TheLazyTomcat/Lib.ListSorters
+    StaticMemoryStream - github.com/TheLazyTomcat/Lib.StaticMemoryStream
+    StrRect            - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 
@@ -171,6 +173,26 @@
 {$IFNDEF CDA_FuncReintroduce_SortStabilized}
   procedure CDA_SortStabilized(var Arr: TCDAArrayType; Reversed: Boolean = False{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}); overload;{$ENDIF}
 
+// streaming (stream)
+{$IFNDEF CDA_FuncReintroduce_WriteToStream}
+  procedure CDA_WriteToStream(const Arr: TCDAArrayType; Stream: TStream); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_SaveToStream}
+  procedure CDA_SaveToStream(const Arr: TCDAArrayType; Stream: TStream); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_ReadFromStream}
+  procedure CDA_ReadFromStream(var Arr: TCDAArrayType; Stream: TStream); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_LoadFromStream}
+  procedure CDA_LoadFromStream(var Arr: TCDAArrayType; Stream: TStream); overload;{$ENDIF}
+
+// streaming (file)
+{$IFNDEF CDA_FuncReintroduce_WriteToFile}
+  procedure CDA_WriteToFile(const Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_ReadFromFile}
+  procedure CDA_ReadFromFile(var Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_SaveToFile}
+  procedure CDA_SaveToFile(const Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_LoadFromFile}
+  procedure CDA_LoadFromFile(var Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
+
 {$ENDIF}
 
 {===============================================================================
@@ -243,7 +265,7 @@ end;
 {$IF Defined(CDA_FuncOverride_ItemUnique) or Defined(CDA_FuncReintroduce_ItemUnique)}
 procedure _CDA_ItemUnique(var Item: TCDABaseType);
 {$ELSE}
-procedure CDA_ItemUnique(var Item: TCDABaseType); 
+procedure CDA_ItemUnique(var Item: TCDABaseType);
 {$IFEND}
 begin
 end;
@@ -259,6 +281,31 @@ Function CDA_ItemCompare({$IFDEF CDA_ConstBaseType}const {$ENDIF}A,B: TCDABaseTy
 {$IFEND}
 begin
 Result := 0;
+end;
+{$IFDEF FPCDWM}{$POP}{$ENDIF}
+
+//------------------------------------------------------------------------------
+
+{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
+{$IF Defined(CDA_FuncOverride_ItemWrite) or Defined(CDA_FuncReintroduce_ItemWrite)}
+procedure _CDA_ItemWrite({$IFDEF CDA_ConstBaseType}const {$ENDIF}Item: TCDABaseType; Stream: TStream);
+{$ELSE}
+procedure CDA_ItemWrite({$IFDEF CDA_ConstBaseType}const {$ENDIF}Item: TCDABaseType; Stream: TStream);
+{$IFEND}
+begin
+end;
+{$IFDEF FPCDWM}{$POP}{$ENDIF}
+
+//------------------------------------------------------------------------------
+
+{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
+{$IF Defined(CDA_FuncOverride_ItemRead) or Defined(CDA_FuncReintroduce_ItemRead)}
+Function _CDA_ItemRead(Stream: TStream): TCDABaseType;
+{$ELSE}
+Function CDA_ItemRead(Stream: TStream): TCDABaseType;
+{$IFEND}
+begin
+Result := CDA_DEFAULT_VALUE;
 end;
 {$IFDEF FPCDWM}{$POP}{$ENDIF}
 
@@ -1243,6 +1290,136 @@ If Arr.Count > 1 then
       Arr.InternalPtr := nil;      
     end;
   end;
+end;
+
+//==============================================================================
+
+{$IF Defined(CDA_FuncOverride_WriteToStream) or Defined(CDA_FuncReintroduce_WriteToStream)}
+procedure _CDA_WriteToStream(const Arr: TCDAArrayType; Stream: TStream);
+{$ELSE}
+procedure CDA_WriteToStream(const Arr: TCDAArrayType; Stream: TStream);
+{$IFEND}
+var
+  i:  Integer;
+begin
+Stream_WriteInt32(Stream,CDA_Length(Arr));
+For i := CDA_Low(Arr) to CDA_High(Arr) do
+  CDA_ItemWrite(CDA_GetItem(Arr,i),Stream);
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_SaveToStream) or Defined(CDA_FuncReintroduce_SaveToStream)}
+procedure _CDA_SaveToStream(const Arr: TCDAArrayType; Stream: TStream);
+{$ELSE}
+procedure CDA_SaveToStream(const Arr: TCDAArrayType; Stream: TStream);
+{$IFEND}
+begin
+Stream_WriteUInt64(Stream,UInt64(CDA_GetUserData(Arr)));
+CDA_WriteToStream(Arr,Stream);
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_ReadFromStream) or Defined(CDA_FuncReintroduce_ReadFromStream)}
+procedure _CDA_ReadFromStream(var Arr: TCDAArrayType; Stream: TStream);
+{$ELSE}
+procedure CDA_ReadFromStream(var Arr: TCDAArrayType; Stream: TStream);
+{$IFEND}
+var
+  i:  Integer;
+begin
+CDA_SetLength(Arr,Stream_ReadInt32(Stream));  // validates the array
+For i := CDA_Low(Arr) to CDA_High(Arr) do
+  CDA_SetItem(Arr,i,CDA_ItemRead(Stream));
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_LoadFromStream) or Defined(CDA_FuncReintroduce_LoadFromStream)}
+procedure _CDA_LoadFromStream(var Arr: TCDAArrayType; Stream: TStream);
+{$ELSE}
+procedure CDA_LoadFromStream(var Arr: TCDAArrayType; Stream: TStream);
+{$IFEND}
+begin
+CDA_SetUserData(Arr,PtrInt(Stream_ReadUInt64(Stream))); // validates the array
+CDA_ReadFromStream(Arr,Stream);
+end;
+
+//==============================================================================
+
+{$IF Defined(CDA_FuncOverride_WriteToFile) or Defined(CDA_FuncReintroduce_WriteToFile)}
+procedure _CDA_WriteToFile(const Arr: TCDAArrayType; const FileName: String);
+{$ELSE}
+procedure CDA_WriteToFile(const Arr: TCDAArrayType; const FileName: String);
+{$IFEND}
+var
+  FileStream: TFileSTream;
+begin
+FileStream := TFileStream.Create(StrToRTL(FileName),fmCreate or fmShareDenyWrite);
+try
+  FileStream.Seek(0,soBeginning);
+  CDA_WriteToStream(Arr,FileStream);
+finally
+  FileStream.Free;
+end;
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_ReadFromFile) or Defined(CDA_FuncReintroduce_ReadFromFile)}
+procedure _CDA_ReadFromFile(var Arr: TCDAArrayType; const FileName: String);
+{$ELSE}
+procedure CDA_ReadFromFile(var Arr: TCDAArrayType; const FileName: String);
+{$IFEND}
+var
+  FileStream: TFileSTream;
+begin
+FileStream := TFileStream.Create(StrToRTL(FileName),fmOpenRead or fmShareDenyWrite);
+try
+  FileStream.Seek(0,soBeginning);
+  CDA_ReadFromStream(Arr,FileStream);
+finally
+  FileStream.Free;
+end;
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_SaveToFile) or Defined(CDA_FuncReintroduce_SaveToFile)}
+procedure _CDA_SaveToFile(const Arr: TCDAArrayType; const FileName: String);
+{$ELSE}
+procedure CDA_SaveToFile(const Arr: TCDAArrayType; const FileName: String);
+{$IFEND}
+var
+  FileStream: TFileSTream;
+begin
+FileStream := TFileStream.Create(StrToRTL(FileName),fmCreate or fmShareDenyWrite);
+try
+  FileStream.Seek(0,soBeginning);
+  CDA_SaveToStream(Arr,FileStream);
+finally
+  FileStream.Free;
+end;
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_LoadFromFile) or Defined(CDA_FuncReintroduce_LoadFromFile)}
+procedure _CDA_LoadFromFile(var Arr: TCDAArrayType; const FileName: String);
+{$ELSE}
+procedure CDA_LoadFromFile(var Arr: TCDAArrayType; const FileName: String);
+{$IFEND}
+var
+  FileStream: TFileSTream;
+begin
+FileStream := TFileStream.Create(StrToRTL(FileName),fmOpenRead or fmShareDenyWrite);
+try
+  FileStream.Seek(0,soBeginning);
+  CDA_LoadFromStream(Arr,FileStream);
+finally
+  FileStream.Free;
+end;
 end;
 
 {$ENDIF}

@@ -20,11 +20,11 @@
     array is separated from the actual array and its length/capacity (hence
     the name counted dynamic arrays).
 
-    WARNING - It is strictly prohibited to directly access fields of the
-              underlying record, use only the provided functions to do so.
+      WARNING - It is strictly prohibited to directly access fields of the
+                underlying record, use only the provided functions to do so.
 
-    Standard functions like Length, SetLength or Copy are implemented along with
-    many more functions that allow accessing the array in a way similar to
+    Standard functions like Length, SetLength or Copy are implemented along
+    with many more functions that allow accessing the array in a way similar to
     accessing a list object (Add, Remove, IndexOf, Sort, ...). All implemented
     functions have CDA_ prefix (e.g CDA_Length).
 
@@ -74,17 +74,17 @@
       Variant         CountedDynArrayVariant.pas
       TGUID           CountedDynArrayGUID.pas
 
-    Note that given the method used (template with type alias), there is a limit
-    of one array type per a *.pas file.
+    Note that given the method used (template with type alias), there is
+    a limit of one array type per a *.pas file.
 
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  Version 1.3.1 (2021-09-15)
+  Version 1.4 (2023-01-22)
 
-  Last changed 2021-09-15
+  Last changed 2023-01-22
 
-  ©2018-2021 František Milt
+  ©2018-2023 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -101,10 +101,12 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses
-    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
-    StrRect     - github.com/TheLazyTomcat/Lib.StrRect
+    AuxClasses         - github.com/TheLazyTomcat/Lib.AuxClasses
+    AuxTypes           - github.com/TheLazyTomcat/Lib.AuxTypes
+    BinaryStreaming    - github.com/TheLazyTomcat/Lib.BinaryStreaming
+    ListSorters        - github.com/TheLazyTomcat/Lib.ListSorters
+    StaticMemoryStream - github.com/TheLazyTomcat/Lib.StaticMemoryStream
+    StrRect            - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 unit CountedDynArrays;

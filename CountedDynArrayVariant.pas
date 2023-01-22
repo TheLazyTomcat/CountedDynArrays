@@ -11,11 +11,11 @@
 
     Counted dynamic array of Variant values
 
-  Version 1.3.1 (2021-09-15)
+  Version 1.4 (2023-01-22)
 
-  Last changed 2021-09-15
+  Last changed 2023-01-22
 
-  ©2018-2021 František Milt
+  ©2018-2023 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -32,10 +32,12 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses
-    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
-    StrRect     - github.com/TheLazyTomcat/Lib.StrRect
+    AuxClasses         - github.com/TheLazyTomcat/Lib.AuxClasses
+    AuxTypes           - github.com/TheLazyTomcat/Lib.AuxTypes
+    BinaryStreaming    - github.com/TheLazyTomcat/Lib.BinaryStreaming
+    ListSorters        - github.com/TheLazyTomcat/Lib.ListSorters
+    StaticMemoryStream - github.com/TheLazyTomcat/Lib.StaticMemoryStream
+    StrRect            - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 unit CountedDynArrayVariant;
@@ -45,10 +47,13 @@ unit CountedDynArrayVariant;
 {$DEFINE CDA_ConstBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
+{$DEFINE CDA_FuncOverride_ItemWrite}
+{$DEFINE CDA_FuncOverride_ItemRead}
 
 interface
 
 uses
+  Classes,
   AuxTypes,
   CountedDynArrays;
 
@@ -89,8 +94,8 @@ type
 implementation
 
 uses
-  Variants,
-  ListSorters;
+  SysUtils, Variants,
+  ListSorters, StrRect, BinaryStreaming;
 
 {$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
@@ -117,6 +122,22 @@ else
   Result := 0;
 end;
 end;
+
+//------------------------------------------------------------------------------
+
+procedure CDA_ItemWrite(const Item: TCDABaseType; Stream: TStream);
+begin
+Stream_WriteVariant(Stream,Item);
+end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemRead(Stream: TStream): TCDABaseType;
+begin
+Result := Stream_ReadVariant(Stream);
+end;
+
+//------------------------------------------------------------------------------
 
 {$DEFINE CDA_Implementation}
 {$INCLUDE '.\CountedDynArrays.inc'}

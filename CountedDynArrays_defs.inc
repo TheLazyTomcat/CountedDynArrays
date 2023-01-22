@@ -11,11 +11,11 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.3.1 (2021-09-15)
+  Version 1.4 (2023-01-22)
 
-  Last changed 2021-09-15
+  Last changed 2023-01-22
 
-  ©2018-2021 František Milt
+  ©2018-2023 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -32,10 +32,12 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxTypes    - github.com/TheLazyTomcat/Lib.AuxTypes
-    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses    
-    ListSorters - github.com/TheLazyTomcat/Lib.ListSorters
-    StrRect     - github.com/TheLazyTomcat/Lib.StrRect
+    AuxClasses         - github.com/TheLazyTomcat/Lib.AuxClasses
+    AuxTypes           - github.com/TheLazyTomcat/Lib.AuxTypes
+    BinaryStreaming    - github.com/TheLazyTomcat/Lib.BinaryStreaming
+    ListSorters        - github.com/TheLazyTomcat/Lib.ListSorters
+    StaticMemoryStream - github.com/TheLazyTomcat/Lib.StaticMemoryStream
+    StrRect            - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 
@@ -81,6 +83,8 @@
 {$UNDEF CDA_FuncOverride_ItemFinal}
 {$UNDEF CDA_FuncOverride_ItemUnique}
 {$UNDEF CDA_FuncOverride_ItemCompare}
+{$UNDEF CDA_FuncOverride_ItemWrite}
+{$UNDEF CDA_FuncOverride_ItemRead}
 
 {$UNDEF CDA_FuncOverride_SortFunc_ItemCompare}
 {$UNDEF CDA_FuncOverride_SortFunc_ItemCompareStabilized}
@@ -141,12 +145,23 @@
 {$UNDEF CDA_FuncOverride_Sort}
 {$UNDEF CDA_FuncOverride_SortStabilized}
 
+{$UNDEF CDA_FuncOverride_WriteToStream}
+{$UNDEF CDA_FuncOverride_SaveToStream}
+{$UNDEF CDA_FuncOverride_ReadFromStream}
+{$UNDEF CDA_FuncOverride_LoadFromStream}
+{$UNDEF CDA_FuncOverride_WriteToFile}
+{$UNDEF CDA_FuncOverride_ReadFromFile}
+{$UNDEF CDA_FuncOverride_SaveToFile}
+{$UNDEF CDA_FuncOverride_LoadFromFile}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 {$UNDEF CDA_FuncReintroduce_ItemInit}
 {$UNDEF CDA_FuncReintroduce_ItemFinal}
 {$UNDEF CDA_FuncReintroduce_ItemUnique}
 {$UNDEF CDA_FuncReintroduce_ItemCompare}
+{$UNDEF CDA_FuncReintroduce_ItemWrite}
+{$UNDEF CDA_FuncReintroduce_ItemRead}
 
 {$UNDEF CDA_FuncReintroduce_SortFunc_ItemCompare}
 {$UNDEF CDA_FuncReintroduce_SortFunc_ItemCompareStabilized}
@@ -206,3 +221,12 @@
 {$UNDEF CDA_FuncReintroduce_Reverse}
 {$UNDEF CDA_FuncReintroduce_Sort}
 {$UNDEF CDA_FuncReintroduce_SortStabilized}
+
+{$UNDEF CDA_FuncReintroduce_WriteToStream}
+{$UNDEF CDA_FuncReintroduce_SaveToStream}
+{$UNDEF CDA_FuncReintroduce_ReadFromStream}
+{$UNDEF CDA_FuncReintroduce_LoadFromStream}
+{$UNDEF CDA_FuncReintroduce_WriteToFile}
+{$UNDEF CDA_FuncReintroduce_ReadFromFile}
+{$UNDEF CDA_FuncReintroduce_SaveToFile}
+{$UNDEF CDA_FuncReintroduce_LoadFromFile}
