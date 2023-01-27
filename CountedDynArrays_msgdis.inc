@@ -11,9 +11,9 @@
 
     Common defines used to disable some warning messages in FPC.
 
-  Version 1.4 (2023-01-22)
+  Version 1.4.1 (2023-01-27)
 
-  Last changed 2023-01-22
+  Last changed 2023-01-27
 
   ©2018-2023 František Milt
 

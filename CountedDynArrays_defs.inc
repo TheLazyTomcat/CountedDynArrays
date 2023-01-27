@@ -11,9 +11,9 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.4 (2023-01-22)
+  Version 1.4.1 (2023-01-27)
 
-  Last changed 2023-01-22
+  Last changed 2023-01-27
 
   ©2018-2023 František Milt
 
@@ -94,6 +94,7 @@
 {$UNDEF CDA_FuncOverride_Valid}
 {$UNDEF CDA_FuncOverride_Validate}
 {$UNDEF CDA_FuncOverride_Init}
+{$UNDEF CDA_FuncOverride_Final}
 
 {$UNDEF CDA_FuncOverride_GetUserData}
 {$UNDEF CDA_FuncOverride_SetUserData}
@@ -171,6 +172,7 @@
 {$UNDEF CDA_FuncReintroduce_Valid}
 {$UNDEF CDA_FuncReintroduce_Validate}
 {$UNDEF CDA_FuncReintroduce_Init}
+{$UNDEF CDA_FuncReintroduce_Final}
 
 {$UNDEF CDA_FuncReintroduce_GetUserData}
 {$UNDEF CDA_FuncReintroduce_SetUserData}

@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.4 (2023-01-22)
+  Version 1.4.1 (2023-01-27)
 
-  Last changed 2023-01-22
+  Last changed 2023-01-27
 
   ©2018-2023 František Milt
 
@@ -72,6 +72,8 @@
   procedure CDA_Validate(var Arr: TCDAArrayType); overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Init}
   procedure CDA_Init(out Arr: TCDAArrayType); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_Final}
+  procedure CDA_Final(var Arr: TCDAArrayType); overload;{$ENDIF}
 
 // user data access
 {$IFNDEF CDA_FuncReintroduce_GetUserData}
@@ -413,6 +415,23 @@ Arr.UserData := 0;
 Arr.InternalPtr := nil;
 Arr.InternalInt := 0;
 Arr.Checksum := CDA_Checksum(Arr);
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_Init) or Defined(CDA_FuncReintroduce_Init)}
+procedure _CDA_Final(var Arr: TCDAArrayType);
+{$ELSE}
+procedure CDA_Final(var Arr: TCDAArrayType);
+{$IFEND}
+begin
+Arr.Signature := 0;
+Arr.Arr := nil;
+Arr.Count := 0;
+Arr.UserData := 0;
+Arr.InternalPtr := nil;
+Arr.InternalInt := 0;
+Arr.Checksum := not CDA_Checksum(Arr);;
 end;
 
 //==============================================================================
@@ -1303,7 +1322,6 @@ procedure CDA_WriteToStream(const Arr: TCDAArrayType; Stream: TStream);
 var
   i:  Integer;
 begin
-Stream_WriteInt32(Stream,CDA_Count(Arr));
 For i := CDA_Low(Arr) to CDA_High(Arr) do
   CDA_ItemWrite(CDA_GetItem(Arr,i),Stream);
 end;
@@ -1316,6 +1334,7 @@ procedure _CDA_SaveToStream(const Arr: TCDAArrayType; Stream: TStream);
 procedure CDA_SaveToStream(const Arr: TCDAArrayType; Stream: TStream);
 {$IFEND}
 begin
+Stream_WriteInt32(Stream,CDA_Count(Arr));
 CDA_WriteToStream(Arr,Stream);
 Stream_WriteUInt64(Stream,UInt64(CDA_GetUserData(Arr)));
 end;
@@ -1330,7 +1349,7 @@ procedure CDA_ReadFromStream(var Arr: TCDAArrayType; Stream: TStream);
 var
   i:  Integer;
 begin
-CDA_SetCount(Arr,Stream_ReadInt32(Stream));  // validates the array
+CDA_Validate(Arr);
 For i := CDA_Low(Arr) to CDA_High(Arr) do
   CDA_SetItem(Arr,i,CDA_ItemRead(Stream));
 end;
@@ -1343,6 +1362,7 @@ procedure _CDA_LoadFromStream(var Arr: TCDAArrayType; Stream: TStream);
 procedure CDA_LoadFromStream(var Arr: TCDAArrayType; Stream: TStream);
 {$IFEND}
 begin
+CDA_SetCount(Arr,Stream_ReadInt32(Stream));  // validates the array
 CDA_ReadFromStream(Arr,Stream);
 CDA_SetUserData(Arr,PtrInt(Stream_ReadUInt64(Stream)));
 end;
