@@ -13,7 +13,7 @@
 
   Version 1.4.1 (2023-01-27)
 
-  Last changed 2023-01-27
+  Last changed 2023-09-04
 
   ©2018-2023 František Milt
 
@@ -32,12 +32,11 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxClasses         - github.com/TheLazyTomcat/Lib.AuxClasses
-    AuxTypes           - github.com/TheLazyTomcat/Lib.AuxTypes
-    BinaryStreaming    - github.com/TheLazyTomcat/Lib.BinaryStreaming
-    ListSorters        - github.com/TheLazyTomcat/Lib.ListSorters
-    StaticMemoryStream - github.com/TheLazyTomcat/Lib.StaticMemoryStream
-    StrRect            - github.com/TheLazyTomcat/Lib.StrRect
+    AuxClasses      - github.com/TheLazyTomcat/Lib.AuxClasses
+    AuxTypes        - github.com/TheLazyTomcat/Lib.AuxTypes
+    BinaryStreaming - github.com/TheLazyTomcat/Lib.BinaryStreaming
+    ListSorters     - github.com/TheLazyTomcat/Lib.ListSorters
+    StrRect         - github.com/TheLazyTomcat/Lib.StrRect
 
 ===============================================================================}
 unit CountedDynArrayGUID;
@@ -157,9 +156,9 @@ end;
 
 Function CDA_ItemRead(Stream: TStream): TCDABaseType;
 begin
-Result.D1 := Stream_ReadUInt32(Stream);
-Result.D2 := Stream_ReadUInt16(Stream);
-Result.D3 := Stream_ReadUInt16(Stream);
+Result.D1 := Stream_GetUInt32(Stream);
+Result.D2 := Stream_GetUInt16(Stream);
+Result.D3 := Stream_GetUInt16(Stream);
 Stream_ReadBuffer(Stream,Result.D4,SizeOf(Result.D4));
 end;
 
