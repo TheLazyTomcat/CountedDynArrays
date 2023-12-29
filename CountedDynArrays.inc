@@ -13,7 +13,7 @@
 
   Version 1.4.1 (2023-01-27)
 
-  Last changed 2023-09-04
+  Last changed 2023-12-29
 
   ©2018-2023 František Milt
 
@@ -66,7 +66,7 @@
 
 // internal structure manipulation
 {$IFNDEF CDA_FuncReintroduce_Valid}
-  Function CDA_Valid(const Arr: TCDAArrayType): Boolean; overload;{$IF Defined(CanInline) and Defined(FPC)} inline;{$IFEND}{$ENDIF}
+  Function CDA_Valid(const Arr: TCDAArrayType): Boolean; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Validate}
   procedure CDA_Validate(var Arr: TCDAArrayType); overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Init}
