@@ -11,11 +11,11 @@
 
     Counted dynamic array of UnicdoeString values
 
-  Version 1.4.1 (2023-01-27)
+  Version 1.4.2 (2024-05-03)
 
-  Last changed 2023-09-04
+  Last changed 2024-05-03
 
-  ©2018-2023 František Milt
+  ©2018-2024 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -32,11 +32,22 @@
       github.com/TheLazyTomcat/CountedDynArrays
 
   Dependencies:
-    AuxClasses      - github.com/TheLazyTomcat/Lib.AuxClasses
+  * AuxExceptions   - github.com/TheLazyTomcat/Lib.AuxExceptions
     AuxTypes        - github.com/TheLazyTomcat/Lib.AuxTypes
     BinaryStreaming - github.com/TheLazyTomcat/Lib.BinaryStreaming
     ListSorters     - github.com/TheLazyTomcat/Lib.ListSorters
     StrRect         - github.com/TheLazyTomcat/Lib.StrRect
+
+  Library AuxExceptions is required only when rebasing local exception classes
+  (see symbol CountedDynArrays_UseAuxExceptions for details).
+
+  Library AuxExceptions might also be required as an indirect dependency.
+
+  Indirect dependencies:
+    AuxClasses  - github.com/TheLazyTomcat/Lib.AuxClasses
+    SimpleCPUID - github.com/TheLazyTomcat/Lib.SimpleCPUID
+    UInt64Utils - github.com/TheLazyTomcat/Lib.UInt64Utils
+    WinFileInfo - github.com/TheLazyTomcat/Lib.WinFileInfo
 
 ===============================================================================}
 unit CountedDynArrayUnicodeString;
