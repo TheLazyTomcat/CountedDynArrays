@@ -9,7 +9,7 @@
 
   Counted Dynamic Arrays
 
-    Counted dynamic array of UnicdoeString values
+    Counted dynamic array of UnicodeString values
 
   Version 1.4.2 (2024-05-03)
 
