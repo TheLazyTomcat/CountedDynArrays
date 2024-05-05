@@ -50,6 +50,7 @@
     WinFileInfo - github.com/TheLazyTomcat/Lib.WinFileInfo
 
 ===============================================================================}
+{!tun_end!} // ignore this line
 {
   CountedDynArrays_UseAuxExceptions
 

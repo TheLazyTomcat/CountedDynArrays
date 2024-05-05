@@ -50,6 +50,7 @@
     WinFileInfo - github.com/TheLazyTomcat/Lib.WinFileInfo
 
 ===============================================================================}
+{!tun_end!} // ignore this line
 
 {$IFDEF FPC_DisableWarns}
   {$DEFINE FPCDWM}
