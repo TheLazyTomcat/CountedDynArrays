@@ -13,7 +13,7 @@
 
   Version 1.4.2 (2024-05-03)
 
-  Last changed 2024-05-03
+  Last changed 2024-10-04
 
   ©2018-2024 František Milt
 
@@ -153,6 +153,7 @@
 {$UNDEF CDA_FuncOverride_LastPtr}
 
 {$UNDEF CDA_FuncOverride_IndexOf}
+{$UNDEF CDA_FuncOverride_Find}
 {$UNDEF CDA_FuncOverride_Add}
 {$UNDEF CDA_FuncOverride_Append}
 {$UNDEF CDA_FuncOverride_Insert}
@@ -231,6 +232,7 @@
 {$UNDEF CDA_FuncReintroduce_LastPtr}
 
 {$UNDEF CDA_FuncReintroduce_IndexOf}
+{$UNDEF CDA_FuncReintroduce_Find}
 {$UNDEF CDA_FuncReintroduce_Add}
 {$UNDEF CDA_FuncReintroduce_Append}
 {$UNDEF CDA_FuncReintroduce_Insert}

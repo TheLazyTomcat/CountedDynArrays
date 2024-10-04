@@ -13,7 +13,7 @@
 
   Version 1.4.2 (2024-05-03)
 
-  Last changed 2024-05-03
+  Last changed 2024-10-04
 
   ©2018-2024 František Milt
 
@@ -153,6 +153,8 @@
 // list-like funtions
 {$IFNDEF CDA_FuncReintroduce_IndexOf}
   Function CDA_IndexOf(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_Find}
+  Function CDA_Find(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Add}
   Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Append}
@@ -203,7 +205,7 @@
   procedure CDA_ReadFromFile(var Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_SaveToFile}
   procedure CDA_SaveToFile(const Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
-{$IFNDEF CDA_FuncReintroduce_LoadFromFile}
+{$IFNDEF CDA_FuncReintroduce_LoadFromFile}                                               
   procedure CDA_LoadFromFile(var Arr: TCDAArrayType; const FileName: String); overload;{$ENDIF}
 
 {$ENDIF}
@@ -607,8 +609,10 @@ Function CDA_Grow(var Arr: TCDAArrayType; GrowMode: TCDAGrowMode = agmFast; Grow
 {$IFEND}
 begin
 CDA_Validate(Arr);
-If DeltaMin < 1 then
-  DeltaMin := 1;
+{
+  If DeltaMin is zero or smaller, then following condition will resolve to
+  false and result will be set to 0 - so no growing will take place.
+}
 If (Arr.Count + DeltaMin) > Length(Arr.Arr) then
   begin
     If (Length(Arr.Arr) > 0) or (GrowMode = agmSlow) then
@@ -629,12 +633,11 @@ If (Arr.Count + DeltaMin) > Length(Arr.Arr) then
     else Result := CDA_INITIAL_CAPACITY;
     If Result < DeltaMin then
       Result := DeltaMin;
-    If Result < 1 then
-      Result := 1;
-    // do the growing
-    CDA_SetCapacity(Arr,Length(Arr.Arr) + Result);
   end
 else Result := 0;
+// do the growing
+If Result > 0 then
+  CDA_SetCapacity(Arr,Length(Arr.Arr) + Result);
 end;
 
 //------------------------------------------------------------------------------
@@ -650,8 +653,8 @@ If Length(Arr.Arr) > 0 then
   case ShrinkMode of
     asmNormal:  If Length(Arr.Arr) > CDA_INITIAL_CAPACITY then
                   begin
-                    If Arr.Count < (Length(Arr.Arr) div 4) then
-                      CDA_SetCapacity(Arr,Length(Arr.Arr) div 4)
+                    If Arr.Count < (Length(Arr.Arr) div 2) then
+                      CDA_SetCapacity(Arr,Length(Arr.Arr) div 2)
                   end
                 else
                   begin
@@ -942,6 +945,19 @@ If CDA_Valid(Arr) then
 end;
 
 //------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_Find) or Defined(CDA_FuncReintroduce_Find)}
+Function _CDA_Find(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean;
+{$ELSE}
+Function CDA_Find(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean;
+{$IFEND}
+begin
+// CDA_IndexOf validates the Arr
+Index := CDA_IndexOf(Arr,Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF});
+Result := (Index >= 0) and (Index < Arr.Count); // do not call CDA_CheckIndex (it would be slower)
+end;
+
+//------------------------------------------------------------------------------
     
 {$IF Defined(CDA_FuncOverride_Add) or Defined(CDA_FuncReintroduce_Add)}
 Function _CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType): Integer;
@@ -1096,7 +1112,7 @@ end;
 {$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
-     
+
 {$IF Defined(CDA_FuncOverride_Remove) or Defined(CDA_FuncReintroduce_Remove)}
 Function _CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
 {$ELSE}
@@ -1104,8 +1120,7 @@ Function CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$END
 {$IFEND}
 begin
 CDA_Validate(Arr);
-Result := CDA_IndexOf(Arr,Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF});
-If CDA_CheckIndex(Arr,Result) then
+If CDA_Find(Arr,Item,Result{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
   CDA_Delete(Arr,Result);
 end;
 
