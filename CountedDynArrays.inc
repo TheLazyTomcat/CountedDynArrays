@@ -99,6 +99,8 @@
   Function CDA_Capacity(const Arr: TCDAArrayType): Integer; overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_CapacityFree}
   Function CDA_CapacityFree(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_FreeCapacity}
+  Function CDA_FreeCapacity(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Count}
   Function CDA_Count(const Arr: TCDAArrayType): Integer; overload;{$ENDIF}
 
@@ -112,16 +114,20 @@
 
 // implicit changing of capacity
 {$IFNDEF CDA_FuncReintroduce_Grow}
-  Function CDA_Grow(var Arr: TCDAArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 1.0; DeltaMin: Integer = 1): Integer; overload;{$ENDIF}
+  procedure CDA_Grow(var Arr: TCDAArrayType; GrowSettings: TGrowSettings; MinSpace: Integer = 1); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_GrowDef}
+  procedure CDA_Grow(var Arr: TCDAArrayType; MinSpace: Integer = 1); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Shrink}
-  procedure CDA_Shrink(var Arr: TCDAArrayType; ShrinkMode: TCDAShrinkMode = asmNormal); overload;{$ENDIF}
+  procedure CDA_Shrink(var Arr: TCDAArrayType; ShrinkSettings: TShrinkSettings); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_ShrinkDef}
+  procedure CDA_Shrink(var Arr: TCDAArrayType); overload;{$ENDIF}
 
 // secure copy
 {$IFNDEF CDA_FuncReintroduce_UniqueArray}
   procedure CDA_UniqueArray(var Arr: TCDAArrayType); overload;{$ENDIF}
-{$IFNDEF CDA_FuncReintroduce_CopyC}
-  Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Copy}
+  Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_CopyAll}
   Function CDA_Copy(const Src: TCDAArrayType): TCDAArrayType; overload;{$ENDIF}
 
 // indices functions
@@ -514,6 +520,17 @@ end;
 
 //------------------------------------------------------------------------------
 
+{$IF Defined(CDA_FuncOverride_FreeCapacity) or Defined(CDA_FuncReintroduce_FreeCapacity)}
+Function _CDA_FreeCapacity(const Arr: TCDAArrayType): Integer;
+{$ELSE}
+Function CDA_FreeCapacity(const Arr: TCDAArrayType): Integer;
+{$IFEND}
+begin
+Result := CDA_CapacityFree(Arr);
+end;
+
+//------------------------------------------------------------------------------
+
 {$IF Defined(CDA_FuncOverride_Count) or Defined(CDA_FuncReintroduce_Count)}
 Function _CDA_Count(const Arr: TCDAArrayType): Integer;
 {$ELSE}
@@ -603,69 +620,57 @@ end;
 //==============================================================================
 
 {$IF Defined(CDA_FuncOverride_Grow) or Defined(CDA_FuncReintroduce_Grow)}
-Function _CDA_Grow(var Arr: TCDAArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 1.0; DeltaMin: Integer = 1): Integer;
+procedure _CDA_Grow(var Arr: TCDAArrayType; GrowSettings: TGrowSettings; MinSpace: Integer = 1);
 {$ELSE}
-Function CDA_Grow(var Arr: TCDAArrayType; GrowMode: TCDAGrowMode = agmFast; GrowFactor: Single = 1.0; DeltaMin: Integer = 1): Integer;
+procedure CDA_Grow(var Arr: TCDAArrayType; GrowSettings: TGrowSettings; MinSpace: Integer = 1);
+{$IFEND}
+var
+  NewCapacity:  Integer;
+begin
+{
+  Array is first validated so we can directly access fields Arr and Count in
+  the following call instead of using CDA_Capacity and CDA_Count.
+}
+CDA_Validate(Arr);
+If GrowResolve(Length(Arr.Arr),Arr.Count,MinSpace,GrowSettings,NewCapacity) then
+  CDA_SetCapacity(Arr,NewCapacity);
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_GrowDef) or Defined(CDA_FuncReintroduce_GrowDef)}
+procedure _CDA_Grow(var Arr: TCDAArrayType; MinSpace: Integer = 1);
+{$ELSE}
+procedure CDA_Grow(var Arr: TCDAArrayType; MinSpace: Integer = 1);
 {$IFEND}
 begin
-CDA_Validate(Arr);
-{
-  If DeltaMin is zero or smaller, then following condition will resolve to
-  false and result will be set to 0 - so no growing will take place.
-}
-If (Arr.Count + DeltaMin) > Length(Arr.Arr) then
-  begin
-    If (Length(Arr.Arr) > 0) or (GrowMode = agmSlow) then
-      case GrowMode of
-        agmLinear:
-          Result := Trunc(GrowFactor);
-        agmFast:
-          Result := Trunc(Length(Arr.Arr) * GrowFactor);
-        agmFastAttenuated:
-          If Length(Arr.Arr) >= CDA_GROW_ATTENUATE_THRESHOLD then
-            Result := Trunc(CDA_GROW_ATTENUATE_THRESHOLD / 16)
-          else
-            Result := Trunc(Length(Arr.Arr) * GrowFactor);
-      else
-       {agmSlow}
-        Result := 1;
-      end
-    else Result := CDA_INITIAL_CAPACITY;
-    If Result < DeltaMin then
-      Result := DeltaMin;
-  end
-else Result := 0;
-// do the growing
-If Result > 0 then
-  CDA_SetCapacity(Arr,Length(Arr.Arr) + Result);
+CDA_Grow(Arr,DefaultGrowSettings,MinSpace);
 end;
 
 //------------------------------------------------------------------------------
  
 {$IF Defined(CDA_FuncOverride_Shrink) or Defined(CDA_FuncReintroduce_Shrink)}
-procedure _CDA_Shrink(var Arr: TCDAArrayType; ShrinkMode: TCDAShrinkMode = asmNormal);
+procedure _CDA_Shrink(var Arr: TCDAArrayType; ShrinkSettings: TShrinkSettings);
 {$ELSE}
-procedure CDA_Shrink(var Arr: TCDAArrayType; ShrinkMode: TCDAShrinkMode = asmNormal);
+procedure CDA_Shrink(var Arr: TCDAArrayType; ShrinkSettings: TShrinkSettings);
 {$IFEND}
+var
+  NewCapacity:  Integer;
 begin
 CDA_Validate(Arr);
-If Length(Arr.Arr) > 0 then
-  case ShrinkMode of
-    asmNormal:  If Length(Arr.Arr) > CDA_INITIAL_CAPACITY then
-                  begin
-                    If Arr.Count < (Length(Arr.Arr) div 2) then
-                      CDA_SetCapacity(Arr,Length(Arr.Arr) div 2)
-                  end
-                else
-                  begin
-                    If Arr.Count <= 0 then
-                      CDA_SetCapacity(Arr,0);
-                  end;
-    asmToCount: CDA_SetCapacity(Arr,Arr.Count);
-  else
-   {asmKeepCap}
-    // do nothing
-  end;
+If ShrinkResolve(Length(Arr.Arr),Arr.Count,ShrinkSettings,NewCapacity) then
+  CDA_SetCapacity(Arr,NewCapacity);
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_ShrinkDef) or Defined(CDA_FuncReintroduce_ShrinkDef)}
+procedure _CDA_Shrink(var Arr: TCDAArrayType);
+{$ELSE}
+procedure CDA_Shrink(var Arr: TCDAArrayType);
+{$IFEND}
+begin
+CDA_Shrink(Arr,DefaultShrinkSettings);
 end;
 
 //==============================================================================
@@ -690,7 +695,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-{$IF Defined(CDA_FuncOverride_CopyC) or Defined(CDA_FuncReintroduce_CopyC)}
+{$IF Defined(CDA_FuncOverride_Copy) or Defined(CDA_FuncReintroduce_Copy)}
 Function _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType;
@@ -715,7 +720,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-{$IF Defined(CDA_FuncOverride_Copy) or Defined(CDA_FuncReintroduce_Copy)}
+{$IF Defined(CDA_FuncOverride_CopyAll) or Defined(CDA_FuncReintroduce_CopyAll)}
 Function _CDA_Copy(const Src: TCDAArrayType): TCDAArrayType; overload;
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType): TCDAArrayType;

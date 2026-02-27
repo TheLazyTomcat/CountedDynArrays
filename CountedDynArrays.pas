@@ -147,38 +147,6 @@ type
   {$MESSAGE Fatal 'Incompatible implementation detail.'}
 {$IFEND}
 
-{
-  Array is only grown if current count + DeltaMin is larger than current
-  capacity.
-
-  agmSlow           - grow by 1
-  agmLinear         - grow by GrowFactor (integer part of the float)
-  agmFast           - grow by capacity * GrowFactor
-  agmFastAttenuated - if capacity is below CDA_GROW_ATTENUATE_THRESHOLD, then
-                      grow by capacity * GrowFactor, if capacity is above or
-                      equal to CDA_GROW_ATTENUATE_THRESHOLD, grow by
-                      1/16 * CDA_GROW_ATTENUATE_THRESHOLD
-
-  If mode is other than agmSlow and current capacity is 0, then new capacity
-  is set to CDA_INITIAL_CAPACITY, irrespective of selected grow mode.
-}
-  TCDAGrowMode = (agmSlow, agmLinear, agmFast, agmFastAttenuated);
-
-{
-  asmKeepCap - array is not shrinked, capacity is preserved
-  asmNormal  - if capacity is above CDA_INITIAL_CAPACITY and count is below
-               capacity div 2, then capacity is set to capacity div 2, otherwise
-               capacity is preserved, if capacity is below or equal to
-               CDA_INITIAL_CAPACITY, then the array is not shinked unless the
-               count is 0, in which case the new capacity is set to 0
-  asmToCount - capacity is set to count
-}
-  TCDAShrinkMode = (asmKeepCap, asmNormal, asmToCount);
-
-const
-  CDA_INITIAL_CAPACITY         = 16;
-  CDA_GROW_ATTENUATE_THRESHOLD = 16 * 1024 * 1024;
-
 implementation
 
 initialization

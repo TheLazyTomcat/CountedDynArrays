@@ -64,7 +64,7 @@ interface
 
 uses
   Classes,
-  AuxTypes,
+  AuxTypes, ListUtils,
   CountedDynArrays;
 
 type
