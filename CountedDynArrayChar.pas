@@ -11,11 +11,11 @@
 
     Counted dynamic array of Char values
 
-  Version 1.4.2 (2024-05-03)
+  Version 1.5 (2026-02-28)
 
-  Last changed 2024-10-04
+  Last changed 2026-02-28
 
-  ©2018-2024 František Milt
+  ©2018-2026 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -36,6 +36,7 @@
     AuxTypes        - github.com/TheLazyTomcat/Lib.AuxTypes
     BinaryStreaming - github.com/TheLazyTomcat/Lib.BinaryStreaming
     ListSorters     - github.com/TheLazyTomcat/Lib.ListSorters
+    ListUtils       - github.com/TheLazyTomcat/Lib.ListUtils
     StrRect         - github.com/TheLazyTomcat/Lib.StrRect
 
   Library AuxExceptions is required only when rebasing local exception classes

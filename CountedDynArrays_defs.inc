@@ -11,11 +11,11 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.4.2 (2024-05-03)
+  Version 1.5 (2026-02-28)
 
-  Last changed 2024-10-04
+  Last changed 2026-02-28
 
-  ©2018-2024 František Milt
+  ©2018-2026 František Milt
 
   Contacts:
     František Milt: frantisek.milt@gmail.com
@@ -36,6 +36,7 @@
     AuxTypes        - github.com/TheLazyTomcat/Lib.AuxTypes
     BinaryStreaming - github.com/TheLazyTomcat/Lib.BinaryStreaming
     ListSorters     - github.com/TheLazyTomcat/Lib.ListSorters
+    ListUtils       - github.com/TheLazyTomcat/Lib.ListUtils
     StrRect         - github.com/TheLazyTomcat/Lib.StrRect
 
   Library AuxExceptions is required only when rebasing local exception classes
@@ -149,6 +150,9 @@
 {$UNDEF CDA_FuncOverride_GetItem}
 {$UNDEF CDA_FuncOverride_GetItemPtr}
 {$UNDEF CDA_FuncOverride_SetItem}
+{$UNDEF CDA_FuncOverride_UniqueItem}
+{$UNDEF CDA_FuncOverride_UniqueItems}
+{$UNDEF CDA_FuncOverride_UniqueItemsAll}
 
 {$UNDEF CDA_FuncOverride_First}
 {$UNDEF CDA_FuncOverride_Last}
@@ -173,14 +177,16 @@
 {$UNDEF CDA_FuncOverride_Reverse}
 {$UNDEF CDA_FuncOverride_Sort}
 {$UNDEF CDA_FuncOverride_SortStabilized}
+{$UNDEF CDA_FuncOverride_FillFrom}
+{$UNDEF CDA_FuncOverride_Fill}
 
 {$UNDEF CDA_FuncOverride_WriteToStream}
 {$UNDEF CDA_FuncOverride_SaveToStream}
 {$UNDEF CDA_FuncOverride_ReadFromStream}
 {$UNDEF CDA_FuncOverride_LoadFromStream}
 {$UNDEF CDA_FuncOverride_WriteToFile}
-{$UNDEF CDA_FuncOverride_ReadFromFile}
 {$UNDEF CDA_FuncOverride_SaveToFile}
+{$UNDEF CDA_FuncOverride_ReadFromFile}
 {$UNDEF CDA_FuncOverride_LoadFromFile}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -231,6 +237,9 @@
 {$UNDEF CDA_FuncReintroduce_GetItem}
 {$UNDEF CDA_FuncReintroduce_GetItemPtr}
 {$UNDEF CDA_FuncReintroduce_SetItem}
+{$UNDEF CDA_FuncReintroduce_UniqueItem}
+{$UNDEF CDA_FuncReintroduce_UniqueItems}
+{$UNDEF CDA_FuncReintroduce_UniqueItemsAll}
 
 {$UNDEF CDA_FuncReintroduce_First}
 {$UNDEF CDA_FuncReintroduce_Last}
@@ -255,12 +264,14 @@
 {$UNDEF CDA_FuncReintroduce_Reverse}
 {$UNDEF CDA_FuncReintroduce_Sort}
 {$UNDEF CDA_FuncReintroduce_SortStabilized}
+{$UNDEF CDA_FuncReintroduce_FillFrom}
+{$UNDEF CDA_FuncReintroduce_Fill}
 
 {$UNDEF CDA_FuncReintroduce_WriteToStream}
 {$UNDEF CDA_FuncReintroduce_SaveToStream}
 {$UNDEF CDA_FuncReintroduce_ReadFromStream}
 {$UNDEF CDA_FuncReintroduce_LoadFromStream}
 {$UNDEF CDA_FuncReintroduce_WriteToFile}
-{$UNDEF CDA_FuncReintroduce_ReadFromFile}
 {$UNDEF CDA_FuncReintroduce_SaveToFile}
+{$UNDEF CDA_FuncReintroduce_ReadFromFile}
 {$UNDEF CDA_FuncReintroduce_LoadFromFile}
