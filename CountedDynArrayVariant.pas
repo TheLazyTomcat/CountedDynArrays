@@ -11,9 +11,9 @@
 
     Counted dynamic array of Variant values
 
-  Version 1.5 (2026-02-28)
+  Version 1.5.1 (2026-03-10)
 
-  Last changed 2026-02-28
+  Last changed 2026-03-10
 
   ©2018-2026 František Milt
 
@@ -107,8 +107,6 @@ implementation
 uses
   SysUtils, Variants,
   ListSorters, StrRect, BinaryStreaming;
-
-{$INCLUDE '.\CountedDynArrays_msgdis.inc'}
 
 const
   CDA_ARRAY_NAME = 'AoVariant';

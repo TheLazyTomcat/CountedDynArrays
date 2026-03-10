@@ -11,9 +11,9 @@
 
     Counted dynamic array of TObject values
 
-  Version 1.5 (2026-02-28)
+  Version 1.5.1 (2026-03-10)
 
-  Last changed 2026-02-28
+  Last changed 2026-03-10
 
   ©2018-2026 František Milt
 
@@ -106,8 +106,6 @@ uses
   SysUtils,
   ListSorters, StrRect, BinaryStreaming;
 
-{$INCLUDE '.\CountedDynArrays_msgdis.inc'}
-
 const
   CDA_DEFAULT_VALUE = TCDABaseType(nil);
 
@@ -116,34 +114,35 @@ const
 //------------------------------------------------------------------------------
 
 Function CDA_ItemCompare(A,B: TCDABaseType): Integer; {$IFDEF CanInline} inline; {$ENDIF}
+var
+  AInt: PtrUInt absolute A;
+  BInt: PtrUInt absolute B;
 begin
-{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
-If PtrUInt(Pointer(A)) < PtrUInt(Pointer(B)) then
+If AInt < BInt then
   Result := -1
-else If PtrUInt(Pointer(A)) > PtrUInt(Pointer(B)) then
+else If AInt > BInt then
   Result := +1
 else
   Result := 0;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 end;
 
 //------------------------------------------------------------------------------
 
 procedure CDA_ItemWrite(Item: TCDABaseType; Stream: TStream);
+var
+  ItemInt: PtrUInt absolute Item;
 begin
 // utterly pointless, but here you go...
-{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
-Stream_WriteUInt64(Stream,UInt64(PtrUInt(Pointer(Item))));
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
+Stream_WriteUInt64(Stream,UInt64(ItemInt));
 end;
 
 //------------------------------------------------------------------------------
 
 Function CDA_ItemRead(Stream: TStream): TCDABaseType;
+var
+  ResultInt: PtrUInt absolute Result;
 begin
-{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
-Result := TObject(Pointer(PtrUInt(Stream_GetUInt64(Stream))));
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
+ResultInt := PtrUInt(Stream_GetUInt64(Stream));
 end;
 
 //------------------------------------------------------------------------------

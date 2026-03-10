@@ -11,9 +11,9 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.5 (2026-02-28)
+  Version 1.5.1 (2026-03-10)
 
-  Last changed 2026-02-28
+  Last changed 2026-03-10
 
   ©2018-2026 František Milt
 
@@ -79,8 +79,6 @@
   {$MODESWITCH CLASSICPROCVARS+}
   {$INLINE ON}
   {$DEFINE CanInline}
-  {$DEFINE FPC_DisableWarns}
-  {$MACRO ON}
 {$ELSE}
   {$IF CompilerVersion >= 17} // Delphi 2005+
     {$DEFINE CanInline}
@@ -120,6 +118,7 @@
 {$UNDEF CDA_FuncOverride_Validate}
 {$UNDEF CDA_FuncOverride_Init}
 {$UNDEF CDA_FuncOverride_Final}
+{$UNDEF CDA_FuncOverride_Invalidate}
 
 {$UNDEF CDA_FuncOverride_GetUserData}
 {$UNDEF CDA_FuncOverride_SetUserData}
@@ -207,6 +206,7 @@
 {$UNDEF CDA_FuncReintroduce_Validate}
 {$UNDEF CDA_FuncReintroduce_Init}
 {$UNDEF CDA_FuncReintroduce_Final}
+{$UNDEF CDA_FuncReintroduce_Invalidate}
 
 {$UNDEF CDA_FuncReintroduce_GetUserData}
 {$UNDEF CDA_FuncReintroduce_SetUserData}

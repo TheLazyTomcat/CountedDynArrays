@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.5 (2026-02-28)
+  Version 1.5.1 (2026-03-10)
 
-  Last changed 2026-02-28
+  Last changed 2026-03-10
 
   ©2018-2026 František Milt
 
@@ -86,6 +86,8 @@
   procedure CDA_Init(out Arr: TCDAArrayType); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Final}
   procedure CDA_Final(var Arr: TCDAArrayType); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_Invalidate}
+  procedure CDA_Invalidate(var Arr: TCDAArrayType); overload;{$ENDIF}
 
 // user data access
 {$IFNDEF CDA_FuncReintroduce_GetUserData}
@@ -253,23 +255,24 @@ end;
 
 //------------------------------------------------------------------------------
 
-{$IFDEF FPCDWM}{$PUSH}W4055{$ENDIF}
 Function CDA_Checksum(const Arr: TCDAArrayType): TCDAChecksum;
+var
+  ArrayPointer:         Pointer;
+  ArrayPointerOverlay:  PtrUInt absolute ArrayPointer;
 begin
 {
-  Checksum is obtained by only XOR-ing of some fields.
-  Field Arr is by compiler implemented as a pointer to the dynamic array
-  itself, so we can use it as such.
+  Checksum is obtained by only XOR-ing of some (inverted) fields. Field Arr is
+  by compiler implemented as a pointer to the dynamic array itself, so we can
+  use it as such.
 }
-Result := Arr.Signature xor PtrUInt(Pointer(Arr.Arr)) xor not(PtrUInt(Arr.Count));
+ArrayPointer := Pointer(Arr.Arr);
+Result := Arr.Signature xor ArrayPointerOverlay xor not(PtrUInt(Arr.Count))
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 {===============================================================================
     Internal functions
 ===============================================================================}
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_ItemInit) or Defined(CDA_FuncReintroduce_ItemInit)}
 procedure _CDA_ItemInit(var Item: TCDABaseType);
 {$ELSE}
@@ -278,11 +281,9 @@ procedure CDA_ItemInit(var Item: TCDABaseType);
 begin
 Item := CDA_DEFAULT_VALUE;
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //------------------------------------------------------------------------------
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_ItemFinal) or Defined(CDA_FuncReintroduce_ItemFinal)}
 procedure _CDA_ItemFinal(var Item: TCDABaseType);
 {$ELSE}
@@ -291,57 +292,71 @@ procedure CDA_ItemFinal(var Item: TCDABaseType);
 begin
 Item := CDA_DEFAULT_VALUE;
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //------------------------------------------------------------------------------
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_ItemUnique) or Defined(CDA_FuncReintroduce_ItemUnique)}
 procedure _CDA_ItemUnique(var Item: TCDABaseType);
 {$ELSE}
 procedure CDA_ItemUnique(var Item: TCDABaseType);
 {$IFEND}
 begin
+Item := Item; // should result in no-op
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //------------------------------------------------------------------------------
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_ItemCompare) or Defined(CDA_FuncReintroduce_ItemCompare)}
 Function _CDA_ItemCompare({$IFDEF CDA_ConstBaseType}const {$ENDIF}A,B: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean{$ENDIF}): Integer;
 {$ELSE}
 Function CDA_ItemCompare({$IFDEF CDA_ConstBaseType}const {$ENDIF}A,B: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean{$ENDIF}): Integer;
 {$IFEND}
 begin
-Result := 0;
+{
+  WARNING -  following code is nonsensical and serves only as a placeholder to
+             suppress warnings produced by compilers about unused parameters,
+             it must be replaced by proper code suited for the actual item type.
+}
+If not Assigned(Addr(A)) and not Assigned(Addr(B))
+{$IFDEF CDA_CaseSensitiveBaseType} and CaseSensitive {$ENDIF} then
+  Result := 0
+else
+  Result := 0;
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //------------------------------------------------------------------------------
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_ItemWrite) or Defined(CDA_FuncReintroduce_ItemWrite)}
 procedure _CDA_ItemWrite({$IFDEF CDA_ConstBaseType}const {$ENDIF}Item: TCDABaseType; Stream: TStream);
 {$ELSE}
 procedure CDA_ItemWrite({$IFDEF CDA_ConstBaseType}const {$ENDIF}Item: TCDABaseType; Stream: TStream);
 {$IFEND}
 begin
+{
+  WARNING -  following code is nonsensical and serves only as a placeholder to
+             suppress warnings produced by compilers about unused parameters,
+             it must be replaced by proper code suited for the actual item type.
+}
+If not Assigned(Addr(Item)) then
+  Stream.Seek(0,soCurrent);
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //------------------------------------------------------------------------------
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_ItemRead) or Defined(CDA_FuncReintroduce_ItemRead)}
 Function _CDA_ItemRead(Stream: TStream): TCDABaseType;
 {$ELSE}
 Function CDA_ItemRead(Stream: TStream): TCDABaseType;
 {$IFEND}
 begin
+{
+  WARNING -  following code is nonsensical and serves only as a placeholder to
+             suppress warnings produced by compilers about unused parameters,
+             it must be replaced by proper code suited for the actual item type.
+}
+Stream.Seek(0,soCurrent);
 Result := CDA_DEFAULT_VALUE;
 end;
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //==============================================================================
 
@@ -463,13 +478,24 @@ begin
 If CDA_Valid(Arr) then
   For i := 0 to Pred(Arr.Count) do
     CDA_ItemFinal(Arr.Arr[i]);
+CDA_Invalidate(Arr);
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_Invalidate) or Defined(CDA_FuncReintroduce_Invalidate)}
+procedure _CDA_Invalidate(var Arr: TCDAArrayType);
+{$ELSE}
+procedure CDA_Invalidate(var Arr: TCDAArrayType);
+{$IFEND}
+begin
 Arr.Signature := 0;
 Arr.Arr := nil;
 Arr.Count := 0;
 Arr.UserData := 0;
 Arr.InternalPtr := nil;
 Arr.InternalInt := 0;
-Arr.Checksum := not CDA_Checksum(Arr); 
+Arr.Checksum := not CDA_Checksum(Arr);
 end;
 
 //==============================================================================
@@ -778,7 +804,6 @@ end;
 
 //==============================================================================
 
-{$IFDEF FPCDWM}{$PUSH}W5024{$ENDIF}
 {$IF Defined(CDA_FuncOverride_Low) or Defined(CDA_FuncReintroduce_Low)}
 Function _CDA_Low(const Arr: TCDAArrayType): Integer;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
@@ -791,7 +816,6 @@ If not CDA_Valid(Arr) then
 Result := 0;
 end;
 {$UNDEF CDA_FuncNamePrefix}
-{$IFDEF FPCDWM}{$POP}{$ENDIF}
 
 //------------------------------------------------------------------------------
  
