@@ -11,9 +11,9 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.5.1 (2026-03-10)
+  Version 1.5.2 (2026-08-15)
 
-  Last changed 2026-03-10
+  Last changed 2026-08-15
 
   ©2018-2026 František Milt
 
@@ -158,6 +158,7 @@
 {$UNDEF CDA_FuncOverride_FirstPtr}
 {$UNDEF CDA_FuncOverride_LastPtr}
 
+{$UNDEF CDA_FuncOverride_Contains}
 {$UNDEF CDA_FuncOverride_IndexOf}
 {$UNDEF CDA_FuncOverride_Find}
 {$UNDEF CDA_FuncOverride_Add}
@@ -246,6 +247,7 @@
 {$UNDEF CDA_FuncReintroduce_FirstPtr}
 {$UNDEF CDA_FuncReintroduce_LastPtr}
 
+{$UNDEF CDA_FuncReintroduce_Contains}
 {$UNDEF CDA_FuncReintroduce_IndexOf}
 {$UNDEF CDA_FuncReintroduce_Find}
 {$UNDEF CDA_FuncReintroduce_Add}

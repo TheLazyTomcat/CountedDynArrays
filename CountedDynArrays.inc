@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.5.1 (2026-03-10)
+  Version 1.5.2 (2026-08-15)
 
-  Last changed 2026-03-10
+  Last changed 2026-08-15
 
   ©2018-2026 František Milt
 
@@ -168,6 +168,8 @@
   Function CDA_LastPtr(const Arr: TCDAArrayType): PCDABaseType; overload;{$ENDIF}
 
 // list-like funtions
+{$IFNDEF CDA_FuncReintroduce_Contains}
+  Function CDA_Contains(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_IndexOf}
   Function CDA_IndexOf(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Find}
@@ -1056,6 +1058,29 @@ end;
 {$UNDEF CDA_FuncNamePrefix}
 
 //==============================================================================
+
+{$IF Defined(CDA_FuncOverride_Contains) or Defined(CDA_FuncReintroduce_Contains)}
+Function _CDA_Contains(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_Contains(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean;
+{$IFEND}
+var
+  i:  Integer;
+begin
+Result := False;
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Contains(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+For i := 0 to Pred(Arr.Count) do
+  If CDA_ItemCompare(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) = 0 then
+    begin
+      Result := True;
+      Break{For i};
+    end;
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+//------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_IndexOf) or Defined(CDA_FuncReintroduce_IndexOf)}
 Function _CDA_IndexOf(const Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;{$DEFINE CDA_FuncNamePrefix}

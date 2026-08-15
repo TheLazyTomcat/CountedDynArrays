@@ -11,9 +11,9 @@
 
     Counted dynamic array of Int32 values
 
-  Version 1.5.1 (2026-03-10)
+  Version 1.5.2 (2026-08-15)
 
-  Last changed 2026-03-10
+  Last changed 2026-08-15
 
   ©2018-2026 František Milt
 
