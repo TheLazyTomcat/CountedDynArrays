@@ -674,7 +674,7 @@ end;
 //==============================================================================
 
 {$IF Defined(CDA_FuncOverride_Grow) or Defined(CDA_FuncReintroduce_Grow)}
-procedure _CDA_Grow(var Arr: TCDAArrayType; GrowSettings: TGrowSettings; MinSpace: Integer = 1);{$DEFINE CDA_FuncNamePrefix}
+procedure _CDA_Grow(var Arr: TCDAArrayType; GrowSettings: TGrowSettings; MinSpace: Integer = 1); overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Grow(var Arr: TCDAArrayType; GrowSettings: TGrowSettings; MinSpace: Integer = 1);
 {$IFEND}
@@ -692,7 +692,7 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 {$IF Defined(CDA_FuncOverride_GrowDef) or Defined(CDA_FuncReintroduce_GrowDef)}
-procedure _CDA_Grow(var Arr: TCDAArrayType; MinSpace: Integer = 1);
+procedure _CDA_Grow(var Arr: TCDAArrayType; MinSpace: Integer = 1); overload;
 {$ELSE}
 procedure CDA_Grow(var Arr: TCDAArrayType; MinSpace: Integer = 1);
 {$IFEND}
@@ -703,7 +703,7 @@ end;
 //------------------------------------------------------------------------------
  
 {$IF Defined(CDA_FuncOverride_Shrink) or Defined(CDA_FuncReintroduce_Shrink)}
-procedure _CDA_Shrink(var Arr: TCDAArrayType; ShrinkSettings: TShrinkSettings);{$DEFINE CDA_FuncNamePrefix}
+procedure _CDA_Shrink(var Arr: TCDAArrayType; ShrinkSettings: TShrinkSettings); overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Shrink(var Arr: TCDAArrayType; ShrinkSettings: TShrinkSettings);
 {$IFEND}
@@ -721,7 +721,7 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 {$IF Defined(CDA_FuncOverride_ShrinkDef) or Defined(CDA_FuncReintroduce_ShrinkDef)}
-procedure _CDA_Shrink(var Arr: TCDAArrayType);
+procedure _CDA_Shrink(var Arr: TCDAArrayType); overload;
 {$ELSE}
 procedure CDA_Shrink(var Arr: TCDAArrayType);
 {$IFEND}
@@ -755,7 +755,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Copy) or Defined(CDA_FuncReintroduce_Copy)}
-Function _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType;{$DEFINE CDA_FuncNamePrefix}
+Function _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType;
 {$IFEND}
@@ -784,7 +784,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_CopyAll) or Defined(CDA_FuncReintroduce_CopyAll)}
-Function _CDA_Copy(const Src: TCDAArrayType): TCDAArrayType;{$DEFINE CDA_FuncNamePrefix}
+Function _CDA_Copy(const Src: TCDAArrayType): TCDAArrayType; overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 Function CDA_Copy(const Src: TCDAArrayType): TCDAArrayType;
 {$IFEND}
@@ -935,7 +935,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_UniqueItems) or Defined(CDA_FuncReintroduce_UniqueItems)}
-procedure _CDA_UniqueItems(var Arr: TCDAArrayType; FromIndex, ToIndex: Integer);{$DEFINE CDA_FuncNamePrefix}
+procedure _CDA_UniqueItems(var Arr: TCDAArrayType; FromIndex, ToIndex: Integer); overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_UniqueItems(var Arr: TCDAArrayType; FromIndex, ToIndex: Integer);
 {$IFEND}
@@ -960,7 +960,7 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 {$IF Defined(CDA_FuncOverride_UniqueItemsAll) or Defined(CDA_FuncReintroduce_UniqueItemsAll)}
-procedure _CDA_UniqueItems(var Arr: TCDAArrayType);{$DEFINE CDA_FuncNamePrefix}
+procedure _CDA_UniqueItems(var Arr: TCDAArrayType); overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_UniqueItems(var Arr: TCDAArrayType);
 {$IFEND}
