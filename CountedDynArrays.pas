@@ -143,6 +143,7 @@ type
   ECDAEmptyArray       = class(ECDAException);
   ECDAOutOfRange       = class(ECDAException);
   ECDAIndexOutOfBounds = class(ECDAException);
+  ECDADuplicateItem    = class(ECDAException);
 
 {$IF SizeOf(TCDAIndexArray) <> SizeOf(Pointer)}
   {$MESSAGE Fatal 'Incompatible implementation detail.'}

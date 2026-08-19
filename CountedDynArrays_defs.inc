@@ -162,6 +162,8 @@
 {$UNDEF CDA_FuncOverride_IndexOf}
 {$UNDEF CDA_FuncOverride_Find}
 {$UNDEF CDA_FuncOverride_Add}
+{$UNDEF CDA_FuncOverride_AddDup}
+{$UNDEF CDA_FuncOverride_AddDupBool}
 {$UNDEF CDA_FuncOverride_Append}
 {$UNDEF CDA_FuncOverride_Insert}
 {$UNDEF CDA_FuncOverride_Exchange}
@@ -253,6 +255,8 @@
 {$UNDEF CDA_FuncReintroduce_IndexOf}
 {$UNDEF CDA_FuncReintroduce_Find}
 {$UNDEF CDA_FuncReintroduce_Add}
+{$UNDEF CDA_FuncReintroduce_AddDup}
+{$UNDEF CDA_FuncReintroduce_AddDupBool}
 {$UNDEF CDA_FuncReintroduce_Append}
 {$UNDEF CDA_FuncReintroduce_Insert}
 {$UNDEF CDA_FuncReintroduce_Exchange}
