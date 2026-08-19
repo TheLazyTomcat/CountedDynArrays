@@ -168,6 +168,8 @@
 {$UNDEF CDA_FuncOverride_Move}
 {$UNDEF CDA_FuncOverride_Extract}
 {$UNDEF CDA_FuncOverride_Remove}
+{$UNDEF CDA_FuncOverride_RemoveBool}
+{$UNDEF CDA_FuncOverride_RemoveAll}
 {$UNDEF CDA_FuncOverride_Delete}
 {$UNDEF CDA_FuncOverride_Clear}
 
@@ -257,6 +259,8 @@
 {$UNDEF CDA_FuncReintroduce_Move}
 {$UNDEF CDA_FuncReintroduce_Extract}
 {$UNDEF CDA_FuncReintroduce_Remove}
+{$UNDEF CDA_FuncReintroduce_RemoveBool}
+{$UNDEF CDA_FuncReintroduce_RemoveAll}
 {$UNDEF CDA_FuncReintroduce_Delete}
 {$UNDEF CDA_FuncReintroduce_Clear}
 

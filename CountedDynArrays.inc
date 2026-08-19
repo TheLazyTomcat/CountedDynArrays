@@ -188,6 +188,10 @@
   Function CDA_Extract(var Arr: TCDAArrayType; Index: Integer): TCDABaseType; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Remove}
   Function CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_RemoveBool}
+  Function CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_RemoveAll}
+  Function CDA_RemoveAll(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Delete}
   procedure CDA_Delete(var Arr: TCDAArrayType; Index: Integer); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Clear}
@@ -1294,7 +1298,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Remove) or Defined(CDA_FuncReintroduce_Remove)}
-Function _CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
+Function _CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer; overload;
 {$ELSE}
 Function CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
 {$IFEND}
@@ -1303,6 +1307,48 @@ begin
 If CDA_Find(Arr,Item,Result{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
   CDA_Delete(Arr,Result);
 end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_RemoveBool) or Defined(CDA_FuncReintroduce_RemoveBool)}
+Function _CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean; overload;
+{$ELSE}
+Function CDA_Remove(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Boolean;
+{$IFEND}
+begin
+Result := CDA_Find(Arr,Item,Index{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF});
+If Result then
+  CDA_Delete(Arr,Index);
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_RemoveAll) or Defined(CDA_FuncReintroduce_RemoveAll)}
+Function _CDA_RemoveAll(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_RemoveAll(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;
+{$IFEND}
+var
+  i,j:  Integer;
+begin
+// return number of removed items
+Result := 0;
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_RemoveAll(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+For i := Pred(Arr.Count) downto 0 do
+  If CDA_ItemCompare(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) = 0 then
+    begin
+      CDA_ItemFinal(Arr.Arr[i]);
+      For j := i to (Arr.Count - 2) do
+        Arr.Arr[j] := Arr.Arr[j + 1];
+      Dec(Arr.Count);
+      Inc(Result);
+    end;
+Arr.Checksum := CDA_Checksum(Arr);
+CDA_Shrink(Arr);
+end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //------------------------------------------------------------------------------
     
