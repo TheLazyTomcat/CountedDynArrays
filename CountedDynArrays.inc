@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.5.2 (2026-08-15)
+  Version 1.5.3 (2026-08-19)
 
-  Last changed 2026-08-15
+  Last changed 2026-08-19
 
   ©2018-2026 František Milt
 
@@ -88,6 +88,8 @@
   procedure CDA_Final(var Arr: TCDAArrayType); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Invalidate}
   procedure CDA_Invalidate(var Arr: TCDAArrayType); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_Create}
+  procedure CDA_Create(out Arr: TCDAArrayType; const Items: array of const; SecureCopy: Boolean = False); overload;{$ENDIF}
 
 // user data access
 {$IFNDEF CDA_FuncReintroduce_GetUserData}
@@ -372,6 +374,25 @@ Stream.Seek(0,soCurrent);
 Result := CDA_DEFAULT_VALUE;
 end;
 
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_ItemDecode) or Defined(CDA_FuncReintroduce_ItemDecode)}
+Function _CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+{$ELSE}
+Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+{$IFEND}
+begin
+{
+  WARNING -  following code is nonsensical and serves only as a placeholder to
+             suppress warnings produced by compilers about unused parameters,
+             it must be replaced by proper code suited for the actual item type.
+}
+If Item.VType = 0 then
+  Result := CDA_DEFAULT_VALUE
+else
+  Result := CDA_DEFAULT_VALUE;
+end;
+
 //==============================================================================
 
 {$IF Defined(CDA_FuncOverride_SortFunc_ItemCompare) or Defined(CDA_FuncReintroduce_SortFunc_ItemCompare)}
@@ -510,6 +531,28 @@ Arr.UserData := 0;
 Arr.InternalPtr := nil;
 Arr.InternalInt := 0;
 Arr.Checksum := not CDA_Checksum(Arr);
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_Create) or Defined(CDA_FuncReintroduce_Create)}
+procedure _CDA_Create(out Arr: TCDAArrayType; const Items: array of const; SecureCopy: Boolean = False);
+{$ELSE}
+procedure CDA_Create(out Arr: TCDAArrayType; const Items: array of const; SecureCopy: Boolean = False);
+{$IFEND}
+var
+  i:  Integer;
+begin
+CDA_Init(Arr);
+CDA_SetCapacity(Arr,Length(Items));
+For i := Low(Items) to High(Items) do
+  begin
+    Arr.Arr[Arr.Count] := CDA_ItemDecode(Items[i]);
+    If SecureCopy then
+      CDA_ItemUnique(Arr.Arr[Arr.Count]);
+    Inc(Arr.Count);
+  end;
+Arr.Checksum := CDA_Checksum(Arr);
 end;
 
 //==============================================================================

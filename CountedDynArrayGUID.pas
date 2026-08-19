@@ -11,9 +11,9 @@
 
     Counted dynamic array of TGUID values
 
-  Version 1.5.2 (2026-08-15)
+  Version 1.5.3 (2026-08-19)
 
-  Last changed 2026-08-15
+  Last changed 2026-08-19
 
   ©2018-2026 František Milt
 
@@ -58,6 +58,7 @@ unit CountedDynArrayGUID;
 {$DEFINE CDA_FuncOverride_ItemCompare}
 {$DEFINE CDA_FuncOverride_ItemWrite}
 {$DEFINE CDA_FuncOverride_ItemRead}
+{$DEFINE CDA_FuncOverride_ItemDecode}
 
 interface
 
@@ -170,6 +171,26 @@ Result.D1 := Stream_GetUInt32(Stream);
 Result.D2 := Stream_GetUInt16(Stream);
 Result.D3 := Stream_GetUInt16(Stream);
 Stream_ReadBuffer(Stream,Result.D4,SizeOf(Result.D4));
+end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+begin
+case Item.VType of
+  vtPointer:        Result := TCDABaseType(Item.VPointer^);
+{$IFDEF Unicode}
+{$IF Declared(vtUnicodeString)}
+  vtUnicodeString:  Result := StringToGUID(UnicodeString(Item.VUnicodeString));
+{$ELSE}
+  vtWideString:     Result := StringToGUID(WideString(Item.VWideString));
+{$IFEND}
+{$ELSE}
+  vtAnsiString:     Result := StringToGUID(AnsiString(Item.VAnsiString));
+{$ENDIF}  
+else
+  Result := CDA_DEFAULT_VALUE;
+end;
 end;
 
 //------------------------------------------------------------------------------

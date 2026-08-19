@@ -80,9 +80,9 @@
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  Version 1.5.2 (2026-08-15)
+  Version 1.5.3 (2026-08-19)
 
-  Last changed 2026-08-15
+  Last changed 2026-08-19
 
   ©2018-2026 František Milt
 

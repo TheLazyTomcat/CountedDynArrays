@@ -11,9 +11,9 @@
 
     Counted dynamic array of UInt16 values
 
-  Version 1.5.2 (2026-08-15)
+  Version 1.5.3 (2026-08-19)
 
-  Last changed 2026-08-15
+  Last changed 2026-08-19
 
   ©2018-2026 František Milt
 
@@ -58,6 +58,7 @@ unit CountedDynArrayUInt16;
 {$DEFINE CDA_FuncOverride_ItemCompare}
 {$DEFINE CDA_FuncOverride_ItemWrite}
 {$DEFINE CDA_FuncOverride_ItemRead}
+{$DEFINE CDA_FuncOverride_ItemDecode}
 
 interface
 
@@ -130,6 +131,21 @@ end;
 Function CDA_ItemRead(Stream: TStream): TCDABaseType;
 begin
 Result := Stream_GetUInt16(Stream);
+end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+begin
+case Item.VType of
+  vtInteger:  Result := TCDABaseType(Item.VInteger);
+  vtInt64:    Result := TCDABaseType(Item.VInt64^);
+{$IF Declared(vtQWord)}
+  vtQWord:    Result := TCDABaseType(Item.VQWord^);
+{$IFEND}
+else
+  Result := CDA_DEFAULT_VALUE;
+end;
 end;
 
 //------------------------------------------------------------------------------

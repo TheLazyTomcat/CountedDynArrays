@@ -11,9 +11,9 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.5.2 (2026-08-15)
+  Version 1.5.3 (2026-08-19)
 
-  Last changed 2026-08-15
+  Last changed 2026-08-19
 
   ©2018-2026 František Milt
 
@@ -108,6 +108,7 @@
 {$UNDEF CDA_FuncOverride_ItemCompare}
 {$UNDEF CDA_FuncOverride_ItemWrite}
 {$UNDEF CDA_FuncOverride_ItemRead}
+{$UNDEF CDA_FuncOverride_ItemDecode}
 
 {$UNDEF CDA_FuncOverride_SortFunc_ItemCompare}
 {$UNDEF CDA_FuncOverride_SortFunc_ItemCompareStabilized}
@@ -119,6 +120,7 @@
 {$UNDEF CDA_FuncOverride_Init}
 {$UNDEF CDA_FuncOverride_Final}
 {$UNDEF CDA_FuncOverride_Invalidate}
+{$UNDEF CDA_FuncOverride_Create}
 
 {$UNDEF CDA_FuncOverride_GetUserData}
 {$UNDEF CDA_FuncOverride_SetUserData}
@@ -203,6 +205,7 @@
 {$UNDEF CDA_FuncReintroduce_ItemCompare}
 {$UNDEF CDA_FuncReintroduce_ItemWrite}
 {$UNDEF CDA_FuncReintroduce_ItemRead}
+{$UNDEF CDA_FuncReintroduce_ItemDecode}
 
 {$UNDEF CDA_FuncReintroduce_SortFunc_ItemCompare}
 {$UNDEF CDA_FuncReintroduce_SortFunc_ItemCompareStabilized}
@@ -214,6 +217,7 @@
 {$UNDEF CDA_FuncReintroduce_Init}
 {$UNDEF CDA_FuncReintroduce_Final}
 {$UNDEF CDA_FuncReintroduce_Invalidate}
+{$UNDEF CDA_FuncReintroduce_Create}
 
 {$UNDEF CDA_FuncReintroduce_GetUserData}
 {$UNDEF CDA_FuncReintroduce_SetUserData}
