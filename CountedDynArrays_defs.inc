@@ -165,7 +165,9 @@
 {$UNDEF CDA_FuncOverride_AddDup}
 {$UNDEF CDA_FuncOverride_AddDupBool}
 {$UNDEF CDA_FuncOverride_Append}
+{$UNDEF CDA_FuncOverride_AppendDup}
 {$UNDEF CDA_FuncOverride_Insert}
+{$UNDEF CDA_FuncOverride_InsertDup}
 {$UNDEF CDA_FuncOverride_Exchange}
 {$UNDEF CDA_FuncOverride_Move}
 {$UNDEF CDA_FuncOverride_Extract}
@@ -258,7 +260,9 @@
 {$UNDEF CDA_FuncReintroduce_AddDup}
 {$UNDEF CDA_FuncReintroduce_AddDupBool}
 {$UNDEF CDA_FuncReintroduce_Append}
+{$UNDEF CDA_FuncReintroduce_AppendDup}
 {$UNDEF CDA_FuncReintroduce_Insert}
+{$UNDEF CDA_FuncReintroduce_InsertDup}
 {$UNDEF CDA_FuncReintroduce_Exchange}
 {$UNDEF CDA_FuncReintroduce_Move}
 {$UNDEF CDA_FuncReintroduce_Extract}

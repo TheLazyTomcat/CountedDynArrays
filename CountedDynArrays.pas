@@ -131,6 +131,8 @@ uses
   AuxTypes{$IFDEF UseAuxExceptions}, AuxExceptions{$ENDIF};
 
 type
+  TCDADuplicates = (dupIgnore,dupAccept,dupError);
+
   TCDASignature = PtrUInt;
   TCDAChecksum  = PtrUInt;
   

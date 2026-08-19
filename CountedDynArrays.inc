@@ -177,13 +177,17 @@
 {$IFNDEF CDA_FuncReintroduce_Add}
   Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_AddDup}
-  Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TDuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
+  Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_AddDupBool}
-  Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer; Duplicates: TDuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean; overload;{$ENDIF}
+  Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Append}
   procedure CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; SecureCopy: Boolean = False); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_AppendDup}
+  Function CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Insert}
   procedure CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_InsertDup}
+  Function CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Exchange}
   procedure CDA_Exchange(var Arr: TCDAArrayType; Idx1, Idx2: Integer); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Move}
@@ -1148,9 +1152,9 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 {$IF Defined(CDA_FuncOverride_AddDup) or Defined(CDA_FuncReintroduce_AddDup)}
-Function _CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TDuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$DEFINE CDA_FuncNamePrefix}
+Function _CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
-Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TDuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer;
+Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer;
 {$IFEND}
 begin
 If not CDA_Add(Arr,Item,Result,Duplicates{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF},SecureCopy) then
@@ -1161,9 +1165,9 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 {$IF Defined(CDA_FuncOverride_AddDupBool) or Defined(CDA_FuncReintroduce_AddDupBool)}
-Function _CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer; Duplicates: TDuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean; overload;{$DEFINE CDA_FuncNamePrefix}
+Function _CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean; overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
-Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer; Duplicates: TDuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean;
+Function CDA_Add(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; out Index: Integer; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean;
 {$IFEND}
 begin
 // validity check is done by CDA_Find or CDA_Add, whichever is called first
@@ -1186,7 +1190,7 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Append) or Defined(CDA_FuncReintroduce_Append)}
-procedure _CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; SecureCopy: Boolean = False);{$DEFINE CDA_FuncNamePrefix}
+procedure _CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; SecureCopy: Boolean = False); overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; SecureCopy: Boolean = False);
 {$IFEND}
@@ -1211,10 +1215,49 @@ Arr.Checksum := CDA_Checksum(Arr);
 end;
 {$UNDEF CDA_FuncNamePrefix}
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_AppendDup) or Defined(CDA_FuncReintroduce_AppendDup)}
+Function _CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer;
+{$IFEND}
+var
+  i,Idx:  Integer;
+begin
+// return number of added items
+Result := Items.Count;
+If Duplicates <> dupAccept then
+  begin
+    If not CDA_Valid(Arr) then
+      raise ECDAInvalidArray.CreateFmt('%sCDA_Append(%s): Invalid array.',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+    For i := 0 to Pred(Items.Count) do
+      If not CDA_Find(Arr,Items.Arr[i],Idx{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
+        begin
+          // item is not present, add it
+          CDA_Grow(Arr);
+          Arr.Arr[Arr.Count] := Items.Arr[i];
+          If SecureCopy then
+            CDA_ItemUnique(Arr.Arr[Arr.Count]);
+          Inc(Arr.Count);
+          Arr.Checksum := CDA_Checksum(Arr);
+        end
+      // duplicate item...
+      else If Duplicates = dupError then
+        raise ECDADuplicateItem.CreateFmt('%sCDA_Append(%s): Duplicate item.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME])
+      else
+        Dec(Result);
+  end
+else CDA_Append(Arr,Items,SecureCopy);
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Insert) or Defined(CDA_FuncReintroduce_Insert)}
-procedure _CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False);{$DEFINE CDA_FuncNamePrefix}
+procedure _CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False); overload;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False);
 {$IFEND}
@@ -1240,6 +1283,32 @@ else If Index = Arr.Count then
 else
   raise ECDAIndexOutOfBounds.CreateFmt('%sCDA_Insert(%s): Index (%d) out of bounds.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Index]);
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_InsertDup) or Defined(CDA_FuncReintroduce_InsertDup)}
+Function _CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean; overload;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Boolean;
+{$IFEND}
+var
+  Idx:  Integer;
+begin
+Result := True;
+If Duplicates <> dupAccept then
+  begin
+    If CDA_Find(Arr,Item,Idx{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
+      begin
+        If Duplicates = dupError then
+          raise ECDADuplicateItem.CreateFmt('%sCDA_Insert(%s): Duplicate item.',
+            [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+        Result := False;        
+      end
+    else CDA_Insert(Arr,Index,Item,SecureCopy);
+  end
+else CDA_Insert(Arr,Index,Item,SecureCopy);
 end;
 {$UNDEF CDA_FuncNamePrefix}
 
