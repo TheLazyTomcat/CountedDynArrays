@@ -11,7 +11,7 @@
 
     Main implementation template
 
-  Version 1.5.3 (2026-08-19)
+  Version 1.5.4 (2026-08-19)
 
   Last changed 2026-08-19
 
@@ -89,7 +89,7 @@
 {$IFNDEF CDA_FuncReintroduce_Invalidate}
   procedure CDA_Invalidate(var Arr: TCDAArrayType); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Create}
-  procedure CDA_Create(out Arr: TCDAArrayType; const Items: array of const; SecureCopy: Boolean = False); overload;{$ENDIF}
+  procedure CDA_Create(out Arr: TCDAArrayType; const Items: array of const; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False); overload;{$ENDIF}
 
 // user data access
 {$IFNDEF CDA_FuncReintroduce_GetUserData}
@@ -377,9 +377,9 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_ItemDecode) or Defined(CDA_FuncReintroduce_ItemDecode)}
-Function _CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+Function _CDA_ItemDecode(const Item: TVarRec; out Value: TCDABaseType): Boolean;
 {$ELSE}
-Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+Function CDA_ItemDecode(const Item: TVarRec; out Value: TCDABaseType): Boolean;
 {$IFEND}
 begin
 {
@@ -388,9 +388,10 @@ begin
              it must be replaced by proper code suited for the actual item type.
 }
 If Item.VType = 0 then
-  Result := CDA_DEFAULT_VALUE
+  Value := CDA_DEFAULT_VALUE
 else
-  Result := CDA_DEFAULT_VALUE;
+  Value := CDA_DEFAULT_VALUE;
+Result := True;
 end;
 
 //==============================================================================
@@ -536,9 +537,9 @@ end;
 //------------------------------------------------------------------------------
 
 {$IF Defined(CDA_FuncOverride_Create) or Defined(CDA_FuncReintroduce_Create)}
-procedure _CDA_Create(out Arr: TCDAArrayType; const Items: array of const; SecureCopy: Boolean = False);
+procedure _CDA_Create(out Arr: TCDAArrayType; const Items: array of const; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
-procedure CDA_Create(out Arr: TCDAArrayType; const Items: array of const; SecureCopy: Boolean = False);
+procedure CDA_Create(out Arr: TCDAArrayType; const Items: array of const; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False);
 {$IFEND}
 var
   i:  Integer;
@@ -547,13 +548,22 @@ CDA_Init(Arr);
 CDA_SetCapacity(Arr,Length(Items));
 For i := Low(Items) to High(Items) do
   begin
-    Arr.Arr[Arr.Count] := CDA_ItemDecode(Items[i]);
-    If SecureCopy then
+    If not CDA_ItemDecode(Items[i],Arr.Arr[Arr.Count]) then
+      case ConversionFailure of
+        cfUseDefaultValue:  Arr.Arr[Arr.Count] := CDA_DEFAULT_VALUE;
+        cfDropItem:         Dec(Arr.Count); // later incremented, so it stays unchanged
+      else
+       {cfError}
+        raise ECDAConversionError.CreateFmt('%sCDA_Create(%s): Failed to convert variant record (%d).',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Items[i].VType]);
+      end
+    else If SecureCopy then
       CDA_ItemUnique(Arr.Arr[Arr.Count]);
     Inc(Arr.Count);
   end;
 Arr.Checksum := CDA_Checksum(Arr);
 end;
+{$UNDEF CDA_FuncNamePrefix}
 
 //==============================================================================
   

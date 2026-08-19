@@ -11,7 +11,7 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.5.3 (2026-08-19)
+  Version 1.5.4 (2026-08-19)
 
   Last changed 2026-08-19
 

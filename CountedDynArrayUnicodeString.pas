@@ -11,7 +11,7 @@
 
     Counted dynamic array of UnicodeString values
 
-  Version 1.5.3 (2026-08-19)
+  Version 1.5.4 (2026-08-19)
 
   Last changed 2026-08-19
 
@@ -146,16 +146,17 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+Function CDA_ItemDecode(const Item: TVarRec; out Value: TCDABaseType): Boolean;
 begin
+Result := True;
 case Item.VType of
 {$IF Declared(vtUnicodeString)}
-  vtUnicodeString:  Result := TCDABaseType(Item.VUnicodeString);
+  vtUnicodeString:  Value := TCDABaseType(Item.VUnicodeString);
 {$ELSE}
-  vtWideString:     Result := TCDABaseType(Item.VWideString);
+  vtWideString:     Value := TCDABaseType(Item.VWideString);
 {$IFEND}
 else
-  Result := CDA_DEFAULT_VALUE;
+  Result := False;
 end;
 end;
 

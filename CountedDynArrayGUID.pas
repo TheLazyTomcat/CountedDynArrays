@@ -11,7 +11,7 @@
 
     Counted dynamic array of TGUID values
 
-  Version 1.5.3 (2026-08-19)
+  Version 1.5.4 (2026-08-19)
 
   Last changed 2026-08-19
 
@@ -175,21 +175,22 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+Function CDA_ItemDecode(const Item: TVarRec; out Value: TCDABaseType): Boolean;
 begin
+Result := True;
 case Item.VType of
-  vtPointer:        Result := TCDABaseType(Item.VPointer^);
+  vtPointer:        Value := TCDABaseType(Item.VPointer^);
 {$IFDEF Unicode}
 {$IF Declared(vtUnicodeString)}
-  vtUnicodeString:  Result := StringToGUID(UnicodeString(Item.VUnicodeString));
+  vtUnicodeString:  Value := StringToGUID(UnicodeString(Item.VUnicodeString));
 {$ELSE}
-  vtWideString:     Result := StringToGUID(WideString(Item.VWideString));
+  vtWideString:     Value := StringToGUID(WideString(Item.VWideString));
 {$IFEND}
 {$ELSE}
-  vtAnsiString:     Result := StringToGUID(AnsiString(Item.VAnsiString));
+  vtAnsiString:     Value := StringToGUID(AnsiString(Item.VAnsiString));
 {$ENDIF}  
 else
-  Result := CDA_DEFAULT_VALUE;
+  Result := False;
 end;
 end;
 

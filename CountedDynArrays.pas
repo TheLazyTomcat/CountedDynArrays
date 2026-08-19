@@ -80,7 +80,7 @@
     For help with implementing a counted dynamic array for any type, please
     refer to already implemented arrays or contact the author.
 
-  Version 1.5.3 (2026-08-19)
+  Version 1.5.4 (2026-08-19)
 
   Last changed 2026-08-19
 
@@ -133,6 +133,8 @@ uses
 type
   TCDADuplicates = (dupIgnore,dupAccept,dupError);
 
+  TCDAConversionFailure = (cfUseDefaultValue,cfDropItem,cfError);
+
   TCDASignature = PtrUInt;
   TCDAChecksum  = PtrUInt;
   
@@ -146,6 +148,7 @@ type
   ECDAOutOfRange       = class(ECDAException);
   ECDAIndexOutOfBounds = class(ECDAException);
   ECDADuplicateItem    = class(ECDAException);
+  ECDAConversionError  = class(ECDAException);
 
 {$IF SizeOf(TCDAIndexArray) <> SizeOf(Pointer)}
   {$MESSAGE Fatal 'Incompatible implementation detail.'}

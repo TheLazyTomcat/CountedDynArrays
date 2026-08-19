@@ -11,7 +11,7 @@
 
     Counted dynamic array of Integer values
 
-  Version 1.5.3 (2026-08-19)
+  Version 1.5.4 (2026-08-19)
 
   Last changed 2026-08-19
 
@@ -136,13 +136,14 @@ end;
 
 //------------------------------------------------------------------------------
 
-Function CDA_ItemDecode(const Item: TVarRec): TCDABaseType;
+Function CDA_ItemDecode(const Item: TVarRec; out Value: TCDABaseType): Boolean;
 begin
+Result := True;
 case Item.VType of
-  vtInteger:  Result := TCDABaseType(Item.VInteger);
-  vtInt64:    Result := TCDABaseType(Item.VInt64^);
+  vtInteger:  Value := TCDABaseType(Item.VInteger);
+  vtInt64:    Value := TCDABaseType(Item.VInt64^);
 else
-  Result := CDA_DEFAULT_VALUE;
+  Result := False;
 end;
 end;
 
