@@ -11,9 +11,9 @@
 
     Counted dynamic array of Float64 (Double) values
 
-  Version 1.5.4 (2026-08-19)
+  Version 1.5.5 (2026-08-25)
 
-  Last changed 2026-08-19
+  Last changed 2026-08-25
 
   ©2018-2026 František Milt
 
@@ -56,6 +56,7 @@ unit CountedDynArrayFloat64;
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
+{$DEFINE CDA_FuncOverride_ItemSame}
 {$DEFINE CDA_FuncOverride_ItemWrite}
 {$DEFINE CDA_FuncOverride_ItemRead}
 {$DEFINE CDA_FuncOverride_ItemDecode}
@@ -124,6 +125,13 @@ else If A > B then
 else
   Result := 0;
 end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemSame(A,B: TCDABaseType): Boolean; {$IFDEF CanInline} inline; {$ENDIF}
+begin
+Result := A = B;
+end;  
 
 //------------------------------------------------------------------------------
 

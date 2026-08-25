@@ -11,9 +11,9 @@
 
     Counted dynamic array of Variant values
 
-  Version 1.5.4 (2026-08-19)
+  Version 1.5.5 (2026-08-25)
 
-  Last changed 2026-08-19
+  Last changed 2026-08-25
 
   ©2018-2026 František Milt
 
@@ -58,6 +58,7 @@ unit CountedDynArrayVariant;
 {$DEFINE CDA_ConstBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
+{$DEFINE CDA_FuncOverride_ItemSame}
 {$DEFINE CDA_FuncOverride_ItemWrite}
 {$DEFINE CDA_FuncOverride_ItemRead}
 {$DEFINE CDA_FuncOverride_ItemDecode}
@@ -131,6 +132,13 @@ case VarCompareValue(A,B) of
 else
   Result := 0;
 end;
+end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemSame(const A,B: TCDABaseType): Boolean;{$IFDEF CanInline} inline;{$ENDIF}
+begin
+Result := VarSameValue(A,B);
 end;
 
 //------------------------------------------------------------------------------

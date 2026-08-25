@@ -11,9 +11,9 @@
 
     Counted dynamic array of AnsiChar values
 
-  Version 1.5.4 (2026-08-19)
+  Version 1.5.5 (2026-08-25)
 
-  Last changed 2026-08-19
+  Last changed 2026-08-25
 
   ©2018-2026 František Milt
 
@@ -58,6 +58,7 @@ unit CountedDynArrayAnsiChar;
 {$DEFINE CDA_CaseSensitiveBaseType}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
+{$DEFINE CDA_FuncOverride_ItemSame}
 {$DEFINE CDA_FuncOverride_ItemWrite}
 {$DEFINE CDA_FuncOverride_ItemRead}
 {$DEFINE CDA_FuncOverride_ItemDecode}
@@ -120,6 +121,13 @@ Function CDA_ItemCompare(A,B: TCDABaseType; CaseSensitive: Boolean): Integer;{$I
 begin
 Result := AnsiStringCompare(A,B,CaseSensitive);
 end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemSame(A,B: TCDABaseType; CaseSensitive: Boolean): Boolean; {$IFDEF CanInline} inline; {$ENDIF}
+begin
+Result := AnsiStringSame(A,B,CaseSensitive);
+end;  
 
 //------------------------------------------------------------------------------
 

@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.5.4 (2026-08-19)
+  Version 1.5.5 (2026-08-25)
 
-  Last changed 2026-08-19
+  Last changed 2026-08-25
 
   ©2018-2026 František Milt
 
@@ -338,6 +338,24 @@ If not Assigned(Addr(A)) and not Assigned(Addr(B))
   Result := 0
 else
   Result := 0;
+end;
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_ItemSame) or Defined(CDA_FuncReintroduce_ItemSame)}
+Function _CDA_ItemSame({$IFDEF CDA_ConstBaseType}const {$ENDIF}A,B: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean{$ENDIF}): Boolean;
+{$ELSE}
+Function CDA_ItemSame({$IFDEF CDA_ConstBaseType}const {$ENDIF}A,B: TCDABaseType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean{$ENDIF}): Boolean;
+{$IFEND}
+begin
+{
+  For some types, it might be faster and more convenient to directly
+  compare the two values for equality insteady of using full ordered
+  comparison.
+  If so, override this function and replace default implementation with
+  optimized equality compare.
+}
+Result := CDA_ItemCompare(A,B{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) = 0;
 end;
 
 //------------------------------------------------------------------------------
@@ -1137,7 +1155,7 @@ If not CDA_Valid(Arr) then
   raise ECDAInvalidArray.CreateFmt('%sCDA_Contains(%s): Invalid array.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 For i := 0 to Pred(Arr.Count) do
-  If CDA_ItemCompare(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) = 0 then
+  If CDA_ItemSame(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
     begin
       Result := True;
       Break{For i};
@@ -1160,7 +1178,7 @@ If not CDA_Valid(Arr) then
   raise ECDAInvalidArray.CreateFmt('%sCDA_IndexOf(%s): Invalid array.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 For i := 0 to Pred(Arr.Count) do
-  If CDA_ItemCompare(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) = 0 then
+  If CDA_ItemSame(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
     begin
       Result := i;
       Break{For i};
@@ -1503,7 +1521,7 @@ If not CDA_Valid(Arr) then
   raise ECDAInvalidArray.CreateFmt('%sCDA_RemoveAll(%s): Invalid array.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 For i := Pred(Arr.Count) downto 0 do
-  If CDA_ItemCompare(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) = 0 then
+  If CDA_ItemSame(Arr.Arr[i],Item{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
     begin
       CDA_ItemFinal(Arr.Arr[i]);
       For j := i to (Arr.Count - 2) do
@@ -1635,7 +1653,7 @@ If Arr1.Count = Arr2.Count then
   begin
     Result := True;
     For i := 0 to Pred(Arr1.Count) do
-      If CDA_ItemCompare(Arr1.Arr[i],Arr2.Arr[i]{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) <> 0 then
+      If not CDA_ItemSame(Arr1.Arr[i],Arr2.Arr[i]{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
         begin
           Result := False;
           Break{For i};

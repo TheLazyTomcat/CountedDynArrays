@@ -11,9 +11,9 @@
 
     Counted dynamic array of TGUID values
 
-  Version 1.5.4 (2026-08-19)
+  Version 1.5.5 (2026-08-25)
 
-  Last changed 2026-08-19
+  Last changed 2026-08-25
 
   ©2018-2026 František Milt
 
@@ -56,6 +56,7 @@ unit CountedDynArrayGUID;
 {$INCLUDE '.\CountedDynArrays_defs.inc'}
 
 {$DEFINE CDA_FuncOverride_ItemCompare}
+{$DEFINE CDA_FuncOverride_ItemSame}
 {$DEFINE CDA_FuncOverride_ItemWrite}
 {$DEFINE CDA_FuncOverride_ItemRead}
 {$DEFINE CDA_FuncOverride_ItemDecode}
@@ -151,6 +152,22 @@ else
           end;
       end;
   end;
+end;
+
+//------------------------------------------------------------------------------
+
+Function CDA_ItemSame(A,B: TCDABaseType): Boolean;
+var
+  i:  Integer;
+begin
+Result := (A.D1 = B.D1) and (A.D2 = B.D2) and (A.D3 = B.D3);
+If Result then
+  For i := Low(A.D4) to High(A.D4) do
+    If A.D4[i] <> B.D4[i] then
+      begin
+        Result := False;
+        Break{For i};
+      end;
 end;
 
 //------------------------------------------------------------------------------
