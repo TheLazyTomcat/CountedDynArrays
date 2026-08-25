@@ -11,7 +11,7 @@
 
     Main implementation template
 
-  Version 1.5.5 (2026-08-25)
+  Version 1.5.6 (2026-08-25)
 
   Last changed 2026-08-25
 
@@ -208,8 +208,6 @@
   procedure CDA_Clear(var Arr: TCDAArrayType); overload;{$ENDIF}
 
 // whole-array access/operation
-{$IFNDEF CDA_FuncReintroduce_ArrayPtr}
-  Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Compare}
   Function CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Same}
@@ -224,6 +222,14 @@
   procedure CDA_FillFrom(var Arr: TCDAArrayType; Index: Integer; SecureCopy: Boolean = False); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Fill}
   procedure CDA_Fill(var Arr: TCDAArrayType;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False); overload;{$ENDIF}
+
+// low-level array access
+{$IFNDEF CDA_FuncReintroduce_ArrayPtr}
+  Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_ArraySize}
+  Function CDA_ArraySize(const Arr: TCDAArrayType): TMemSize; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_ArrayAllocSize}
+  Function CDA_ArrayAllocatedSize(const Arr: TCDAArrayType): TMemSize; overload;{$ENDIF}
 
 // streaming (stream)
 {$IFNDEF CDA_FuncReintroduce_WriteToStream}
@@ -1575,24 +1581,6 @@ end;
 
 //==============================================================================
 
-{$IF Defined(CDA_FuncOverride_ArrayPtr) or Defined(CDA_FuncReintroduce_ArrayPtr)}
-Function _CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;{$DEFINE CDA_FuncNamePrefix}
-{$ELSE}
-Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;
-{$IFEND}
-begin
-If not CDA_Valid(Arr) then
-  raise ECDAInvalidArray.CreateFmt('%sCDA_ArrayPtr(%s): Invalid array.',
-          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
-If Arr.Count > 0 then
-  Result := Addr(Arr.Arr[0])
-else
-  Result := nil;
-end;
-{$UNDEF CDA_FuncNamePrefix}
-
-//------------------------------------------------------------------------------
-
 {$IF Defined(CDA_FuncOverride_Compare) or Defined(CDA_FuncReintroduce_Compare)}
 Function _CDA_Compare(const Arr1, Arr2: TCDAArrayType{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}): Integer;{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
@@ -1811,6 +1799,60 @@ For i := 0 to Pred(Arr.Count) do
     If SecureCopy then
       CDA_ItemUnique(Arr.Arr[i]);
   end;
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+//==============================================================================
+
+{$IF Defined(CDA_FuncOverride_ArrayPtr) or Defined(CDA_FuncReintroduce_ArrayPtr)}
+Function _CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_ArrayPtr(const Arr: TCDAArrayType): Pointer;
+{$IFEND}
+begin
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_ArrayPtr(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If Arr.Count > 0 then
+  Result := Addr(Arr.Arr[0])
+else
+  Result := nil;
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_ArraySize) or Defined(CDA_FuncReintroduce_ArraySize)}
+Function _CDA_ArraySize(const Arr: TCDAArrayType): TMemSize;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_ArraySize(const Arr: TCDAArrayType): TMemSize;
+{$IFEND}
+begin
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_ArraySize(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If Arr.Count > 0 then
+  Result := TMemSize(Arr.Count) * TMemSize(SizeOf(TCDABaseType))
+else
+  Result := 0;
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_ArrayAllocSize) or Defined(CDA_FuncReintroduce_ArrayAllocSize)}
+Function _CDA_ArrayAllocatedSize(const Arr: TCDAArrayType): TMemSize;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_ArrayAllocatedSize(const Arr: TCDAArrayType): TMemSize;
+{$IFEND}
+begin
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_ArrayAllocatedSize(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If Arr.Count > 0 then
+  Result := TMemSize(Length(Arr.Arr)) * TMemSize(SizeOf(TCDABaseType))
+else
+  Result := 0;
 end;
 {$UNDEF CDA_FuncNamePrefix}
 

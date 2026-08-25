@@ -11,7 +11,7 @@
 
     Counted dynamic array of TGUID values
 
-  Version 1.5.5 (2026-08-25)
+  Version 1.5.6 (2026-08-25)
 
   Last changed 2026-08-25
 

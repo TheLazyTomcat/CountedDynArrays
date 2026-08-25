@@ -11,7 +11,7 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.5.5 (2026-08-25)
+  Version 1.5.6 (2026-08-25)
 
   Last changed 2026-08-25
 
@@ -180,7 +180,6 @@
 {$UNDEF CDA_FuncOverride_Delete}
 {$UNDEF CDA_FuncOverride_Clear}
 
-{$UNDEF CDA_FuncOverride_ArrayPtr}
 {$UNDEF CDA_FuncOverride_Compare}
 {$UNDEF CDA_FuncOverride_Same}
 {$UNDEF CDA_FuncOverride_Reverse}
@@ -188,6 +187,10 @@
 {$UNDEF CDA_FuncOverride_SortStabilized}
 {$UNDEF CDA_FuncOverride_FillFrom}
 {$UNDEF CDA_FuncOverride_Fill}
+
+{$UNDEF CDA_FuncOverride_ArrayPtr}
+{$UNDEF CDA_FuncOverride_ArraySize}
+{$UNDEF CDA_FuncOverride_ArrayAllocSize}
 
 {$UNDEF CDA_FuncOverride_WriteToStream}
 {$UNDEF CDA_FuncOverride_SaveToStream}
@@ -278,7 +281,6 @@
 {$UNDEF CDA_FuncReintroduce_Delete}
 {$UNDEF CDA_FuncReintroduce_Clear}
 
-{$UNDEF CDA_FuncReintroduce_ArrayPtr}
 {$UNDEF CDA_FuncReintroduce_Compare}
 {$UNDEF CDA_FuncReintroduce_Same}
 {$UNDEF CDA_FuncReintroduce_Reverse}
@@ -286,6 +288,10 @@
 {$UNDEF CDA_FuncReintroduce_SortStabilized}
 {$UNDEF CDA_FuncReintroduce_FillFrom}
 {$UNDEF CDA_FuncReintroduce_Fill}
+
+{$UNDEF CDA_FuncReintroduce_ArrayPtr}
+{$UNDEF CDA_FuncReintroduce_ArraySize}
+{$UNDEF CDA_FuncReintroduce_ArrayAllocSize}
 
 {$UNDEF CDA_FuncReintroduce_WriteToStream}
 {$UNDEF CDA_FuncReintroduce_SaveToStream}
