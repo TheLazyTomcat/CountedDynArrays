@@ -13,7 +13,7 @@
 
   Version 1.5.6 (2026-08-25)
 
-  Last changed 2026-08-26
+  Last changed 2026-08-27
 
   ©2018-2026 František Milt
 
@@ -1570,14 +1570,21 @@ end;
 //------------------------------------------------------------------------------
        
 {$IF Defined(CDA_FuncOverride_Clear) or Defined(CDA_FuncReintroduce_Clear)}
-procedure _CDA_Clear(var Arr: TCDAArrayType);
+procedure _CDA_Clear(var Arr: TCDAArrayType);{$DEFINE CDA_FuncNamePrefix}
 {$ELSE}
 procedure CDA_Clear(var Arr: TCDAArrayType);
 {$IFEND}
+var
+  i:  Integer;
 begin
-CDA_SetLength(Arr,0); // does validity check
-Arr.UserData := 0;
-end;
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Clear(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+For i := 0 to Pred(Arr.Count) do
+  CDA_ItemFinal(Arr.Arr[i]);
+Arr.Count := 0;
+Arr.Checksum := CDA_Checksum(Arr);
+end;  
 
 //==============================================================================
 

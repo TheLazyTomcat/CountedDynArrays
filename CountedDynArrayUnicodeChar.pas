@@ -13,7 +13,7 @@
 
   Version 1.5.6 (2026-08-25)
 
-  Last changed 2026-08-26
+  Last changed 2026-08-27
 
   ©2018-2026 František Milt
 
