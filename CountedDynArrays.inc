@@ -13,7 +13,7 @@
 
   Version 1.5.6 (2026-08-25)
 
-  Last changed 2026-08-25
+  Last changed 2026-08-26
 
   ©2018-2026 František Milt
 
@@ -569,7 +569,7 @@ var
   i:  Integer;
 begin
 CDA_Init(Arr);
-CDA_SetCapacity(Arr,Length(Items));
+CDA_Grow(Arr,Length(Items));
 For i := Low(Items) to High(Items) do
   begin
     If not CDA_ItemDecode(Items[i],Arr.Arr[Arr.Count]) then
@@ -751,7 +751,7 @@ else If NewCount > Arr.Count then
   begin
     // add new items
     If NewCount > Length(Arr.Arr) then
-      CDA_SetCapacity(Arr,NewCount);
+      CDA_Grow(Arr,NewCount - Length(Arr.Arr));
     For i := Arr.Count to Pred(NewCount) do
       CDA_ItemInit(Arr.Arr[i]);
     Arr.Count := NewCount;
@@ -1278,7 +1278,7 @@ If not CDA_Valid(Arr) then
   raise ECDAInvalidArray.CreateFmt('%sCDA_Append(%s): Invalid array.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
 If Length(Arr.Arr) < (Arr.Count + Items.Count) then
-  CDA_SetCapacity(Arr,Arr.Count + Items.Count);
+  CDA_Grow(Arr,Items.Count);
 Idx := Arr.Count;
 For i := 0 to Pred(Items.Count) do
   begin
