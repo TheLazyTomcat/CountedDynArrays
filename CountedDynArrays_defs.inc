@@ -135,6 +135,7 @@
 {$UNDEF CDA_FuncOverride_SetLength}
 {$UNDEF CDA_FuncOverride_SetCapacity}
 {$UNDEF CDA_FuncOverride_SetCount}
+{$UNDEF CDA_FuncOverride_Prepare}
 
 {$UNDEF CDA_FuncOverride_Grow}
 {$UNDEF CDA_FuncOverride_GrowDef}
@@ -144,6 +145,8 @@
 {$UNDEF CDA_FuncOverride_UniqueArray}
 {$UNDEF CDA_FuncOverride_Copy}
 {$UNDEF CDA_FuncOverride_CopyAll}
+{$UNDEF CDA_FuncOverride_CopyTo}
+{$UNDEF CDA_FuncOverride_CopyAllTo}
 
 {$UNDEF CDA_FuncOverride_Low}
 {$UNDEF CDA_FuncOverride_High}
@@ -236,6 +239,7 @@
 {$UNDEF CDA_FuncReintroduce_SetLength}
 {$UNDEF CDA_FuncReintroduce_SetCapacity}
 {$UNDEF CDA_FuncReintroduce_SetCount}
+{$UNDEF CDA_FuncReintroduce_Prepare}
 
 {$UNDEF CDA_FuncReintroduce_Grow}
 {$UNDEF CDA_FuncReintroduce_GrowDef}
@@ -245,6 +249,8 @@
 {$UNDEF CDA_FuncReintroduce_UniqueArray}
 {$UNDEF CDA_FuncReintroduce_Copy}
 {$UNDEF CDA_FuncReintroduce_CopyAll}
+{$UNDEF CDA_FuncReintroduce_CopyTo}
+{$UNDEF CDA_FuncReintroduce_CopyAllTo}
 
 {$UNDEF CDA_FuncReintroduce_Low}
 {$UNDEF CDA_FuncReintroduce_High}

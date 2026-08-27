@@ -116,6 +116,8 @@
   procedure CDA_SetCapacity(var Arr: TCDAArrayType; NewCapacity: Integer); overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_SetCount}
   procedure CDA_SetCount(var Arr: TCDAArrayType; NewCount: Integer); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_Prepare}
+  procedure CDA_Prepare(var Arr: TCDAArrayType; MinCapacity: Integer); overload;{$ENDIF}
 
 // implicit changing of capacity
 {$IFNDEF CDA_FuncReintroduce_Grow}
@@ -134,6 +136,10 @@
   Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_CopyAll}
   Function CDA_Copy(const Src: TCDAArrayType): TCDAArrayType; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_CopyTo}
+  procedure CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer; var Dst: TCDAArrayType; SecureCopy: Boolean = False); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_CopyAllTo}
+  procedure CDA_Copy(const Src: TCDAArrayType; var Dst: TCDAArrayType; SecureCopy: Boolean = False); overload;{$ENDIF}
 
 // indices functions
 {$IFNDEF CDA_FuncReintroduce_Low}
@@ -745,6 +751,7 @@ If NewCount < Arr.Count then
     For i := Pred(Arr.Count) downto NewCount do
       CDA_ItemFinal(Arr.Arr[i]);
     Arr.Count := NewCount;
+    Arr.Checksum := CDA_Checksum(Arr);
     CDA_Shrink(Arr);
   end
 else If NewCount > Arr.Count then
@@ -755,8 +762,27 @@ else If NewCount > Arr.Count then
     For i := Arr.Count to Pred(NewCount) do
       CDA_ItemInit(Arr.Arr[i]);
     Arr.Count := NewCount;
+    Arr.Checksum := CDA_Checksum(Arr);
   end;
-Arr.Checksum := CDA_Checksum(Arr);
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_Prepare) or Defined(CDA_FuncReintroduce_Prepare)}
+procedure _CDA_Prepare(var Arr: TCDAArrayType; MinCapacity: Integer);{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+procedure CDA_Prepare(var Arr: TCDAArrayType; MinCapacity: Integer);
+{$IFEND}
+begin
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Prepare(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If MinCapacity < 0 then
+  raise ECDAOutOfRange.CreateFmt('%sCDA_Prepare(%s): Minimum capacity (%d) out of allowed range.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,MinCapacity]);
+If Length(Arr.Arr) < MinCapacity then
+  CDA_Grow(Arr,MinCapacity - Arr.Count);
 end;
 {$UNDEF CDA_FuncNamePrefix}
 
@@ -890,6 +916,70 @@ Result.UserData := Src.UserData;
 For i := 0 to Pred(Result.Count) do
   CDA_ItemUnique(Result.Arr[i]);
 Result.Checksum := CDA_Checksum(Result);
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_CopyTo) or Defined(CDA_FuncReintroduce_CopyTo)}
+procedure _CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer; var Dst: TCDAArrayType; SecureCopy: Boolean = False); overload;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+procedure CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer; var Dst: TCDAArrayType; SecureCopy: Boolean = False);
+{$IFEND}
+var
+  i:  Integer;
+begin
+If not CDA_Valid(Src) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Copy(%s): Invalid source array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If not CDA_Valid(Dst) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Copy(%s): Invalid destination array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+CDA_Clear(Dst);
+CDA_Prepare(Dst,Src.Count);
+If (Index >= 0) and (Index < Src.Count) then
+  begin
+    If (Index + Count) > Src.Count then
+      Count := Src.Count - Index;
+    For i := Index to Pred(Index + Count) do
+      begin
+        Dst.Arr[Dst.Count] := Src.Arr[i];
+        Inc(Dst.Count);          end;
+    If SecureCopy then
+      For i := 0 to Pred(Dst.Count) do
+        CDA_ItemUnique(Dst.Arr[i]);
+    Dst.UserData := Src.UserData;
+    Dst.Checksum := CDA_Checksum(Dst);
+  end;
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_CopyAllTo) or Defined(CDA_FuncReintroduce_CopyAllTo)}
+procedure _CDA_Copy(const Src: TCDAArrayType; var Dst: TCDAArrayType; SecureCopy: Boolean = False); overload;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+procedure CDA_Copy(const Src: TCDAArrayType; var Dst: TCDAArrayType; SecureCopy: Boolean = False);
+{$IFEND}
+var
+  i:  Integer;
+begin
+If not CDA_Valid(Src) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Copy(%s): Invalid source array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If not CDA_Valid(Dst) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Copy(%s): Invalid destination array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+CDA_Clear(Dst);
+CDA_Prepare(Dst,Src.Count);
+For i := 0 to Pred(Src.Count) do
+  Dst.Arr[i] := Src.Arr[i];
+Dst.Count := Src.Count;
+If SecureCopy then
+  For i := 0 to Pred(Dst.Count) do
+    CDA_ItemUnique(Dst.Arr[i]);
+Dst.UserData := Src.UserData;
+Dst.Checksum := CDA_Checksum(Dst);
 end;
 {$UNDEF CDA_FuncNamePrefix}
 
