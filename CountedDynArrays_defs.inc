@@ -11,9 +11,9 @@
 
     Compilation symbols, switches and parameters.
 
-  Version 1.5.6 (2026-08-25)
+  Version 1.5.7 (2026-10-23)
 
-  Last changed 2026-08-27
+  Last changed 2026-10-23
 
   ©2018-2026 František Milt
 
@@ -143,6 +143,7 @@
 {$UNDEF CDA_FuncOverride_ShrinkDef}
 
 {$UNDEF CDA_FuncOverride_UniqueArray}
+{$UNDEF CDA_FuncOverride_Unique}
 {$UNDEF CDA_FuncOverride_Copy}
 {$UNDEF CDA_FuncOverride_CopyAll}
 {$UNDEF CDA_FuncOverride_CopyTo}
@@ -172,6 +173,8 @@
 {$UNDEF CDA_FuncOverride_AddDupBool}
 {$UNDEF CDA_FuncOverride_Append}
 {$UNDEF CDA_FuncOverride_AppendDup}
+{$UNDEF CDA_FuncOverride_AppendArr}
+{$UNDEF CDA_FuncOverride_AppendArrDup}
 {$UNDEF CDA_FuncOverride_Insert}
 {$UNDEF CDA_FuncOverride_InsertDup}
 {$UNDEF CDA_FuncOverride_Exchange}
@@ -247,6 +250,7 @@
 {$UNDEF CDA_FuncReintroduce_ShrinkDef}
 
 {$UNDEF CDA_FuncReintroduce_UniqueArray}
+{$UNDEF CDA_FuncReintroduce_Unique}
 {$UNDEF CDA_FuncReintroduce_Copy}
 {$UNDEF CDA_FuncReintroduce_CopyAll}
 {$UNDEF CDA_FuncReintroduce_CopyTo}
@@ -276,6 +280,8 @@
 {$UNDEF CDA_FuncReintroduce_AddDupBool}
 {$UNDEF CDA_FuncReintroduce_Append}
 {$UNDEF CDA_FuncReintroduce_AppendDup}
+{$UNDEF CDA_FuncReintroduce_AppendArr}
+{$UNDEF CDA_FuncReintroduce_AppendArrDup}
 {$UNDEF CDA_FuncReintroduce_Insert}
 {$UNDEF CDA_FuncReintroduce_InsertDup}
 {$UNDEF CDA_FuncReintroduce_Exchange}

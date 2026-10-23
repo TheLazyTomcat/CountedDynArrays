@@ -11,9 +11,9 @@
 
     Main implementation template
 
-  Version 1.5.6 (2026-08-25)
+  Version 1.5.7 (2026-10-23)
 
-  Last changed 2026-08-27
+  Last changed 2026-10-23
 
   ©2018-2026 František Milt
 
@@ -132,6 +132,8 @@
 // secure copy
 {$IFNDEF CDA_FuncReintroduce_UniqueArray}
   procedure CDA_UniqueArray(var Arr: TCDAArrayType); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_Unique}
+  procedure CDA_Unique(var Arr: TCDAArrayType); overload;{$IFDEF CanInline} inline;{$ENDIF}{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Copy}
   Function CDA_Copy(const Src: TCDAArrayType; Index, Count: Integer): TCDAArrayType; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_CopyAll}
@@ -192,6 +194,10 @@
   procedure CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; SecureCopy: Boolean = False); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_AppendDup}
   Function CDA_Append(var Arr: TCDAArrayType; const Items: TCDAArrayType; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; SecureCopy: Boolean = False): Integer; overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_AppendArr}
+  procedure CDA_Append(var Arr: TCDAArrayType; const Items: array of const; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False); overload;{$ENDIF}
+{$IFNDEF CDA_FuncReintroduce_AppendArrDup}
+  Function CDA_Append(var Arr: TCDAArrayType; const Items: array of const; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False): Integer; overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_Insert}
   procedure CDA_Insert(var Arr: TCDAArrayType; Index: Integer;{$IFDEF CDA_ConstBaseType} const{$ENDIF} Item: TCDABaseType; SecureCopy: Boolean = False); overload;{$ENDIF}
 {$IFNDEF CDA_FuncReintroduce_InsertDup}
@@ -289,9 +295,9 @@ var
   ArrayPointerOverlay:  PtrUInt absolute ArrayPointer;
 begin
 {
-  Checksum is obtained by only XOR-ing of some (inverted) fields. Field Arr is
-  by compiler implemented as a pointer to the dynamic array itself, so we can
-  use it as such.
+  Checksum is obtained by only XOR-ing some (inverted) fields. Field Arr is
+  by compiler implemented as a pointer to the dynamic array itself, so we
+  can use it as such.
 }
 ArrayPointer := Pointer(Arr.Arr);
 Result := Arr.Signature xor ArrayPointerOverlay xor not(PtrUInt(Arr.Count))
@@ -709,11 +715,12 @@ If NewLength < 0 then
   raise ECDAOutOfRange.CreateFmt('%sCDA_SetLength(%s): New length (%d) out of allowed range.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,NewLength]);
 If NewLength < Arr.Count then
-  For i := NewLength to Pred(Arr.Count) do
-    CDA_ItemFinal(Arr.Arr[i]);
+  begin
+    For i := NewLength to Pred(Arr.Count) do
+      CDA_ItemFinal(Arr.Arr[i]);
+    Arr.Count := NewLength;
+  end;
 SetLength(Arr.Arr,NewLength);
-If NewLength < Arr.Count then
-  Arr.Count := NewLength;
 Arr.Checksum := CDA_Checksum(Arr);
 end;
 {$UNDEF CDA_FuncNamePrefix}
@@ -857,15 +864,26 @@ begin
 If not CDA_Valid(Arr) then
   raise ECDAInvalidArray.CreateFmt('%sCDA_UniqueArray(%s): Invalid array.',
           [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
-// alsp change the signature so that the array is truly unique
+// also change the signature so that the array is truly unique
 Arr.Signature := CDA_Signature;
 SetLength(Arr.Arr,Length(Arr.Arr));
-// ensure individual item are unique
+// ensure individual items are unique
 For i := 0 to Pred(Arr.Count) do
   CDA_ItemUnique(Arr.Arr[i]);
 Arr.Checksum := CDA_Checksum(Arr);  
 end;
 {$UNDEF CDA_FuncNamePrefix}
+
+//------------------------------------------------------------------------------
+
+{$IF Defined(CDA_FuncOverride_Unique) or Defined(CDA_FuncReintroduce_Unique)}
+procedure _CDA_Unique(var Arr: TCDAArrayType); overload;
+{$ELSE}
+procedure CDA_Unique(var Arr: TCDAArrayType);
+{$IFEND}
+begin
+CDA_UniqueArray(Arr);
+end;
 
 //------------------------------------------------------------------------------
 
@@ -944,7 +962,8 @@ If (Index >= 0) and (Index < Src.Count) then
     For i := Index to Pred(Index + Count) do
       begin
         Dst.Arr[Dst.Count] := Src.Arr[i];
-        Inc(Dst.Count);          end;
+        Inc(Dst.Count);
+      end;
     If SecureCopy then
       For i := 0 to Pred(Dst.Count) do
         CDA_ItemUnique(Dst.Arr[i]);
@@ -1418,6 +1437,93 @@ If Duplicates <> dupAccept then
         Dec(Result);
   end
 else CDA_Append(Arr,Items,SecureCopy);
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_AppendArr) or Defined(CDA_FuncReintroduce_AppendArr)}
+procedure _CDA_Append(var Arr: TCDAArrayType; const Items: array of const; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False); overload;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+procedure CDA_Append(var Arr: TCDAArrayType; const Items: array of const; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False);
+{$IFEND}
+var
+  i:  Integer;
+begin
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Append(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+If Length(Arr.Arr) < (Arr.Count + Length(Items)) then
+  CDA_Grow(Arr,Length(Items));
+For i := Low(Items) to High(Items) do
+  begin
+    If not CDA_ItemDecode(Items[i],Arr.Arr[Arr.Count]) then
+      case ConversionFailure of
+        cfUseDefaultValue:  Arr.Arr[Arr.Count] := CDA_DEFAULT_VALUE;
+        cfDropItem:         Dec(Arr.Count);
+      else
+       {cfError}
+        raise ECDAConversionError.CreateFmt('%sCDA_Append(%s): Failed to convert variant record (%d).',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Items[i].VType]);
+      end
+    else If SecureCopy then
+      CDA_ItemUnique(Arr.Arr[Arr.Count]);
+    Inc(Arr.Count);      
+  end;
+Arr.Checksum := CDA_Checksum(Arr);
+end;
+{$UNDEF CDA_FuncNamePrefix}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+{$IF Defined(CDA_FuncOverride_AppendArrDup) or Defined(CDA_FuncReintroduce_AppendArrDup)}
+Function _CDA_Append(var Arr: TCDAArrayType; const Items: array of const; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False): Integer; overload;{$DEFINE CDA_FuncNamePrefix}
+{$ELSE}
+Function CDA_Append(var Arr: TCDAArrayType; const Items: array of const; Duplicates: TCDADuplicates{$IFDEF CDA_CaseSensitiveBaseType}; CaseSensitive: Boolean = False{$ENDIF}; ConversionFailure: TCDAConversionFailure = cfUseDefaultValue; SecureCopy: Boolean = False): Integer;
+{$IFEND}
+var
+  i,Idx:  Integer;
+  Temp:   TCDABaseType;
+begin
+If not CDA_Valid(Arr) then
+  raise ECDAInvalidArray.CreateFmt('%sCDA_Append(%s): Invalid array.',
+          [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME]);
+Result := Length(Items);
+If Duplicates <> dupAccept then
+  begin
+    For i := Low(Items) to High(Items) do
+      begin
+        // decode item into temporary storage
+        If not CDA_ItemDecode(Items[i],Temp) then
+          case ConversionFailure of
+            cfUseDefaultValue:  Temp := CDA_DEFAULT_VALUE;
+            cfDropItem:         begin
+                                  Dec(Result);
+                                  Continue{For i};
+                                end;
+          else
+           {cfError}
+            raise ECDAConversionError.CreateFmt('%sCDA_Append(%s): Failed to convert variant record (%d).',
+              [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME,Items[i].VType]);
+          end;
+        // now try to add it
+        If not CDA_Find(Arr,Temp,Idx{$IFDEF CDA_CaseSensitiveBaseType},CaseSensitive{$ENDIF}) then
+          begin
+            CDA_Grow(Arr);
+            Arr.Arr[Arr.Count] := Temp;
+            If SecureCopy then
+              CDA_ItemUnique(Arr.Arr[Arr.Count]);
+            Inc(Arr.Count);
+            Arr.Checksum := CDA_Checksum(Arr);
+          end
+        else If Duplicates = dupError then
+          raise ECDADuplicateItem.CreateFmt('%sCDA_Append(%s): Duplicate item.',
+            [{$IFDEF CDA_FuncNamePrefix}'_'{$ELSE}''{$ENDIF},CDA_ARRAY_NAME])
+        else
+          Dec(Result);
+      end;
+  end
+else CDA_Append(Arr,Items,ConversionFailure,SecureCopy);
 end;
 {$UNDEF CDA_FuncNamePrefix}
 
@@ -2035,7 +2141,7 @@ If CDA_Validate(Arr) then
   CDA_SetCount(Arr,0);
 CDA_SetCount(Arr,Stream_GetInt32(Stream));
 For i := 0 to Pred(Arr.Count) do
-  // all items are fresh, so there is no need to finalize them
+  // all items are fresh/empty, so there is no need to finalize them
   Arr.Arr[i] := CDA_ItemRead(Stream);
 Arr.UserData := PtrInt(Stream_GetUInt64(Stream));
 end;
